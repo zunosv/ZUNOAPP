@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="es">
+
 <head>
 
 <meta charset="UTF-8">
@@ -12,6 +13,10 @@
 
 <script src="https://cdn.tailwindcss.com"></script>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
+
 <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
 
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -19,14 +24,12 @@
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
 <style>
-body{
-background:#09090F;
-}
+body{background:#09090F;}
 </style>
 
 </head>
 
-<body class="text-white font-sans">
+<body class="text-white">
 
 <div id="root"></div>
 
@@ -34,34 +37,183 @@ background:#09090F;
 
 const {useState} = React
 
+/* FIREBASE */
+
+const firebaseConfig = {
+apiKey:"AIzaSyAqXjnH6WrXuEQivE3RGwvav1qyFOOyoeY",
+authDomain:"zuno-1285e.firebaseapp.com",
+projectId:"zuno-1285e"
+}
+
+firebase.initializeApp(firebaseConfig)
+
+const db = firebase.firestore()
+
+/* COMPRESION IMAGEN */
+
+function compressImage(file){
+
+return new Promise(resolve=>{
+
+const reader = new FileReader()
+
+reader.readAsDataURL(file)
+
+reader.onload=e=>{
+
+const img=new Image()
+
+img.src=e.target.result
+
+img.onload=()=>{
+
+const canvas=document.createElement("canvas")
+const ctx=canvas.getContext("2d")
+
+const width=600
+const scale=width/img.width
+
+canvas.width=width
+canvas.height=img.height*scale
+
+ctx.drawImage(img,0,0,canvas.width,canvas.height)
+
+resolve(canvas.toDataURL("image/jpeg",0.6))
+
+}
+
+}
+
+})
+
+}
+
 function App(){
 
-const [view,setView] = useState("login")
-const [logged,setLogged] = useState(false)
+const [view,setView]=useState("login")
+const [user,setUser]=useState(null)
 
-const login = () =>{
-setLogged(true)
+/* LOGIN */
+
+const [phone,setPhone]=useState("")
+const [password,setPassword]=useState("")
+
+/* REGISTRO */
+
+const [nombre,setNombre]=useState("")
+const [dui,setDui]=useState("")
+const [correo,setCorreo]=useState("")
+const [regPhone,setRegPhone]=useState("")
+const [regPass,setRegPass]=useState("")
+
+/* TICKET */
+
+const [monto,setMonto]=useState("")
+const [comercio,setComercio]=useState("Texaco")
+const [img,setImg]=useState(null)
+
+/* LOGIN */
+
+const login=async()=>{
+
+const snap=await db.collection("users")
+.where("phone","==",phone)
+.where("password","==",password)
+.get()
+
+if(snap.empty){
+
+alert("Usuario no encontrado")
+
+return
+
+}
+
+const data=snap.docs[0].data()
+
+setUser(data)
+
 setView("dashboard")
+
 }
 
-const register = () =>{
-alert("Cuenta creada ⚡")
-setView("login")
+/* REGISTRO */
+
+const registrar=async()=>{
+
+if(!nombre||!dui||!correo||!regPhone||!regPass){
+
+alert("Completa todos los datos")
+
+return
+
 }
+
+await db.collection("users").add({
+
+nombre,
+dui,
+correo,
+phone:regPhone,
+password:regPass,
+balance:0,
+createdAt:Date.now()
+
+})
+
+alert("Cuenta creada")
+
+setView("login")
+
+}
+
+/* SUBIR TICKET */
+
+const enviarTicket=async()=>{
+
+if(!img||!monto){
+
+alert("Completa datos")
+
+return
+
+}
+
+const compressed=await compressImage(img)
+
+await db.collection("tickets").add({
+
+phone:user.phone,
+monto:parseFloat(monto),
+comercio,
+status:"pending",
+imgBase64:compressed,
+createdAt:Date.now()
+
+})
+
+alert("Ticket enviado")
+
+setMonto("")
+setImg(null)
+
+}
+
+/* UI */
 
 return(
 
-<div className="min-h-screen flex flex-col">
-
-{/* HEADER */}
+<div className="min-h-screen">
 
 <header className="flex items-center gap-3 p-4 border-b border-gray-800">
 
 <img src="recursos/zlogo.png" className="w-8"/>
 
 <div>
+
 <div className="font-bold text-lg">ZUNO</div>
 <div className="text-xs text-gray-400">Tu dinero más rápido ⚡</div>
+
 </div>
 
 </header>
@@ -69,45 +221,39 @@ return(
 
 {/* LOGIN */}
 
-{view==="login" && (
+{view==="login"&&(
 
-<div className="flex flex-1 items-center justify-center p-6">
+<div className="flex justify-center mt-20">
 
-<div className="bg-[#14141C] p-8 rounded-2xl w-full max-w-sm">
+<div className="bg-[#14141C] p-8 rounded-xl w-80">
 
-<div className="text-center mb-6">
-
-<img src="recursos/zlogo.png" className="w-14 mx-auto mb-3"/>
-
-<h2 className="text-xl font-bold">Iniciar sesión</h2>
-
-<p className="text-gray-400 text-sm">
-Accede a tu billetera ZUNO
-</p>
-
-</div>
+<h2 className="text-xl mb-4">Ingresar</h2>
 
 <input
-placeholder="Correo"
-className="w-full p-3 mb-3 rounded-lg bg-[#1a1a2e]"
+placeholder="Teléfono"
+value={phone}
+onChange={e=>setPhone(e.target.value)}
+className="w-full p-3 mb-3 rounded bg-[#1a1a2e]"
 />
 
 <input
 type="password"
 placeholder="Contraseña"
-className="w-full p-3 mb-4 rounded-lg bg-[#1a1a2e]"
+value={password}
+onChange={e=>setPassword(e.target.value)}
+className="w-full p-3 mb-3 rounded bg-[#1a1a2e]"
 />
 
 <button
 onClick={login}
-className="w-full bg-red-600 p-3 rounded-xl font-semibold hover:bg-red-700"
+className="w-full bg-red-600 p-3 rounded"
 >
 Entrar
 </button>
 
 <p
 onClick={()=>setView("register")}
-className="text-center text-sm text-gray-400 mt-4 cursor-pointer"
+className="text-center mt-4 text-gray-400 cursor-pointer"
 >
 Crear cuenta
 </p>
@@ -121,62 +267,62 @@ Crear cuenta
 
 {/* REGISTRO */}
 
-{view==="register" && (
+{view==="register"&&(
 
-<div className="flex flex-1 items-center justify-center p-6">
+<div className="flex justify-center mt-20">
 
-<div className="bg-[#14141C] p-8 rounded-2xl w-full max-w-sm">
+<div className="bg-[#14141C] p-8 rounded-xl w-80">
 
-<div className="text-center mb-6">
-
-<img src="recursos/zlogo.png" className="w-14 mx-auto mb-3"/>
-
-<h2 className="text-xl font-bold">Crear cuenta</h2>
-
-<p className="text-gray-400 text-sm">
-Empieza a ganar cashback
-</p>
-
-</div>
+<h2 className="text-xl mb-4">Registro</h2>
 
 <input
-placeholder="Nombre completo"
-className="w-full p-3 mb-3 rounded-lg bg-[#1a1a2e]"
+placeholder="Nombre"
+value={nombre}
+onChange={e=>setNombre(e.target.value)}
+className="w-full p-3 mb-3 rounded bg-[#1a1a2e]"
 />
 
 <input
 placeholder="DUI"
-className="w-full p-3 mb-3 rounded-lg bg-[#1a1a2e]"
-/>
-
-<input
-placeholder="Teléfono"
-className="w-full p-3 mb-3 rounded-lg bg-[#1a1a2e]"
+value={dui}
+onChange={e=>setDui(e.target.value)}
+className="w-full p-3 mb-3 rounded bg-[#1a1a2e]"
 />
 
 <input
 placeholder="Correo"
-className="w-full p-3 mb-3 rounded-lg bg-[#1a1a2e]"
+value={correo}
+onChange={e=>setCorreo(e.target.value)}
+className="w-full p-3 mb-3 rounded bg-[#1a1a2e]"
+/>
+
+<input
+placeholder="Teléfono"
+value={regPhone}
+onChange={e=>setRegPhone(e.target.value)}
+className="w-full p-3 mb-3 rounded bg-[#1a1a2e]"
 />
 
 <input
 type="password"
 placeholder="Contraseña"
-className="w-full p-3 mb-4 rounded-lg bg-[#1a1a2e]"
+value={regPass}
+onChange={e=>setRegPass(e.target.value)}
+className="w-full p-3 mb-3 rounded bg-[#1a1a2e]"
 />
 
 <button
-onClick={register}
-className="w-full bg-red-600 p-3 rounded-xl font-semibold hover:bg-red-700"
+onClick={registrar}
+className="w-full bg-red-600 p-3 rounded"
 >
 Crear cuenta
 </button>
 
 <p
 onClick={()=>setView("login")}
-className="text-center text-sm text-gray-400 mt-4 cursor-pointer"
+className="text-center mt-4 text-gray-400 cursor-pointer"
 >
-Volver al login
+Volver
 </p>
 
 </div>
@@ -188,34 +334,35 @@ Volver al login
 
 {/* DASHBOARD */}
 
-{view==="dashboard" && (
+{view==="dashboard"&&(
 
-<div className="flex-1 p-6 space-y-6">
+<div className="p-6 space-y-6">
 
-{/* SALDO */}
+<div className="bg-[#14141C] p-6 rounded-xl">
 
-<div className="bg-[#14141C] p-6 rounded-2xl">
-
-<p className="text-gray-400 text-sm">Saldo ZUNO</p>
+<p className="text-gray-400">Saldo</p>
 
 <h2 className="text-3xl font-bold">$0.00</h2>
 
 </div>
 
+<div className="bg-[#14141C] p-6 rounded-xl space-y-3">
 
-{/* SUBIR TICKET */}
-
-<div className="bg-[#14141C] p-6 rounded-2xl space-y-3">
-
-<h3 className="font-semibold">Subir ticket</h3>
+<h3>Subir ticket</h3>
 
 <input
 type="number"
-placeholder="Monto compra"
-className="w-full p-3 rounded-lg bg-[#1a1a2e]"
+placeholder="Monto"
+value={monto}
+onChange={e=>setMonto(e.target.value)}
+className="w-full p-3 rounded bg-[#1a1a2e]"
 />
 
-<select className="w-full p-3 rounded-lg bg-[#1a1a2e]">
+<select
+value={comercio}
+onChange={e=>setComercio(e.target.value)}
+className="w-full p-3 rounded bg-[#1a1a2e]"
+>
 
 <option>Texaco</option>
 <option>UNO</option>
@@ -225,34 +372,19 @@ className="w-full p-3 rounded-lg bg-[#1a1a2e]"
 
 <input
 type="file"
-className="w-full"
+onChange={e=>setImg(e.target.files[0])}
 />
 
-<button className="w-full bg-red-600 p-3 rounded-xl font-semibold">
-
+<button
+onClick={enviarTicket}
+className="w-full bg-red-600 p-3 rounded"
+>
 Enviar ticket
-
 </button>
 
 </div>
 
 </div>
-
-)}
-
-
-{/* NAV */}
-
-{logged && (
-
-<nav className="fixed bottom-0 w-full bg-black border-t border-gray-800 flex justify-around py-3">
-
-<button>Inicio</button>
-<button>Ticket</button>
-<button>Comercios</button>
-<button>Perfil</button>
-
-</nav>
 
 )}
 
