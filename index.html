@@ -24,9 +24,7 @@
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
 <style>
-body{
-background:#09090F;
-}
+body{background:#09090F;}
 </style>
 
 </head>
@@ -37,7 +35,7 @@ background:#09090F;
 
 <script type="text/babel">
 
-const {useState,useEffect} = React
+const {useState} = React
 
 /* FIREBASE */
 
@@ -63,13 +61,27 @@ const [user,setUser] = useState(null)
 const [phone,setPhone] = useState("")
 const [password,setPassword] = useState("")
 
-/* REGISTRO */
+/* BOT REGISTRO */
 
-const [nombre,setNombre] = useState("")
-const [dui,setDui] = useState("")
-const [correo,setCorreo] = useState("")
-const [regPhone,setRegPhone] = useState("")
-const [regPass,setRegPass] = useState("")
+const questions = [
+"¿Cuál es tu nombre completo?",
+"¿Cuál es tu fecha de nacimiento?",
+"Ingresa tu DUI",
+"¿Cuál es tu correo?",
+"¿Cuál es tu dirección?"
+]
+
+const fields = [
+"nombre",
+"birth",
+"dui",
+"correo",
+"direccion"
+]
+
+const [step,setStep] = useState(0)
+const [answer,setAnswer] = useState("")
+const [data,setData] = useState({})
 
 /* LOGIN */
 
@@ -96,23 +108,48 @@ setView("dashboard")
 
 }
 
-/* REGISTRO */
+/* BOT NEXT */
 
-const registrar = async()=>{
+const nextQuestion = ()=>{
+
+const newData = {...data,[fields[step]]:answer}
+
+setData(newData)
+
+setAnswer("")
+
+if(step+1 < questions.length){
+
+setStep(step+1)
+
+}else{
+
+saveUser(newData)
+
+}
+
+}
+
+/* GUARDAR USUARIO */
+
+const saveUser = async(userData)=>{
 
 await db.collection("users").add({
 
-nombre,
-dui,
-correo,
-phone:regPhone,
-password:regPass,
+...userData,
+
+phone,
+password,
+
 balance:0,
+totalCashback:0,
+tickets:0,
+
 createdAt:Date.now()
 
 })
 
-alert("Cuenta creada")
+alert("Registro completado")
 
 setView("login")
 
@@ -175,7 +212,7 @@ Entrar
 </button>
 
 <p
-onClick={()=>setView("register")}
+onClick={()=>setView("bot")}
 className="text-center text-gray-400 cursor-pointer">
 
 Crear cuenta
@@ -188,73 +225,43 @@ Crear cuenta
 
 )}
 
-{/* REGISTRO */}
+{/* BOT INTERACTIVO */}
 
-{view==="register" && (
+{view==="bot" && (
 
-<div className="flex flex-1 items-center justify-center p-6">
+<div className="p-6 space-y-6">
 
-<div className="bg-[#14141C] p-8 rounded-xl w-80 space-y-3">
+<h2 className="text-xl font-bold">
 
-<h2 className="text-xl text-center font-bold">
-
-Registro
+Bot ZUNO
 
 </h2>
 
-<input
-placeholder="Nombre"
-value={nombre}
-onChange={e=>setNombre(e.target.value)}
-className="w-full p-3 rounded bg-[#1a1a2e]"
-/>
+<p className="text-gray-400">
+
+Paso {step+1} de {questions.length}
+
+</p>
+
+<div className="bg-[#14141C] p-4 rounded-xl">
+
+🤖 {questions[step]}
+
+</div>
 
 <input
-placeholder="DUI"
-value={dui}
-onChange={e=>setDui(e.target.value)}
-className="w-full p-3 rounded bg-[#1a1a2e]"
-/>
-
-<input
-placeholder="Correo"
-value={correo}
-onChange={e=>setCorreo(e.target.value)}
-className="w-full p-3 rounded bg-[#1a1a2e]"
-/>
-
-<input
-placeholder="Teléfono"
-value={regPhone}
-onChange={e=>setRegPhone(e.target.value)}
-className="w-full p-3 rounded bg-[#1a1a2e]"
-/>
-
-<input
-type="password"
-placeholder="Contraseña"
-value={regPass}
-onChange={e=>setRegPass(e.target.value)}
+value={answer}
+onChange={e=>setAnswer(e.target.value)}
 className="w-full p-3 rounded bg-[#1a1a2e]"
 />
 
 <button
-onClick={registrar}
+onClick={nextQuestion}
 className="w-full bg-red-600 p-3 rounded-xl">
 
-Registrarme
+Continuar
 
 </button>
-
-<p
-onClick={()=>setView("login")}
-className="text-center text-gray-400 cursor-pointer">
-
-Volver
-
-</p>
-
-</div>
 
 </div>
 
