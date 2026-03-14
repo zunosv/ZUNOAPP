@@ -403,7 +403,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
   <div class="sub-body">
     <div class="step-lbl">1 · Foto del recibo o factura</div>
     <div class="upz" id="upz" onclick="triggerUp()">
-      <input type="file" id="up-file" accept="image/*" capture="environment" onchange="onFile(event)">
+      <input type="file" id="up-file" accept="image/*" onchange="onFile(event)">
       <div id="upz-ph">
         <div class="upz-ic">📸</div>
         <div class="upz-lbl">Tocá para tomar foto</div>
@@ -518,7 +518,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
     <!-- PASO 1: DUI -->
     <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">1 · Foto de tu DUI (frente)</div>
     <div class="kup" id="kup-dui" onclick="triggerKUP('kup-dui-file')">
-      <input type="file" id="kup-dui-file" accept="image/*" capture="environment" onchange="onKUP(event,'kup-dui','kup-dui-prev','kyc-img-dui')">
+      <input type="file" id="kup-dui-file" accept="image/*" onchange="onKUP(event,'kup-dui','kup-dui-prev','kyc-img-dui')">
       <div id="kup-dui-ph">
         <div class="kup-ic">🪪</div>
         <div class="kup-lbl">Foto del DUI frente</div>
@@ -530,7 +530,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
     <!-- PASO 2: SELFIE -->
     <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">2 · Selfie sosteniendo tu DUI</div>
     <div class="kup" id="kup-selfie" onclick="triggerKUP('kup-selfie-file')">
-      <input type="file" id="kup-selfie-file" accept="image/*" capture="user" onchange="onKUP(event,'kup-selfie','kup-selfie-prev','kyc-img-selfie')">
+      <input type="file" id="kup-selfie-file" accept="image/*" onchange="onKUP(event,'kup-selfie','kup-selfie-prev','kyc-img-selfie')">
       <div id="kup-selfie-ph">
         <div class="kup-ic">🤳</div>
         <div class="kup-lbl">Selfie con tu DUI visible</div>
