@@ -165,6 +165,20 @@ saveUser(newData)
 
 const saveUser = async(userData)=>{
 
+/* VERIFICAR TELEFONO DUPLICADO */
+
+const checkPhone = await db.collection("users")
+.where("phone","==",phone)
+.get()
+
+if(!checkPhone.empty){
+
+setError("Este número ya está registrado")
+
+return
+
+}
+
 await db.collection("users").add({
 
 ...userData,
@@ -175,11 +189,36 @@ balance:0,
 totalCashback:0,
 tickets:0,
 
+verified:false,
+duiPhoto:null,
+
 createdAt:Date.now()
 
 })
 
 setView("login")
+
+}
+
+/* SUBIR FOTO DUI */
+
+const uploadDUI = async(file)=>{
+
+const reader = new FileReader()
+
+reader.readAsDataURL(file)
+
+reader.onload = async(e)=>{
+
+await db.collection("users").doc(user.id).update({
+
+duiPhoto:e.target.result
+
+})
+
+alert("Foto enviada para verificación")
+
+}
 
 }
 
@@ -211,9 +250,7 @@ Tu dinero más rápido ⚡
 <div className="bg-[#14141C] p-8 rounded-xl w-80 space-y-3">
 
 <h2 className="text-xl text-center font-bold">
-
 Iniciar sesión
-
 </h2>
 
 <input
@@ -232,29 +269,21 @@ className="w-full p-3 rounded bg-[#1a1a2e]"
 />
 
 {error && (
-
 <p className="text-red-400 text-sm text-center">
-
 {error}
-
 </p>
-
 )}
 
 <button
 onClick={login}
 className="w-full bg-red-600 p-3 rounded-xl">
-
 Entrar
-
 </button>
 
 <p
 onClick={()=>setView("bot")}
 className="text-center text-gray-400 cursor-pointer">
-
 Crear cuenta
-
 </p>
 
 </div>
@@ -270,21 +299,15 @@ Crear cuenta
 <div className="p-6 space-y-6">
 
 <h2 className="text-xl font-bold">
-
 Bot ZUNO
-
 </h2>
 
 <p className="text-gray-400">
-
 Paso {step+1} de {questions.length}
-
 </p>
 
 <div className="bg-[#14141C] p-4 rounded-xl">
-
 🤖 {questions[step].q}
-
 </div>
 
 <input
@@ -295,21 +318,15 @@ className="w-full p-3 rounded bg-[#1a1a2e]"
 />
 
 {error && (
-
 <p className="text-red-400 text-sm">
-
 {error}
-
 </p>
-
 )}
 
 <button
 onClick={nextQuestion}
 className="w-full bg-red-600 p-3 rounded-xl">
-
 Continuar
-
 </button>
 
 </div>
@@ -322,26 +339,19 @@ Continuar
 
 <div className="flex-1 p-6 pb-24 space-y-6">
 
-{/* HOME */}
-
 {tab==="home" && (
 
 <>
-
 <h2 className="text-xl font-bold">
 Hola {user.nombre}
 </h2>
 
 <div className="bg-gradient-to-r from-red-600 to-red-500 p-6 rounded-2xl">
-
 <p>Saldo disponible</p>
-
 <h2 className="text-3xl font-bold">
 ${user.balance}
 </h2>
-
 </div>
-
 </>
 
 )}
@@ -351,19 +361,12 @@ ${user.balance}
 {tab==="tickets" && (
 
 <div className="bg-[#14141C] p-6 rounded-xl">
-
 <h3 className="font-semibold mb-3">
-
 Mis tickets
-
 </h3>
-
 <p className="text-gray-400 text-sm">
-
 Aquí aparecerán tus tickets enviados.
-
 </p>
-
 </div>
 
 )}
@@ -372,20 +375,30 @@ Aquí aparecerán tus tickets enviados.
 
 {tab==="profile" && (
 
-<div className="bg-[#14141C] p-6 rounded-xl space-y-2">
+<div className="bg-[#14141C] p-6 rounded-xl space-y-3">
 
 <h3 className="font-semibold">
-
 Perfil
-
 </h3>
 
 <p>Nombre: {user.nombre}</p>
-
 <p>Teléfono: {user.phone}</p>
-
 <p>Correo: {user.correo}</p>
 
+<p className="text-yellow-400 text-sm">
+Estado KYC: {user.verified ? "Verificado" : "Pendiente"}
+</p>
+
+<input
+type="file"
+onChange={(e)=>uploadDUI(e.target.files[0])}
+/>
+
+<p className="text-gray-400 text-xs">
+Sube foto de tu DUI para verificación.  
+El administrador eliminará la imagen después de verificar tu cuenta.
+</p>
+
 </div>
 
 )}
@@ -394,7 +407,7 @@ Perfil
 
 )}
 
-{/* NAV BAR INFERIOR */}
+{/* NAV BAR */}
 
 {view==="dashboard" && (
 
