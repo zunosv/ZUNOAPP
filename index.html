@@ -71,7 +71,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 .login-hero{background:linear-gradient(170deg,#1a0005 0%,#09090f 55%);padding:56px 24px 40px;text-align:center;position:relative;overflow:hidden}
 .login-hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:320px;height:320px;background:radial-gradient(circle,rgba(232,25,44,.15),transparent 70%);pointer-events:none}
 .brand{display:inline-flex;align-items:center;gap:10px;margin-bottom:32px;position:relative;z-index:1}
-.brand-ico{width:52px;height:52px;border-radius:16px;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 4px 24px rgba(232,25,44,.45)}
+.brand-ico{width:52px;height:52px;border-radius:16px;background:var(--red);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 4px 24px rgba(232,25,44,.45)}
 .brand-name{font-size:36px;font-weight:800}
 .login-title{font-size:25px;font-weight:800;line-height:1.3;position:relative;z-index:1}
 .login-sub{font-size:13px;color:var(--text2);margin-top:8px;line-height:1.7;position:relative;z-index:1}
@@ -257,6 +257,30 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 .pmi-ar{color:var(--text3)}
 .logout{width:100%;padding:14px;margin-top:14px;background:transparent;border:1.5px solid var(--redborder);border-radius:14px;color:var(--red3);font-family:'Plus Jakarta Sans';font-size:14px;font-weight:700;cursor:pointer;transition:all .12s}
 .logout:active{background:var(--redbg)}
+
+/* KYC */
+.kyc-ban{border-radius:16px;padding:16px;margin-bottom:16px;cursor:pointer;transition:all .12s;touch-action:manipulation}
+.kyc-ban:active{opacity:.8}
+.kyc-ban.pend{background:var(--goldbg);border:1px solid var(--goldborder)}
+.kyc-ban.review{background:var(--bluebg);border:1px solid var(--blueborder);cursor:default}
+.kyc-ban.done{background:var(--greenbg);border:1px solid var(--greenborder);cursor:default}
+.kyc-top{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.kyc-ic{font-size:26px;flex-shrink:0}
+.kyc-ttl{font-size:14px;font-weight:800}
+.kyc-sub{font-size:12px;margin-top:2px;line-height:1.5;color:var(--text2)}
+.kyc-progress{display:flex;gap:6px;margin-top:10px}
+.kyc-dot{flex:1;height:4px;border-radius:2px;background:var(--border2)}
+.kyc-dot.on{background:var(--gold)}
+.kyc-dot.done{background:var(--green)}
+.kyc-btn-gold{width:100%;padding:11px;border:none;border-radius:11px;background:var(--gold);color:#000;font-family:'Plus Jakarta Sans';font-size:13px;font-weight:800;cursor:pointer;margin-top:10px;transition:all .12s;touch-action:manipulation}
+.kyc-btn-gold:active{transform:scale(.97)}
+.kup{border:2px dashed var(--border2);border-radius:14px;padding:22px;text-align:center;cursor:pointer;position:relative;overflow:hidden;background:var(--s2);margin-bottom:12px;transition:all .15s}
+.kup.has{border-style:solid;border-color:var(--green);padding:0}
+.kup input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.kup-ic{font-size:28px;margin-bottom:6px}
+.kup-lbl{font-size:13px;font-weight:700}
+.kup-sub{font-size:11px;color:var(--text3);margin-top:3px}
+.kup img{width:100%;max-height:180px;object-fit:contain;border-radius:12px;display:none}
 </style>
 </head>
 <body>
@@ -265,7 +289,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 <div id="s-login" class="scr on">
   <div class="login-hero">
     <div class="brand">
-      <div class="brand-ico">⚡</div>
+      <div class="brand-ico"><img src="recursos/zlogo.png" alt="Zuno" style="width:100%;height:100%;object-fit:contain;padding:6px;filter:invert(1)"></div>
       <div class="brand-name">ZUNO</div>
     </div>
     <div class="login-title">Gana cashback real<br>en cada compra</div>
@@ -457,14 +481,71 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
     <div class="sbox"><div class="sbox-v" id="ps-tks">0</div><div class="sbox-l">Tickets</div></div>
     <div class="sbox"><div class="sbox-v" id="ps-cb">$0</div><div class="sbox-l">Ganado</div></div>
   </div>
+
+  <!-- KYC BANNER -->
+  <div id="kyc-ban" class="kyc-ban pend" onclick="openKYC()">
+    <div class="kyc-top">
+      <span class="kyc-ic">🆔</span>
+      <div>
+        <div class="kyc-ttl">Verificá tu identidad</div>
+        <div class="kyc-sub">Desbloquea la tarjeta Zuno y límites mayores</div>
+      </div>
+    </div>
+    <div class="kyc-progress">
+      <div class="kyc-dot" id="kd1"></div>
+      <div class="kyc-dot" id="kd2"></div>
+    </div>
+    <button class="kyc-btn-gold" id="kyc-main-btn">Verificar ahora →</button>
+  </div>
+
   <div class="pmenu">
     <div class="pmi" onclick="goTo('ticket')"><span class="pmi-ic">📸</span><span class="pmi-tx">Subir ticket</span><span class="pmi-ar">›</span></div>
     <div class="pmi" onclick="goTo('mytickets')"><span class="pmi-ic">🧾</span><span class="pmi-tx">Mis tickets</span><span class="pmi-ar">›</span></div>
     <div class="pmi" onclick="goTo('map')"><span class="pmi-ic">🏪</span><span class="pmi-tx">Comercios Zuno</span><span class="pmi-ar">›</span></div>
-    <div class="pmi" style="opacity:.5;cursor:not-allowed"><span class="pmi-ic">💳</span><span class="pmi-tx">Tarjeta Zuno <span style="font-size:10px;background:var(--purplebg);color:var(--purple3);padding:2px 7px;border-radius:5px;font-weight:700;margin-left:6px">PRONTO</span></span></div>
+    <div class="pmi" id="pmi-tarjeta" style="opacity:.5;cursor:not-allowed"><span class="pmi-ic">💳</span><span class="pmi-tx">Tarjeta Zuno <span style="font-size:10px;background:var(--purplebg);color:var(--purple3);padding:2px 7px;border-radius:5px;font-weight:700;margin-left:6px">PRONTO</span></span></div>
     <div class="pmi" onclick="goTo('home')"><span class="pmi-ic">🏠</span><span class="pmi-tx">Inicio</span><span class="pmi-ar">›</span></div>
   </div>
   <button class="logout" onclick="doLogout()">Cerrar sesión</button>
+</div>
+
+<!-- MODAL KYC -->
+<div class="mov" id="m-kyc">
+  <div class="modal">
+    <div class="m-pill"></div>
+    <h3>Verificación de identidad</h3>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:18px;line-height:1.6">Necesitamos verificar que sos vos. Subí los siguientes documentos — los revisamos en menos de 24h.</div>
+
+    <!-- PASO 1: DUI -->
+    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">1 · Foto de tu DUI (frente)</div>
+    <div class="kup" id="kup-dui" onclick="triggerKUP('kup-dui-file')">
+      <input type="file" id="kup-dui-file" accept="image/*" capture="environment" onchange="onKUP(event,'kup-dui','kup-dui-prev','kyc-img-dui')">
+      <div id="kup-dui-ph">
+        <div class="kup-ic">🪪</div>
+        <div class="kup-lbl">Foto del DUI frente</div>
+        <div class="kup-sub">Asegurate que se lean todos los datos</div>
+      </div>
+      <img id="kup-dui-prev" alt="DUI">
+    </div>
+
+    <!-- PASO 2: SELFIE -->
+    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">2 · Selfie sosteniendo tu DUI</div>
+    <div class="kup" id="kup-selfie" onclick="triggerKUP('kup-selfie-file')">
+      <input type="file" id="kup-selfie-file" accept="image/*" capture="user" onchange="onKUP(event,'kup-selfie','kup-selfie-prev','kyc-img-selfie')">
+      <div id="kup-selfie-ph">
+        <div class="kup-ic">🤳</div>
+        <div class="kup-lbl">Selfie con tu DUI visible</div>
+        <div class="kup-sub">Tu cara y el DUI deben verse claramente</div>
+      </div>
+      <img id="kup-selfie-prev" alt="Selfie">
+    </div>
+
+    <div style="background:var(--bluebg);border:1px solid var(--blueborder);border-radius:11px;padding:11px 14px;font-size:12px;color:var(--blue);font-weight:600;line-height:1.6;margin-bottom:16px">
+      🔒 Tus documentos son confidenciales y solo se usan para verificar tu identidad.
+    </div>
+
+    <button class="btn btn-red" onclick="submitKYC()">Enviar para verificación →</button>
+    <button class="btn btn-ghost" onclick="closeM('m-kyc')" style="margin-bottom:0">Cancelar</button>
+  </div>
 </div>
 
 <!-- NAV -->
@@ -764,7 +845,67 @@ async function rProfile(){
   $('ps-bal').textContent=fUSD(CU.balance||0);
   $('ps-tks').textContent=CU.tickets||0;
   $('ps-cb').textContent=fUSD(CU.totalCashback||0);
+  // KYC banner
+  const kb=$('kyc-ban');const kbtn=$('kyc-main-btn');
+  const ks=CU.kycStatus||'none';
+  if(ks==='approved'||CU.verified){
+    kb.className='kyc-ban done';kb.onclick=null;
+    kb.innerHTML=`<div class="kyc-top"><span class="kyc-ic">✅</span><div><div class="kyc-ttl" style="color:var(--green)">Identidad verificada</div><div class="kyc-sub">Tu cuenta está completamente verificada</div></div></div>`;
+    // habilitar tarjeta
+    const pt=$('pmi-tarjeta');if(pt){pt.style.opacity='1';pt.style.cursor='pointer';}
+  } else if(ks==='pending'){
+    kb.className='kyc-ban review';kb.onclick=null;
+    kb.innerHTML=`<div class="kyc-top"><span class="kyc-ic">⏳</span><div><div class="kyc-ttl" style="color:var(--blue)">En revisión</div><div class="kyc-sub">Estamos verificando tus documentos — menos de 24h</div></div></div><div class="kyc-progress"><div class="kyc-dot on"></div><div class="kyc-dot on"></div></div>`;
+  } else {
+    kb.className='kyc-ban pend';kb.onclick=openKYC;
+    $('kd1').className='kyc-dot';$('kd2').className='kyc-dot';
+    if(kbtn)kbtn.style.display='block';
+  }
 }
+
+// KYC
+let kycImgDUI=null,kycImgSelfie=null;
+window.openKYC=()=>{
+  kycImgDUI=null;kycImgSelfie=null;
+  ['kup-dui','kup-selfie'].forEach(id=>{
+    const el=$(id);el.classList.remove('has');
+    el.querySelector('img').style.display='none';
+    el.querySelector('[id$="-ph"]').style.display='block';
+  });
+  $('m-kyc').classList.add('open');
+};
+window.triggerKUP=id=>$(id).click();
+window.onKUP=(e,zoneId,prevId,varName)=>{
+  const f=e.target.files[0];if(!f)return;
+  if(f.size>5*1024*1024){toast('Imagen muy grande (máx 5MB)','err');return;}
+  const r=new FileReader();
+  r.onload=ev=>{
+    const b64=ev.target.result;
+    if(varName==='kyc-img-dui')kycImgDUI=b64;
+    else kycImgSelfie=b64;
+    const prev=$(prevId);prev.src=b64;prev.style.display='block';
+    $(zoneId).classList.add('has');
+    $(zoneId).querySelector('[id$="-ph"]').style.display='none';
+  };
+  r.readAsDataURL(f);
+};
+window.submitKYC=async()=>{
+  if(!kycImgDUI){toast('Subí la foto de tu DUI','err');return;}
+  if(!kycImgSelfie){toast('Subí el selfie con tu DUI','err');return;}
+  load(true,'Enviando documentos...');
+  try{
+    await setDoc(doc(db,'kyc',CU.id),{
+      userId:CU.id,userName:CU.name,userDUI:CU.dui,userPhone:CU.phone,
+      imgDUI:kycImgDUI,imgSelfie:kycImgSelfie,
+      status:'pending',createdAt:Date.now()
+    });
+    await updateDoc(doc(db,'users',CU.id),{kycStatus:'pending'});
+    CU.kycStatus='pending';
+    closeM('m-kyc');load(false);
+    toast('✅ Documentos enviados — revisamos pronto','ok');
+    rProfile();
+  }catch(e){toast('Error al enviar. Intentá de nuevo.','err');load(false);}
+};
 </script>
 </body>
 </html>

@@ -62,7 +62,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 #s-login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;background:radial-gradient(ellipse at 50% 0%,rgba(124,58,237,.12),transparent 60%)}
 .lcard{width:100%;max-width:380px;background:var(--s1);border:1px solid var(--border2);border-radius:20px;padding:32px 28px}
 .lcard-logo{display:flex;align-items:center;gap:12px;margin-bottom:28px}
-.lcard-ic{width:44px;height:44px;border-radius:14px;background:var(--purple);display:flex;align-items:center;justify-content:center;font-size:22px}
+.lcard-ic{width:44px;height:44px;border-radius:14px;background:var(--purple);display:flex;align-items:center;justify-content:center;overflow:hidden}
 .field{margin-bottom:13px}
 .field label{display:block;font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
 .field input,.field select,.field textarea{width:100%;padding:12px 14px;background:var(--s2);border:1.5px solid var(--border2);border-radius:12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;outline:none;transition:all .2s;-webkit-appearance:none}
@@ -192,7 +192,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 <div id="s-login" style="display:flex">
   <div class="lcard">
     <div class="lcard-logo">
-      <div class="lcard-ic">⚡</div>
+      <div class="lcard-ic"><img src="recursos/zlogo.png" alt="Zuno" style="width:100%;height:100%;object-fit:contain;padding:5px;filter:invert(1)"></div>
       <div><div style="font-size:22px;font-weight:800">Zuno Admin</div><div style="font-size:12px;color:var(--text3)">Panel Super Administrador</div></div>
     </div>
     <div class="field"><label>Usuario</label><input type="text" id="l-user" placeholder="admin" autocomplete="off"></div>
@@ -206,13 +206,14 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
   <div class="ov" id="ov" onclick="closeSB()"></div>
   <nav class="sidebar" id="sidebar">
     <div class="sb-logo">
-      <div class="sb-logo-ic">⚡</div>
+      <div class="sb-logo-ic" style="overflow:hidden"><img src="recursos/zlogo.png" alt="Zuno" style="width:100%;height:100%;object-fit:contain;padding:5px;filter:invert(1)"></div>
       <div><div class="sb-logo-name">Zuno</div><div class="sb-logo-tag">Super Admin</div></div>
     </div>
     <div class="sb-sec">
       <div class="sb-lbl">Principal</div>
       <div class="sb-item on" data-p="dash" onclick="goP('dash',this)"><span class="sb-ic">📊</span>Dashboard</div>
       <div class="sb-item" data-p="tickets" onclick="goP('tickets',this)"><span class="sb-ic">🧾</span>Tickets<span class="sb-badge" id="badge-tk" style="display:none">0</span></div>
+      <div class="sb-item" data-p="kyc" onclick="goP('kyc',this)"><span class="sb-ic">🆔</span>KYC<span class="sb-badge" id="badge-kyc" style="display:none">0</span></div>
       <div class="sb-item" data-p="clientes" onclick="goP('clientes',this)"><span class="sb-ic">👥</span>Clientes<span class="sb-badge" id="badge-cl" style="display:none">0</span></div>
     </div>
     <div class="sb-sec">
@@ -265,6 +266,17 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
         <div class="ftab" onclick="setTkF('all',this)">Todos</div>
       </div>
       <div id="tk-list"></div>
+    </div>
+
+    <!-- KYC -->
+    <div class="panel" id="panel-kyc">
+      <div class="phdr"><h2>Verificación KYC</h2></div>
+      <div class="ftabs" id="kyc-ftabs">
+        <div class="ftab on" onclick="setKycF('pending',this)">⏳ Pendientes</div>
+        <div class="ftab" onclick="setKycF('approved',this)">✅ Aprobados</div>
+        <div class="ftab" onclick="setKycF('rejected',this)">❌ Rechazados</div>
+      </div>
+      <div id="kyc-list"></div>
     </div>
 
     <!-- CLIENTES -->
@@ -398,6 +410,32 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
   </div>
 </div>
 
+<!-- Modal KYC review -->
+<div class="mov" id="m-kyc-rev">
+  <div class="modal">
+    <div class="m-pill"></div>
+    <h3 id="mkr-name">—</h3>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:14px" id="mkr-sub">—</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+      <div>
+        <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">DUI Frente</div>
+        <img id="mkr-dui" src="" alt="DUI" style="width:100%;border-radius:12px;object-fit:contain;max-height:160px;background:var(--s3)">
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Selfie + DUI</div>
+        <img id="mkr-selfie" src="" alt="Selfie" style="width:100%;border-radius:12px;object-fit:contain;max-height:160px;background:var(--s3)">
+      </div>
+    </div>
+    <div style="background:var(--s2);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--text3);line-height:1.8" id="mkr-datos">—</div>
+    <div class="field"><label>Nota (si rechazás)</label><input type="text" id="kyc-rej-note" placeholder="Ej: Foto borrosa, DUI no coincide..."></div>
+    <div class="m-acts">
+      <button class="btn-sm r" style="flex:1;padding:12px;font-size:13px" onclick="reviewKYC('rejected')">❌ Rechazar</button>
+      <button class="btn-p" style="flex:2;padding:12px" onclick="reviewKYC('approved')">✅ Aprobar identidad</button>
+    </div>
+    <button class="btn-cancel" style="width:100%;margin-top:8px;padding:12px" onclick="closeM('m-kyc-rev')">Cancelar</button>
+  </div>
+</div>
+
 <div class="load-ov" id="loading"><div class="spinner"></div><p id="ltxt">Guardando...</p></div>
 <div class="toast" id="toast"></div>
 
@@ -468,12 +506,15 @@ async function rPanel(id){
   // badges
   const pendTks=allTickets.filter(t=>t.status==='pending').length;
   const pendCls=allUsers.filter(u=>!u.verified).length;
+  // KYC badge
+  try{const ks=await getDocs(query(collection(db,'kyc'),where('status','==','pending')));const pk=ks.size;const kb=$('badge-kyc');if(pk>0){kb.style.display='inline-flex';kb.textContent=pk;}else kb.style.display='none';}catch{}
   const tkBadge=$('badge-tk');const clBadge=$('badge-cl');
   if(pendTks>0){tkBadge.style.display='inline-flex';tkBadge.textContent=pendTks;}else tkBadge.style.display='none';
   if(pendCls>0){clBadge.style.display='inline-flex';clBadge.textContent=pendCls;}else clBadge.style.display='none';
   $('alert-ind').style.display=(pendTks>0||pendCls>0)?'flex':'none';
   if(id==='dash')rDash();
   else if(id==='tickets')rTickets();
+  else if(id==='kyc')rKYC();
   else if(id==='clientes')rClientes();
   else if(id==='comercios')rComs();
   else if(id==='admins')rAdmins();
@@ -539,8 +580,11 @@ window.approveTicket=async id=>{
   const note=$('note-'+id)?.value||'';
   load(true,'Aprobando ticket...');
   try{
-    // 1. Actualizar ticket
-    await updateDoc(doc(db,'tickets',id),{status:'approved',note,approvedAt:Date.now()});
+    // 1. Aprobar ticket y eliminar foto para optimizar Firestore
+    await updateDoc(doc(db,'tickets',id),{
+      status:'approved',note,approvedAt:Date.now(),
+      imgBase64:null // eliminar foto — ya no se necesita
+    });
     // 2. Acreditar cashback en saldo del usuario
     const userRef=doc(db,'users',tk.userId);
     const userSnap=await getDoc(userRef);
@@ -569,8 +613,11 @@ window.confirmReject=async()=>{
   load(true);
   try{
     const tk=allTickets.find(t=>t.id===selTkId);
-    await updateDoc(doc(db,'tickets',selTkId),{status:'rejected',note,rejectedAt:Date.now()});
-    // Marcar en historial del usuario
+    // Rechazar y eliminar foto para optimizar Firestore
+    await updateDoc(doc(db,'tickets',selTkId),{
+      status:'rejected',note,rejectedAt:Date.now(),
+      imgBase64:null // eliminar foto — ya no se necesita
+    });
     if(tk){
       const us=await getDoc(doc(db,'users',tk.userId));
       if(us.exists()){
@@ -580,7 +627,7 @@ window.confirmReject=async()=>{
         await updateDoc(doc(db,'users',tk.userId),{history:hist});
       }
     }
-    closeM('m-rej');toast('Ticket rechazado','ok');await loadAll();rTickets();
+    closeM('m-rej');toast('Ticket rechazado — foto eliminada','ok');await loadAll();rTickets();
   }catch{toast('Error','err');}
   load(false);
 };
@@ -735,6 +782,90 @@ function rReportes(){
         <div class="rinfo"><div class="rname">${u.name}</div><div class="rsub">Saldo: ${fUSD(u.balance||0)} · Ganado: ${fUSD(u.totalCashback||0)}</div></div>
       </div>`).join('')}`;
 }
+
+// ── KYC ──
+let allKYC=[],kycFilter='pending',selKycId=null;
+
+async function loadKYC(){
+  const snap=await getDocs(collection(db,'kyc'));
+  allKYC=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.createdAt-a.createdAt);
+}
+
+async function rKYC(){
+  await loadKYC();
+  const pendKyc=allKYC.filter(k=>k.status==='pending').length;
+  const kb=$('badge-kyc');
+  if(pendKyc>0){kb.style.display='inline-flex';kb.textContent=pendKyc;}else kb.style.display='none';
+  let list=kycFilter==='all'?allKYC:allKYC.filter(k=>k.status===kycFilter);
+  $('kyc-list').innerHTML=list.length?list.map(k=>{
+    const isPend=k.status==='pending';
+    const sc=k.status==='approved'?'g':k.status==='rejected'?'r':'p';
+    const sl=k.status==='approved'?'✅ Aprobado':k.status==='rejected'?'❌ Rechazado':'⏳ Pendiente';
+    return `<div class="tka">
+      <div class="tka-top">
+        <img src="${k.imgSelfie||''}" style="width:72px;height:72px;border-radius:11px;object-fit:cover;flex-shrink:0;cursor:pointer" onclick="this.style.width=this.style.width==='100%'?'72px':'100%'">
+        <div class="tka-info">
+          <div class="tka-com">${k.userName}</div>
+          <div class="tka-user">📋 DUI: ${k.userDUI}</div>
+          <div class="tka-user">📱 ${k.userPhone}</div>
+          <div class="tka-date">📅 ${fDate(k.createdAt)}</div>
+          <span class="bdg ${sc}" style="margin-top:6px;display:inline-flex">${sl}</span>
+          ${k.note?`<div style="font-size:11px;color:var(--text3);margin-top:4px">📝 ${k.note}</div>`:''}
+        </div>
+      </div>
+      ${isPend?`<div class="tka-actions">
+        <button class="btn-reject" onclick="openKYCReview('${k.id}')">🔍 Revisar documentos</button>
+      </div>`:''}
+    </div>`;}).join('')
+  :`<div style="text-align:center;color:var(--text3);padding:40px;font-size:13px">${kycFilter==='pending'?'🎉 No hay verificaciones pendientes':'Sin registros'}</div>`;
+}
+window.setKycF=(f,el)=>{kycFilter=f;document.querySelectorAll('#panel-kyc .ftab').forEach(t=>t.classList.remove('on'));el.classList.add('on');rKYC();};
+
+window.openKYCReview=id=>{
+  const k=allKYC.find(x=>x.id===id);if(!k)return;selKycId=id;
+  $('mkr-name').textContent=k.userName;
+  $('mkr-sub').textContent='DUI: '+k.userDUI+' · '+k.userPhone;
+  $('mkr-dui').src=k.imgDUI||'';
+  $('mkr-selfie').src=k.imgSelfie||'';
+  $('mkr-datos').innerHTML=`👤 <strong>${k.userName}</strong><br>📋 DUI: <strong>${k.userDUI}</strong><br>📱 Tel: ${k.userPhone}<br>📅 Enviado: ${fDate(k.createdAt)}`;
+  $('kyc-rej-note').value='';
+  openM('m-kyc-rev');
+};
+
+window.reviewKYC=async status=>{
+  if(!selKycId)return;
+  const note=$('kyc-rej-note').value.trim();
+  if(status==='rejected'&&!note){toast('Ingresá el motivo del rechazo','err');return;}
+  load(true,status==='approved'?'Aprobando identidad...':'Rechazando...');
+  try{
+    const k=allKYC.find(x=>x.id===selKycId);
+    // Guardar resultado SIN las fotos — se eliminan para optimizar Firestore
+    await setDoc(doc(db,'kyc',selKycId),{
+      userId:k.userId,
+      userName:k.userName,
+      userDUI:k.userDUI,
+      userPhone:k.userPhone,
+      status,
+      note:note||'',
+      createdAt:k.createdAt,
+      reviewedAt:Date.now(),
+      // imgDUI e imgSelfie se eliminan intencionalmente al revisar
+    });
+    await updateDoc(doc(db,'users',k.userId),{
+      kycStatus:status,
+      ...(status==='approved'?{verified:true}:{})
+    });
+    closeM('m-kyc-rev');
+    toast(
+      status==='approved'
+        ?'✅ Identidad aprobada — fotos eliminadas de Firestore'
+        :'Solicitud rechazada — fotos eliminadas',
+      status==='approved'?'ok':''
+    );
+    await loadAll();await rKYC();
+  }catch(e){toast('Error','err');console.error(e);}
+  load(false);
+};
 
 // ── LOGIN ──
 window.doLogin=async()=>{
