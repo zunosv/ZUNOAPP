@@ -12,7 +12,7 @@
 <link rel="icon" href="recursos/zlogo.png">
 <link rel="apple-touch-icon" href="recursos/zlogo.png">
 
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 
@@ -36,12 +36,6 @@ border-bottom:1px solid #1e1e35;
 .logo{
 width:34px;
 height:34px;
-object-fit:contain;
-}
-
-.brand{
-display:flex;
-flex-direction:column;
 }
 
 .brand-name{
@@ -52,12 +46,6 @@ font-size:18px;
 .brand-tag{
 font-size:11px;
 color:#8888aa;
-}
-
-/* CONTAINER */
-
-.container{
-padding:20px;
 }
 
 /* LOGIN */
@@ -83,13 +71,9 @@ margin-bottom:20px;
 width:60px;
 }
 
-.login-logo h1{
-margin:10px 0 5px 0;
-}
-
 .login-logo p{
-color:#8888aa;
 font-size:12px;
+color:#8888aa;
 }
 
 input{
@@ -114,10 +98,19 @@ font-weight:600;
 cursor:pointer;
 }
 
+.link{
+text-align:center;
+margin-top:10px;
+font-size:13px;
+color:#aaa;
+cursor:pointer;
+}
+
 /* DASHBOARD */
 
 .dashboard{
 display:none;
+padding:20px;
 }
 
 .balance-card{
@@ -143,6 +136,7 @@ border-radius:12px;
 /* NAV */
 
 nav{
+display:none;
 position:fixed;
 bottom:0;
 width:100%;
@@ -169,14 +163,12 @@ font-size:14px;
 
 <img src="recursos/zlogo.png" class="logo">
 
-<div class="brand">
-<span class="brand-name">ZUNO</span>
-<span class="brand-tag">Tu dinero más rápido ⚡</span>
+<div>
+<div class="brand-name">ZUNO</div>
+<div class="brand-tag">Tu dinero más rápido ⚡</div>
 </div>
 
 </header>
-
-<div class="container">
 
 <!-- LOGIN -->
 
@@ -188,7 +180,7 @@ font-size:14px;
 
 <img src="recursos/zlogo.png">
 
-<h1>ZUNO</h1>
+<h2>ZUNO</h2>
 
 <p>Tu dinero más rápido ⚡</p>
 
@@ -198,7 +190,9 @@ font-size:14px;
 
 <input id="pass" type="password" placeholder="Contraseña">
 
-<button onclick="login()">Entrar</button>
+<button onclick="login()">Iniciar sesión</button>
+
+<div class="link" onclick="registro()">Crear cuenta</div>
 
 </div>
 
@@ -222,11 +216,11 @@ font-size:14px;
 
 <input id="monto" type="number" placeholder="Monto compra">
 
-<select id="comercio">
+<select>
 
 <option>Texaco</option>
-<option>Esso</option>
 <option>UNO</option>
+<option>Esso</option>
 
 </select>
 
@@ -238,9 +232,7 @@ font-size:14px;
 
 </div>
 
-</div>
-
-<nav>
+<nav id="nav">
 
 <button>Inicio</button> <button>Ticket</button> <button>Comercios</button> <button>Perfil</button>
 
@@ -253,13 +245,18 @@ function login(){
 let email=document.getElementById("email").value
 
 if(!email){
-alert("Ingresa datos")
+alert("Ingresa tus datos")
 return
 }
 
 document.getElementById("login").style.display="none"
 document.getElementById("app").style.display="block"
+document.getElementById("nav").style.display="flex"
 
+}
+
+function registro(){
+alert("Pantalla de registro próximamente")
 }
 
 function ticket(){
