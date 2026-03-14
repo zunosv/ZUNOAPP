@@ -55,6 +55,7 @@ function App(){
 
 const [view,setView] = useState("login")
 const [user,setUser] = useState(null)
+const [error,setError] = useState("")
 
 /* LOGIN */
 
@@ -64,19 +65,36 @@ const [password,setPassword] = useState("")
 /* BOT REGISTRO */
 
 const questions = [
-"¿Cuál es tu nombre completo?",
-"¿Cuál es tu fecha de nacimiento?",
-"Ingresa tu DUI",
-"¿Cuál es tu correo?",
-"¿Cuál es tu dirección?"
-]
+{
+q:"¿Cuál es tu nombre completo?",
+field:"nombre",
+placeholder:"Ej: Juan Pérez"
+},
 
-const fields = [
-"nombre",
-"birth",
-"dui",
-"correo",
-"direccion"
+{
+q:"¿Cuál es tu fecha de nacimiento?",
+field:"birth",
+placeholder:"Formato: DD/MM/AAAA"
+},
+
+{
+q:"Ingresa tu DUI",
+field:"dui",
+placeholder:"Formato: 12345678-9"
+},
+
+{
+q:"Correo electrónico",
+field:"correo",
+placeholder:"Ej: correo@email.com"
+},
+
+{
+q:"Dirección",
+field:"direccion",
+placeholder:"Ej: Santa Tecla, La Libertad"
+}
+
 ]
 
 const [step,setStep] = useState(0)
@@ -87,6 +105,8 @@ const [data,setData] = useState({})
 
 const login = async()=>{
 
+setError("")
+
 const snap = await db.collection("users")
 .where("phone","==",phone)
 .where("password","==",password)
@@ -94,7 +114,7 @@ const snap = await db.collection("users")
 
 if(snap.empty){
 
-alert("Usuario no encontrado")
+setError("Usuario o contraseña incorrecta")
 
 return
 
@@ -112,7 +132,17 @@ setView("dashboard")
 
 const nextQuestion = ()=>{
 
-const newData = {...data,[fields[step]]:answer}
+if(!answer){
+
+setError("Este campo es obligatorio")
+
+return
+
+}
+
+setError("")
+
+const newData = {...data,[questions[step].field]:answer}
 
 setData(newData)
 
@@ -137,7 +167,6 @@ const saveUser = async(userData)=>{
 await db.collection("users").add({
 
 ...userData,
-
 phone,
 password,
 
@@ -148,8 +177,6 @@ tickets:0,
 createdAt:Date.now()
 
 })
-
-alert("Registro completado")
 
 setView("login")
 
@@ -189,7 +216,7 @@ Iniciar sesión
 </h2>
 
 <input
-placeholder="Teléfono"
+placeholder="Teléfono (ej: 70123456)"
 value={phone}
 onChange={e=>setPhone(e.target.value)}
 className="w-full p-3 rounded bg-[#1a1a2e]"
@@ -202,6 +229,16 @@ value={password}
 onChange={e=>setPassword(e.target.value)}
 className="w-full p-3 rounded bg-[#1a1a2e]"
 />
+
+{error && (
+
+<p className="text-red-400 text-sm text-center">
+
+{error}
+
+</p>
+
+)}
 
 <button
 onClick={login}
@@ -245,15 +282,26 @@ Paso {step+1} de {questions.length}
 
 <div className="bg-[#14141C] p-4 rounded-xl">
 
-🤖 {questions[step]}
+🤖 {questions[step].q}
 
 </div>
 
 <input
+placeholder={questions[step].placeholder}
 value={answer}
 onChange={e=>setAnswer(e.target.value)}
 className="w-full p-3 rounded bg-[#1a1a2e]"
 />
+
+{error && (
+
+<p className="text-red-400 text-sm">
+
+{error}
+
+</p>
+
+)}
 
 <button
 onClick={nextQuestion}
