@@ -56,6 +56,7 @@ function App(){
 const [view,setView] = useState("login")
 const [user,setUser] = useState(null)
 const [error,setError] = useState("")
+const [tab,setTab] = useState("home")
 
 /* LOGIN */
 
@@ -319,27 +320,99 @@ Continuar
 
 {view==="dashboard" && user && (
 
-<div className="p-6">
+<div className="flex-1 p-6 pb-24 space-y-6">
+
+{/* HOME */}
+
+{tab==="home" && (
+
+<>
 
 <h2 className="text-xl font-bold">
-
 Hola {user.nombre}
-
 </h2>
 
-<div className="bg-gradient-to-r from-red-600 to-red-500 p-6 rounded-2xl mt-4">
+<div className="bg-gradient-to-r from-red-600 to-red-500 p-6 rounded-2xl">
 
 <p>Saldo disponible</p>
 
 <h2 className="text-3xl font-bold">
-
 ${user.balance}
-
 </h2>
 
 </div>
 
+</>
+
+)}
+
+{/* TICKETS */}
+
+{tab==="tickets" && (
+
+<div className="bg-[#14141C] p-6 rounded-xl">
+
+<h3 className="font-semibold mb-3">
+
+Mis tickets
+
+</h3>
+
+<p className="text-gray-400 text-sm">
+
+Aquí aparecerán tus tickets enviados.
+
+</p>
+
 </div>
+
+)}
+
+{/* PERFIL */}
+
+{tab==="profile" && (
+
+<div className="bg-[#14141C] p-6 rounded-xl space-y-2">
+
+<h3 className="font-semibold">
+
+Perfil
+
+</h3>
+
+<p>Nombre: {user.nombre}</p>
+
+<p>Teléfono: {user.phone}</p>
+
+<p>Correo: {user.correo}</p>
+
+</div>
+
+)}
+
+</div>
+
+)}
+
+{/* NAV BAR INFERIOR */}
+
+{view==="dashboard" && (
+
+<nav className="fixed bottom-0 w-full bg-black border-t border-gray-800 flex justify-around py-3">
+
+<button onClick={()=>setTab("home")}>
+Inicio
+</button>
+
+<button onClick={()=>setTab("tickets")}>
+Tickets
+</button>
+
+<button onClick={()=>setTab("profile")}>
+Perfil
+</button>
+
+</nav>
 
 )}
 
