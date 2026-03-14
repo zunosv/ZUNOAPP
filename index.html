@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
 
@@ -15,11 +14,9 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -27,78 +24,52 @@
 <style>
 
 :root{
-
 --primary:#E8192C;
 --surface:#111827;
 --card:rgba(255,255,255,0.05);
 --border:rgba(255,255,255,0.08);
 --text:#f1f5f9;
-
 }
 
 body{
-
 background:
 radial-gradient(circle at 20% 20%,#1f2937,transparent),
 radial-gradient(circle at 80% 0%,#111827,transparent),
 #0a0e1a;
 
 font-family:'DM Sans',sans-serif;
-
 color:var(--text);
-
 }
 
 .card{
-
 background:var(--card);
-
 border:1px solid var(--border);
-
 backdrop-filter:blur(10px);
-
 border-radius:16px;
-
 padding:20px;
-
 }
 
 .btn{
-
 background:linear-gradient(135deg,#E8192C,#c81424);
-
 padding:14px;
-
 border-radius:12px;
-
 font-weight:600;
-
 transition:.25s;
-
 }
 
 .btn:hover{
-
 transform:translateY(-2px);
-
 }
 
 input,select{
-
 background:rgba(255,255,255,0.05);
-
 border:1px solid var(--border);
-
 padding:12px;
-
 border-radius:12px;
-
 width:100%;
-
 }
 
 .sidebar{
-
 position:fixed;
 top:0;
 left:0;
@@ -108,13 +79,16 @@ background:#0f172a;
 padding:20px;
 transform:translateX(-100%);
 transition:.3s;
-
 }
 
 .sidebar.open{
-
 transform:translateX(0);
+}
 
+.message{
+color:#f87171;
+font-size:14px;
+margin-top:8px;
 }
 
 </style>
@@ -130,11 +104,9 @@ transform:translateX(0);
 const {useState,useEffect}=React
 
 const firebaseConfig={
-
 apiKey:"AIzaSyAqXjnH6WrXuEQivE3RGwvav1qyFOOyoeY",
 authDomain:"zuno-1285e.firebaseapp.com",
 projectId:"zuno-1285e"
-
 }
 
 firebase.initializeApp(firebaseConfig)
@@ -147,11 +119,12 @@ const [view,setView]=useState("login")
 const [sidebar,setSidebar]=useState(false)
 const [user,setUser]=useState(null)
 
+const [message,setMessage]=useState("")
+
 const [phone,setPhone]=useState("")
 const [password,setPassword]=useState("")
 
 const [form,setForm]=useState({
-
 nombre:"",
 birth:"",
 dui:"",
@@ -159,12 +132,13 @@ correo:"",
 direccion:"",
 telefono:"",
 password:""
-
 })
 
 /* LOGIN */
 
 const login=async()=>{
+
+setMessage("")
 
 const snap=await db.collection("users")
 .where("phone","==",phone)
@@ -172,11 +146,8 @@ const snap=await db.collection("users")
 .get()
 
 if(snap.empty){
-
-alert("usuario incorrecto")
-
+setMessage("Usuario o contraseña incorrectos")
 return
-
 }
 
 const doc=snap.docs[0]
@@ -191,6 +162,8 @@ setView("home")
 
 const register=async()=>{
 
+setMessage("")
+
 let dui=form.dui.replace(/-/g,"")
 
 const dup=await db.collection("users")
@@ -198,11 +171,8 @@ const dup=await db.collection("users")
 .get()
 
 if(!dup.empty){
-
-alert("DUI ya registrado")
-
+setMessage("Este DUI ya está registrado")
 return
-
 }
 
 const dupPhone=await db.collection("users")
@@ -210,15 +180,11 @@ const dupPhone=await db.collection("users")
 .get()
 
 if(!dupPhone.empty){
-
-alert("Teléfono ya registrado")
-
+setMessage("Este teléfono ya está registrado")
 return
-
 }
 
 await db.collection("users").add({
-
 nombre:form.nombre,
 birth:form.birth,
 dui:dui,
@@ -226,14 +192,13 @@ correo:form.correo,
 direccion:form.direccion,
 phone:form.telefono,
 password:form.password,
-
 balance:0,
 verified:false,
 duiPhoto:null
-
 })
 
 setView("login")
+setMessage("Cuenta creada correctamente")
 
 }
 
@@ -248,12 +213,10 @@ reader.readAsDataURL(file)
 reader.onload=async(e)=>{
 
 await db.collection("users").doc(user.id).update({
-
 duiPhoto:e.target.result
-
 })
 
-alert("Documento enviado")
+setMessage("Documento enviado para verificación")
 
 }
 
@@ -280,7 +243,9 @@ return(
 
 <header className="p-4 flex items-center gap-4">
 
+{view!=="login" && view!=="register" && (
 <button onClick={()=>setSidebar(!sidebar)}>☰</button>
+)}
 
 <img src="recursos/zlogo.png" className="w-6"/>
 
@@ -298,18 +263,24 @@ return(
 
 <h2 className="text-xl font-bold">Login</h2>
 
-<input placeholder="Teléfono"
+<input
+placeholder="Teléfono"
 value={phone}
 onChange={e=>setPhone(e.target.value)}/>
 
-<input type="password"
+<input
+type="password"
 placeholder="Contraseña"
 value={password}
 onChange={e=>setPassword(e.target.value)}/>
 
+{message && <p className="message">{message}</p>}
+
 <button className="btn w-full" onClick={login}>Entrar</button>
 
-<button onClick={()=>setView("register")}>Crear cuenta</button>
+<button onClick={()=>{setView("register");setMessage("")}}>
+Crear cuenta
+</button>
 
 </div>
 
@@ -349,6 +320,8 @@ onChange={e=>setForm({...form,direccion:e.target.value})}/>
 placeholder="Contraseña"
 onChange={e=>setForm({...form,password:e.target.value})}/>
 
+{message && <p className="message">{message}</p>}
+
 <button className="btn w-full" onClick={register}>Crear cuenta</button>
 
 </div>
@@ -375,6 +348,8 @@ onChange={e=>setForm({...form,password:e.target.value})}/>
 
 <input type="file"
 onChange={(e)=>uploadDUI(e.target.files[0])}/>
+
+{message && <p className="message">{message}</p>}
 
 </div>
 
