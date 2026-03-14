@@ -1,31 +1,300 @@
-
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>ZUNO</title>
 
 <link rel="icon" href="recursos/zlogo.png">
 
 <script src="https://cdn.tailwindcss.com"></script>
 
-<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-<script type="module" src="./src/firebase.js"></script>
+<style>
+body{
+background:#09090F;
+}
+</style>
 
 </head>
 
-<body class="bg-[#09090F] text-white">
+<body class="text-white">
+
 <div id="root"></div>
 
-<script type="text/babel" data-type="module">
+<script type="text/babel">
 
-import App from "./src/App.js";
+const {useState,useEffect} = React
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+/* FIREBASE */
+
+const firebaseConfig = {
+
+apiKey:"AIzaSyAqXjnH6WrXuEQivE3RGwvav1qyFOOyoeY",
+authDomain:"zuno-1285e.firebaseapp.com",
+projectId:"zuno-1285e"
+
+}
+
+firebase.initializeApp(firebaseConfig)
+
+const db = firebase.firestore()
+
+function App(){
+
+const [view,setView] = useState("login")
+const [user,setUser] = useState(null)
+
+/* LOGIN */
+
+const [phone,setPhone] = useState("")
+const [password,setPassword] = useState("")
+
+/* REGISTRO */
+
+const [nombre,setNombre] = useState("")
+const [dui,setDui] = useState("")
+const [correo,setCorreo] = useState("")
+const [regPhone,setRegPhone] = useState("")
+const [regPass,setRegPass] = useState("")
+
+/* LOGIN */
+
+const login = async()=>{
+
+const snap = await db.collection("users")
+.where("phone","==",phone)
+.where("password","==",password)
+.get()
+
+if(snap.empty){
+
+alert("Usuario no encontrado")
+
+return
+
+}
+
+const doc = snap.docs[0]
+
+setUser({id:doc.id,...doc.data()})
+
+setView("dashboard")
+
+}
+
+/* REGISTRO */
+
+const registrar = async()=>{
+
+await db.collection("users").add({
+
+nombre,
+dui,
+correo,
+phone:regPhone,
+password:regPass,
+balance:0,
+createdAt:Date.now()
+
+})
+
+alert("Cuenta creada")
+
+setView("login")
+
+}
+
+return(
+
+<div className="min-h-screen flex flex-col">
+
+<header className="p-4 border-b border-gray-800 flex items-center gap-3">
+
+<img src="recursos/zlogo.png" className="w-8"/>
+
+<div>
+
+<div className="font-bold">ZUNO</div>
+<div className="text-xs text-gray-400">
+Tu dinero más rápido ⚡
+</div>
+
+</div>
+
+</header>
+
+{/* LOGIN */}
+
+{view==="login" && (
+
+<div className="flex flex-1 items-center justify-center p-6">
+
+<div className="bg-[#14141C] p-8 rounded-xl w-80 space-y-3">
+
+<h2 className="text-xl text-center font-bold">
+
+Iniciar sesión
+
+</h2>
+
+<input
+placeholder="Teléfono"
+value={phone}
+onChange={e=>setPhone(e.target.value)}
+className="w-full p-3 rounded bg-[#1a1a2e]"
+/>
+
+<input
+type="password"
+placeholder="Contraseña"
+value={password}
+onChange={e=>setPassword(e.target.value)}
+className="w-full p-3 rounded bg-[#1a1a2e]"
+/>
+
+<button
+onClick={login}
+className="w-full bg-red-600 p-3 rounded-xl">
+
+Entrar
+
+</button>
+
+<p
+onClick={()=>setView("register")}
+className="text-center text-gray-400 cursor-pointer">
+
+Crear cuenta
+
+</p>
+
+</div>
+
+</div>
+
+)}
+
+{/* REGISTRO */}
+
+{view==="register" && (
+
+<div className="flex flex-1 items-center justify-center p-6">
+
+<div className="bg-[#14141C] p-8 rounded-xl w-80 space-y-3">
+
+<h2 className="text-xl text-center font-bold">
+
+Registro
+
+</h2>
+
+<input
+placeholder="Nombre"
+value={nombre}
+onChange={e=>setNombre(e.target.value)}
+className="w-full p-3 rounded bg-[#1a1a2e]"
+/>
+
+<input
+placeholder="DUI"
+value={dui}
+onChange={e=>setDui(e.target.value)}
+className="w-full p-3 rounded bg-[#1a1a2e]"
+/>
+
+<input
+placeholder="Correo"
+value={correo}
+onChange={e=>setCorreo(e.target.value)}
+className="w-full p-3 rounded bg-[#1a1a2e]"
+/>
+
+<input
+placeholder="Teléfono"
+value={regPhone}
+onChange={e=>setRegPhone(e.target.value)}
+className="w-full p-3 rounded bg-[#1a1a2e]"
+/>
+
+<input
+type="password"
+placeholder="Contraseña"
+value={regPass}
+onChange={e=>setRegPass(e.target.value)}
+className="w-full p-3 rounded bg-[#1a1a2e]"
+/>
+
+<button
+onClick={registrar}
+className="w-full bg-red-600 p-3 rounded-xl">
+
+Registrarme
+
+</button>
+
+<p
+onClick={()=>setView("login")}
+className="text-center text-gray-400 cursor-pointer">
+
+Volver
+
+</p>
+
+</div>
+
+</div>
+
+)}
+
+{/* DASHBOARD */}
+
+{view==="dashboard" && user && (
+
+<div className="p-6">
+
+<h2 className="text-xl font-bold">
+
+Hola {user.nombre}
+
+</h2>
+
+<div className="bg-gradient-to-r from-red-600 to-red-500 p-6 rounded-2xl mt-4">
+
+<p>Saldo disponible</p>
+
+<h2 className="text-3xl font-bold">
+
+${user.balance}
+
+</h2>
+
+</div>
+
+</div>
+
+)}
+
+</div>
+
+)
+
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>)
 
 </script>
 
