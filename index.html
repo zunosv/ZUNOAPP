@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
 
 <meta charset="UTF-8">
@@ -14,9 +16,11 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -24,71 +28,80 @@
 <style>
 
 :root{
+
 --primary:#E8192C;
---surface:#111827;
---card:rgba(255,255,255,0.05);
+--bg:#0b0e16;
+--card:rgba(255,255,255,0.04);
 --border:rgba(255,255,255,0.08);
---text:#f1f5f9;
+
 }
 
 body{
+
 background:
 radial-gradient(circle at 20% 20%,#1f2937,transparent),
 radial-gradient(circle at 80% 0%,#111827,transparent),
-#0a0e1a;
+var(--bg);
 
 font-family:'DM Sans',sans-serif;
-color:var(--text);
+color:#f1f5f9;
+
 }
 
 .card{
+
 background:var(--card);
 border:1px solid var(--border);
-backdrop-filter:blur(10px);
 border-radius:16px;
 padding:20px;
+backdrop-filter:blur(10px);
+
 }
 
 .btn{
-background:linear-gradient(135deg,#E8192C,#c81424);
+
+background:linear-gradient(135deg,#E8192C,#b71220);
 padding:14px;
 border-radius:12px;
 font-weight:600;
 transition:.25s;
+
 }
 
 .btn:hover{
+
 transform:translateY(-2px);
+
+}
+
+.sidebar{
+
+position:fixed;
+top:0;
+left:0;
+height:100%;
+width:260px;
+background:#0f172a;
+padding:24px;
+transform:translateX(-100%);
+transition:.3s;
+
+}
+
+.sidebar.open{
+
+transform:translateX(0);
+
 }
 
 input,select{
+
 background:rgba(255,255,255,0.05);
 border:1px solid var(--border);
 padding:12px;
 border-radius:12px;
 width:100%;
-}
 
-.sidebar{
-position:fixed;
-top:0;
-left:0;
-width:250px;
-height:100%;
-background:#0f172a;
-padding:20px;
-transform:translateX(-100%);
-transition:.3s;
-}
-
-.sidebar.open{
-transform:translateX(0);
-}
-
-.message{
-color:#f87171;
-font-size:14px;
-margin-top:8px;
 }
 
 </style>
@@ -101,12 +114,14 @@ margin-top:8px;
 
 <script type="text/babel">
 
-const {useState,useEffect}=React
+const {useState}=React
 
 const firebaseConfig={
+
 apiKey:"AIzaSyAqXjnH6WrXuEQivE3RGwvav1qyFOOyoeY",
 authDomain:"zuno-1285e.firebaseapp.com",
 projectId:"zuno-1285e"
+
 }
 
 firebase.initializeApp(firebaseConfig)
@@ -119,26 +134,18 @@ const [view,setView]=useState("login")
 const [sidebar,setSidebar]=useState(false)
 const [user,setUser]=useState(null)
 
-const [message,setMessage]=useState("")
-
 const [phone,setPhone]=useState("")
 const [password,setPassword]=useState("")
 
-const [form,setForm]=useState({
-nombre:"",
-birth:"",
-dui:"",
-correo:"",
-direccion:"",
-telefono:"",
-password:""
-})
+const [monto,setMonto]=useState("")
+const [sucursal,setSucursal]=useState("")
+const [ticketImg,setTicketImg]=useState(null)
+
+const cashback=(monto*0.03)||0
 
 /* LOGIN */
 
 const login=async()=>{
-
-setMessage("")
 
 const snap=await db.collection("users")
 .where("phone","==",phone)
@@ -146,7 +153,6 @@ const snap=await db.collection("users")
 .get()
 
 if(snap.empty){
-setMessage("Usuario o contraseña incorrectos")
 return
 }
 
@@ -158,67 +164,24 @@ setView("home")
 
 }
 
-/* REGISTRO */
+/* ENVIAR TICKET */
 
-const register=async()=>{
+const enviarTicket=async()=>{
 
-setMessage("")
+await db.collection("tickets").add({
 
-let dui=form.dui.replace(/-/g,"")
+userId:user.id,
+userName:user.nombre,
+comercio:"Texaco",
+sucursal,
+monto:parseFloat(monto),
+cashback,
+status:"pending",
+createdAt:Date.now()
 
-const dup=await db.collection("users")
-.where("dui","==",dui)
-.get()
-
-if(!dup.empty){
-setMessage("Este DUI ya está registrado")
-return
-}
-
-const dupPhone=await db.collection("users")
-.where("phone","==",form.telefono)
-.get()
-
-if(!dupPhone.empty){
-setMessage("Este teléfono ya está registrado")
-return
-}
-
-await db.collection("users").add({
-nombre:form.nombre,
-birth:form.birth,
-dui:dui,
-correo:form.correo,
-direccion:form.direccion,
-phone:form.telefono,
-password:form.password,
-balance:0,
-verified:false,
-duiPhoto:null
 })
 
-setView("login")
-setMessage("Cuenta creada correctamente")
-
-}
-
-/* SUBIR DUI */
-
-const uploadDUI=(file)=>{
-
-const reader=new FileReader()
-
-reader.readAsDataURL(file)
-
-reader.onload=async(e)=>{
-
-await db.collection("users").doc(user.id).update({
-duiPhoto:e.target.result
-})
-
-setMessage("Documento enviado para verificación")
-
-}
+setView("home")
 
 }
 
@@ -243,7 +206,7 @@ return(
 
 <header className="p-4 flex items-center gap-4">
 
-{view!=="login" && view!=="register" && (
+{view!=="login" && (
 <button onClick={()=>setSidebar(!sidebar)}>☰</button>
 )}
 
@@ -261,7 +224,7 @@ return(
 
 <div className="card max-w-sm mx-auto space-y-3">
 
-<h2 className="text-xl font-bold">Login</h2>
+<h2 className="text-xl font-bold">Bienvenido</h2>
 
 <input
 placeholder="Teléfono"
@@ -274,12 +237,8 @@ placeholder="Contraseña"
 value={password}
 onChange={e=>setPassword(e.target.value)}/>
 
-{message && <p className="message">{message}</p>}
-
-<button className="btn w-full" onClick={login}>Entrar</button>
-
-<button onClick={()=>{setView("register");setMessage("")}}>
-Crear cuenta
+<button className="btn w-full" onClick={login}>
+Entrar
 </button>
 
 </div>
@@ -288,41 +247,64 @@ Crear cuenta
 
 )}
 
-{/* REGISTRO */}
+{/* DASHBOARD */}
 
-{view==="register" && (
+{view==="home" && user && (
 
-<div className="p-6">
+<div className="p-6 space-y-6">
 
-<div className="card max-w-md mx-auto space-y-3">
+<div className="flex items-center gap-3">
 
-<h2 className="text-xl font-bold">Registro</h2>
+<div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center font-bold">
+{user.nombre?.charAt(0)}
+</div>
 
-<input placeholder="Nombre"
-onChange={e=>setForm({...form,nombre:e.target.value})}/>
+<div>
+<h2 className="font-semibold">
+Hola {user.nombre}
+</h2>
+<p className="text-sm text-gray-400">
+Bienvenido a ZUNO
+</p>
+</div>
 
-<input type="date"
-onChange={e=>setForm({...form,birth:e.target.value})}/>
+</div>
 
-<input placeholder="DUI sin guiones"
-onChange={e=>setForm({...form,dui:e.target.value})}/>
+<div className="card">
 
-<input placeholder="Teléfono"
-onChange={e=>setForm({...form,telefono:e.target.value})}/>
+<p className="text-gray-400 text-sm">
+Saldo disponible
+</p>
 
-<input placeholder="Correo"
-onChange={e=>setForm({...form,correo:e.target.value})}/>
+<h2 className="text-3xl font-bold mt-1">
+${user.balance || "0.00"}
+</h2>
 
-<input placeholder="Dirección"
-onChange={e=>setForm({...form,direccion:e.target.value})}/>
+</div>
 
-<input type="password"
-placeholder="Contraseña"
-onChange={e=>setForm({...form,password:e.target.value})}/>
+<div
+onClick={()=>setView("ticket")}
+className="card cursor-pointer hover:scale-[1.02] transition">
 
-{message && <p className="message">{message}</p>}
+<h3 className="text-lg font-semibold">
+📸 Subir ticket
+</h3>
 
-<button className="btn w-full" onClick={register}>Crear cuenta</button>
+<p className="text-sm text-gray-400">
+Gana cashback con tus compras
+</p>
+
+</div>
+
+<div className="card">
+
+<h3 className="font-semibold mb-3">
+Comercios participantes
+</h3>
+
+<div className="bg-red-600/20 px-3 py-2 rounded-lg inline-block text-sm">
+⛽ Texaco
+</div>
 
 </div>
 
@@ -330,26 +312,58 @@ onChange={e=>setForm({...form,password:e.target.value})}/>
 
 )}
 
-{/* PERFIL */}
+{/* SUBIR TICKET */}
 
-{view==="profile" && user && (
+{view==="ticket" && (
 
-<div className="p-6">
+<div className="p-6 space-y-4">
 
-<div className="card max-w-md space-y-3">
+<div className="card space-y-3">
 
-<h2 className="font-bold text-lg">Perfil</h2>
+<h2 className="font-semibold">
+Subir Ticket
+</h2>
 
-<p>Nombre: {user.nombre}</p>
-<p>DUI: {user.dui}</p>
-<p>Teléfono: {user.phone}</p>
+<select
+value={sucursal}
+onChange={e=>setSucursal(e.target.value)}>
 
-<p>Estado KYC: {user.verified?"Verificado":"Pendiente"}</p>
+<option>Selecciona sucursal Texaco</option>
+<option>Texaco Escalón</option>
+<option>Texaco Santa Tecla</option>
+<option>Texaco San Miguel</option>
 
-<input type="file"
-onChange={(e)=>uploadDUI(e.target.files[0])}/>
+</select>
 
-{message && <p className="message">{message}</p>}
+<input
+type="number"
+placeholder="Monto de la compra"
+value={monto}
+onChange={e=>setMonto(e.target.value)}/>
+
+<input
+type="file"
+onChange={(e)=>setTicketImg(e.target.files[0])}/>
+
+<div className="card">
+
+<p className="text-sm text-gray-400">
+Cashback estimado
+</p>
+
+<h2 className="text-xl font-bold">
+${cashback.toFixed(2)}
+</h2>
+
+</div>
+
+<button
+className="btn w-full"
+onClick={enviarTicket}>
+
+Enviar Ticket
+
+</button>
 
 </div>
 
@@ -368,4 +382,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(<App/>)
 </script>
 
 </body>
+
 </html>
