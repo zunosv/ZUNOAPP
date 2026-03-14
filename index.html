@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 
 <html lang="es">
-
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>ZUNO</title>
 
 <link rel="icon" href="recursos/zlogo.png">
 
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -27,72 +26,46 @@
 
 <style>
 
-/* ── TOKENS ───────────────────────── */
-
 :root{
 
---bg-base:#0a0e1a;
---bg-surface:#111827;
---bg-card:rgba(255,255,255,0.05);
-
+--primary:#E8192C;
+--surface:#111827;
+--card:rgba(255,255,255,0.05);
 --border:rgba(255,255,255,0.08);
-
---primary:#00c896;
---primary-glow:rgba(0,200,150,0.35);
-
---accent:#6366f1;
-
---text-primary:#f1f5f9;
---text-muted:#64748b;
-
---radius:16px;
-
---shadow-card:
-0 4px 10px rgba(0,0,0,0.4),
-0 10px 30px rgba(0,0,0,0.6);
-
---shadow-glow:0 0 20px var(--primary-glow);
-
---font-display:'Plus Jakarta Sans',sans-serif;
---font-body:'DM Sans',sans-serif;
+--text:#f1f5f9;
 
 }
 
 body{
+
 background:
 radial-gradient(circle at 20% 20%,#1f2937,transparent),
 radial-gradient(circle at 80% 0%,#111827,transparent),
-var(--bg-base);
+#0a0e1a;
 
-font-family:var(--font-body);
+font-family:'DM Sans',sans-serif;
 
-color:var(--text-primary);
+color:var(--text);
 
 }
 
-/* cards */
-
 .card{
 
-background:var(--bg-card);
-
-backdrop-filter:blur(10px);
+background:var(--card);
 
 border:1px solid var(--border);
 
-border-radius:var(--radius);
+backdrop-filter:blur(10px);
 
-box-shadow:var(--shadow-card);
+border-radius:16px;
 
 padding:20px;
 
 }
 
-/* botones */
-
 .btn{
 
-background:linear-gradient(135deg,#00c896,#00a77a);
+background:linear-gradient(135deg,#E8192C,#c81424);
 
 padding:14px;
 
@@ -100,9 +73,7 @@ border-radius:12px;
 
 font-weight:600;
 
-box-shadow:var(--shadow-glow);
-
-transition:0.25s;
+transition:.25s;
 
 }
 
@@ -112,19 +83,37 @@ transform:translateY(-2px);
 
 }
 
-/* input */
-
-.input{
+input,select{
 
 background:rgba(255,255,255,0.05);
 
 border:1px solid var(--border);
 
-padding:14px;
+padding:12px;
 
 border-radius:12px;
 
 width:100%;
+
+}
+
+.sidebar{
+
+position:fixed;
+top:0;
+left:0;
+width:250px;
+height:100%;
+background:#0f172a;
+padding:20px;
+transform:translateX(-100%);
+transition:.3s;
+
+}
+
+.sidebar.open{
+
+transform:translateX(0);
 
 }
 
@@ -138,9 +127,7 @@ width:100%;
 
 <script type="text/babel">
 
-const {useState,useEffect} = React
-
-/* FIREBASE */
+const {useState,useEffect}=React
 
 const firebaseConfig={
 
@@ -157,23 +144,23 @@ const db=firebase.firestore()
 function App(){
 
 const [view,setView]=useState("login")
+const [sidebar,setSidebar]=useState(false)
 const [user,setUser]=useState(null)
-const [tab,setTab]=useState("home")
-
-/* login */
 
 const [phone,setPhone]=useState("")
 const [password,setPassword]=useState("")
 
-/* ticket */
+const [form,setForm]=useState({
 
-const [tickets,setTickets]=useState([])
-const [loading,setLoading]=useState(false)
+nombre:"",
+birth:"",
+dui:"",
+correo:"",
+direccion:"",
+telefono:"",
+password:""
 
-/* ticket form */
-
-const [monto,setMonto]=useState("")
-const [comercio,setComercio]=useState("Texaco")
+})
 
 /* LOGIN */
 
@@ -185,111 +172,144 @@ const snap=await db.collection("users")
 .get()
 
 if(snap.empty){
+
 alert("usuario incorrecto")
+
 return
+
 }
 
 const doc=snap.docs[0]
 
 setUser({id:doc.id,...doc.data()})
 
-setView("dashboard")
+setView("home")
 
 }
 
-/* CARGAR TICKETS */
+/* REGISTRO */
 
-const loadTickets=async()=>{
+const register=async()=>{
 
-setLoading(true)
+let dui=form.dui.replace(/-/g,"")
 
-const snap=await db.collection("tickets")
-.where("userId","==",user.id)
+const dup=await db.collection("users")
+.where("dui","==",dui)
 .get()
 
-const list=snap.docs.map(d=>({id:d.id,...d.data()}))
+if(!dup.empty){
 
-setTickets(list)
+alert("DUI ya registrado")
 
-setLoading(false)
+return
 
 }
 
-/* SUBIR TICKET */
+const dupPhone=await db.collection("users")
+.where("phone","==",form.telefono)
+.get()
 
-const uploadTicket=async()=>{
+if(!dupPhone.empty){
 
-await db.collection("tickets").add({
+alert("Teléfono ya registrado")
 
-userId:user.id,
-userName:user.nombre,
+return
 
-monto:parseFloat(monto),
+}
 
-comercio,
+await db.collection("users").add({
 
-cashback:monto*0.03,
+nombre:form.nombre,
+birth:form.birth,
+dui:dui,
+correo:form.correo,
+direccion:form.direccion,
+phone:form.telefono,
+password:form.password,
 
-status:"pending",
-
-createdAt:Date.now()
+balance:0,
+verified:false,
+duiPhoto:null
 
 })
 
-alert("ticket enviado")
-
-setMonto("")
+setView("login")
 
 }
 
-/* cargar tickets al entrar */
+/* SUBIR DUI */
 
-useEffect(()=>{
+const uploadDUI=(file)=>{
 
-if(tab==="tickets"){
-loadTickets()
+const reader=new FileReader()
+
+reader.readAsDataURL(file)
+
+reader.onload=async(e)=>{
+
+await db.collection("users").doc(user.id).update({
+
+duiPhoto:e.target.result
+
+})
+
+alert("Documento enviado")
+
 }
 
-},[tab])
+}
 
 return(
 
-<div className="min-h-screen pb-24">
+<div className="min-h-screen">
+
+{/* SIDEBAR */}
+
+<div className={`sidebar ${sidebar?"open":""}`}>
+
+<h2 className="text-xl mb-6 font-bold">ZUNO</h2>
+
+<button onClick={()=>setView("home")}>Inicio</button><br/>
+<button onClick={()=>setView("ticket")}>Subir Ticket</button><br/>
+<button onClick={()=>setView("tickets")}>Mis Tickets</button><br/>
+<button onClick={()=>setView("profile")}>Perfil</button>
+
+</div>
+
+{/* HEADER */}
+
+<header className="p-4 flex items-center gap-4">
+
+<button onClick={()=>setSidebar(!sidebar)}>☰</button>
+
+<img src="recursos/zlogo.png" className="w-6"/>
+
+<h2 className="font-bold">ZUNO</h2>
+
+</header>
 
 {/* LOGIN */}
 
 {view==="login" && (
 
-<div className="flex items-center justify-center min-h-screen p-6">
+<div className="p-6">
 
-<div className="card w-full max-w-sm space-y-4">
+<div className="card max-w-sm mx-auto space-y-3">
 
-<h2 style={{fontFamily:"var(--font-display)"}} className="text-2xl font-bold text-center">
+<h2 className="text-xl font-bold">Login</h2>
 
-Bienvenido a ZUNO
-
-</h2>
-
-<input
-className="input"
-placeholder="Teléfono"
+<input placeholder="Teléfono"
 value={phone}
-onChange={e=>setPhone(e.target.value)}
-/>
+onChange={e=>setPhone(e.target.value)}/>
 
-<input
-className="input"
-type="password"
+<input type="password"
 placeholder="Contraseña"
 value={password}
-onChange={e=>setPassword(e.target.value)}
-/>
+onChange={e=>setPassword(e.target.value)}/>
 
-<button className="btn w-full" onClick={login}>
+<button className="btn w-full" onClick={login}>Entrar</button>
 
-Entrar
-
-</button>
+<button onClick={()=>setView("register")}>Crear cuenta</button>
 
 </div>
 
@@ -297,167 +317,68 @@ Entrar
 
 )}
 
-{/* DASHBOARD */}
+{/* REGISTRO */}
 
-{view==="dashboard" && user && (
+{view==="register" && (
 
-<div className="p-6 space-y-6">
+<div className="p-6">
 
-{/* HOME */}
+<div className="card max-w-md mx-auto space-y-3">
 
-{tab==="home" && (
+<h2 className="text-xl font-bold">Registro</h2>
 
-<div className="card">
+<input placeholder="Nombre"
+onChange={e=>setForm({...form,nombre:e.target.value})}/>
 
-<h2 className="text-xl font-bold">
+<input type="date"
+onChange={e=>setForm({...form,birth:e.target.value})}/>
 
-Hola {user.nombre}
+<input placeholder="DUI sin guiones"
+onChange={e=>setForm({...form,dui:e.target.value})}/>
 
-</h2>
+<input placeholder="Teléfono"
+onChange={e=>setForm({...form,telefono:e.target.value})}/>
 
-<p className="text-gray-400">
+<input placeholder="Correo"
+onChange={e=>setForm({...form,correo:e.target.value})}/>
 
-Saldo disponible
+<input placeholder="Dirección"
+onChange={e=>setForm({...form,direccion:e.target.value})}/>
 
-</p>
+<input type="password"
+placeholder="Contraseña"
+onChange={e=>setForm({...form,password:e.target.value})}/>
 
-<h2 className="text-3xl font-bold">
+<button className="btn w-full" onClick={register}>Crear cuenta</button>
 
-${user.balance}
-
-</h2>
+</div>
 
 </div>
 
 )}
 
-{/* SUBIR TICKET */}
+{/* PERFIL */}
 
-{tab==="upload" && (
+{view==="profile" && user && (
 
-<div className="card space-y-4">
+<div className="p-6">
 
-<h3 className="font-semibold">
+<div className="card max-w-md space-y-3">
 
-Subir Ticket
+<h2 className="font-bold text-lg">Perfil</h2>
 
-</h3>
+<p>Nombre: {user.nombre}</p>
+<p>DUI: {user.dui}</p>
+<p>Teléfono: {user.phone}</p>
 
-<input
-className="input"
-type="number"
-placeholder="Monto"
-value={monto}
-onChange={e=>setMonto(e.target.value)}
-/>
+<p>Estado KYC: {user.verified?"Verificado":"Pendiente"}</p>
 
-<select
-className="input"
-value={comercio}
-onChange={e=>setComercio(e.target.value)}
->
-
-<option>Texaco</option>
-<option>UNO</option>
-<option>Esso</option>
-
-</select>
-
-<button className="btn w-full" onClick={uploadTicket}>
-
-Enviar Ticket
-
-</button>
-
-</div>
-
-)}
-
-{/* MIS TICKETS */}
-
-{tab==="tickets" && (
-
-<div className="space-y-4">
-
-<h3 className="text-lg font-bold">
-
-Mis Tickets
-
-</h3>
-
-{loading && <p>Cargando...</p>}
-
-{tickets.length===0 && !loading && (
-
-<div className="card text-center">
-
-<p className="text-gray-400">
-
-Aún no tienes tickets
-
-</p>
-
-</div>
-
-)}
-
-{tickets.map(t=>(
-
-<div key={t.id} className="card flex justify-between">
-
-<div>
-
-<p className="font-semibold">
-
-${t.monto}
-
-</p>
-
-<p className="text-sm text-gray-400">
-
-{t.comercio}
-
-</p>
-
-</div>
-
-<div>
-
-<p className="text-sm">
-
-{t.status}
-
-</p>
+<input type="file"
+onChange={(e)=>uploadDUI(e.target.files[0])}/>
 
 </div>
 
 </div>
-
-))}
-
-</div>
-
-)}
-
-</div>
-
-)}
-
-{/* NAV BAR */}
-
-{view==="dashboard" && (
-
-<nav className="fixed bottom-0 w-full bg-black/40 backdrop-blur border-t border-white/10 flex justify-around py-3">
-
-<button onClick={()=>setTab("home")}>Inicio</button>
-
-<button onClick={()=>setTab("upload")}>Ticket</button>
-
-<button onClick={()=>setTab("tickets")}>Tickets</button>
-
-<button onClick={()=>setTab("profile")}>Perfil</button>
-
-</nav>
 
 )}
 
