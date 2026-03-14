@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>ZUNO</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+font-family:'Plus Jakarta Sans',sans-serif;
+background:#09090F;
+color:white;
+margin:0;
+}
+
+header{
+background:#E8192C;
+padding:15px;
+text-align:center;
+font-weight:600;
+}
+
+.container{
+padding:20px;
+}
+
+.card{
+background:#14141C;
+padding:20px;
+border-radius:12px;
+margin-bottom:20px;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:8px;
+margin-bottom:12px;
+border-radius:8px;
+border:none;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#E8192C;
+border:none;
+border-radius:10px;
+color:white;
+font-weight:600;
+cursor:pointer;
+}
+
+.balance{
+font-size:28px;
+font-weight:600;
+}
+
+.hidden{
+display:none;
+}
+
+nav{
+position:fixed;
+bottom:0;
+width:100%;
+background:#111;
+display:flex;
+justify-content:space-around;
+padding:10px 0;
+}
+
+nav button{
+background:none;
+border:none;
+color:white;
+}
+
+</style>
+
+</head>
+<body>
+
+<header>ZUNO ⚡</header>
+
+<div class="container">
+
+<!-- LOGIN -->
+
+<div id="login">
+
+<div class="card">
+
+<h3>Iniciar sesión</h3>
+
+<input id="loginEmail" placeholder="Correo">
+
+<input id="loginPass" type="password" placeholder="Contraseña">
+
+<button onclick="login()">Entrar</button>
+
+<p style="margin-top:10px">
+¿No tienes cuenta?
+<button onclick="mostrarRegistro()">Crear cuenta</button>
+</p>
+
+</div>
+
+</div>
+
+<!-- REGISTRO -->
+
+<div id="registro" class="hidden">
+
+<div class="card">
+
+<h3>Crear cuenta</h3>
+
+<input id="regName" placeholder="Nombre">
+
+<input id="regDui" placeholder="DUI">
+
+<input id="regPhone" placeholder="Teléfono">
+
+<input id="regEmail" placeholder="Correo">
+
+<input id="regPass" type="password" placeholder="Contraseña">
+
+<button onclick="registrar()">Registrarme</button>
+
+<p>
+<button onclick="mostrarLogin()">Volver</button>
+</p>
+
+</div>
+
+</div>
+
+<!-- DASHBOARD -->
+
+<div id="app" class="hidden">
+
+<div class="card">
+
+<h3>Saldo ZUNO</h3>
+<div class="balance" id="saldo">$0.00</div>
+
+</div>
+
+<div class="card">
+
+<h3>Subir ticket</h3>
+
+<label>Monto</label> <input id="monto" type="number">
+
+<label>Comercio</label>
+
+<select id="comercio">
+<option>Texaco</option>
+<option>UNO</option>
+<option>Esso</option>
+</select>
+
+<label>Foto ticket</label> <input id="foto" type="file">
+
+<button onclick="enviarTicket()">Enviar ticket</button>
+
+</div>
+
+<div class="card">
+
+<h3>Mis tickets</h3>
+
+<ul id="tickets"></ul>
+
+</div>
+
+</div>
+
+</div>
+
+<nav id="nav" class="hidden">
+
+<button onclick="mostrarInicio()">Inicio</button>
+
+<button onclick="logout()">Salir</button>
+
+</nav>
+
+<script>
+
+let saldo = 0
+let tickets = []
+
+function mostrarRegistro(){
+document.getElementById("login").classList.add("hidden")
+document.getElementById("registro").classList.remove("hidden")
+}
+
+function mostrarLogin(){
+document.getElementById("registro").classList.add("hidden")
+document.getElementById("login").classList.remove("hidden")
+}
+
+function registrar(){
+
+let name = document.getElementById("regName").value
+
+if(!name){
+alert("Completa los datos")
+return
+}
+
+alert("Cuenta creada (modo demo)")
+
+mostrarLogin()
+
+}
+
+function login(){
+
+let email = document.getElementById("loginEmail").value
+
+if(!email){
+alert("Ingresa datos")
+return
+}
+
+document.getElementById("login").classList.add("hidden")
+document.getElementById("app").classList.remove("hidden")
+document.getElementById("nav").classList.remove("hidden")
+
+}
+
+function enviarTicket(){
+
+let monto = document.getElementById("monto").value
+
+if(!monto){
+alert("Ingresa monto")
+return
+}
+
+let cashback = monto * 0.03
+
+tickets.push({
+monto:monto,
+cashback:cashback,
+status:"pendiente"
+})
+
+actualizarTickets()
+
+alert("Ticket enviado")
+
+}
+
+function actualizarTickets(){
+
+let lista = document.getElementById("tickets")
+
+lista.innerHTML=""
+
+tickets.forEach(t=>{
+
+let li = document.createElement("li")
+
+li.innerText =
+"$"+t.monto+
+" | cashback $"+t.cashback.toFixed(2)+
+" | "+t.status
+
+lista.appendChild(li)
+
+})
+
+}
+
+function logout(){
+
+location.reload()
+
+}
+
+</script>
+
+</body>
+</html>
