@@ -853,17 +853,17 @@ async function rProfile(){
   // KYC banner
   const kb=$('kyc-ban');const kbtn=$('kyc-main-btn');
   const ks=CU.kycStatus||'none';
-  if(ks==='approved'||CU.verified){
+  if(ks==='approved'){
     kb.className='kyc-ban done';kb.onclick=null;
     kb.innerHTML=`<div class="kyc-top"><span class="kyc-ic">✅</span><div><div class="kyc-ttl" style="color:var(--green)">Identidad verificada</div><div class="kyc-sub">Tu cuenta está completamente verificada</div></div></div>`;
-    // habilitar tarjeta
     const pt=$('pmi-tarjeta');if(pt){pt.style.opacity='1';pt.style.cursor='pointer';}
   } else if(ks==='pending'){
     kb.className='kyc-ban review';kb.onclick=null;
     kb.innerHTML=`<div class="kyc-top"><span class="kyc-ic">⏳</span><div><div class="kyc-ttl" style="color:var(--blue)">En revisión</div><div class="kyc-sub">Estamos verificando tus documentos — menos de 24h</div></div></div><div class="kyc-progress"><div class="kyc-dot on"></div><div class="kyc-dot on"></div></div>`;
   } else {
     kb.className='kyc-ban pend';kb.onclick=openKYC;
-    $('kd1').className='kyc-dot';$('kd2').className='kyc-dot';
+    if($('kd1'))$('kd1').className='kyc-dot';
+    if($('kd2'))$('kd2').className='kyc-dot';
     if(kbtn)kbtn.style.display='block';
   }
 }
@@ -887,9 +887,13 @@ window.onKUP=(e,zoneId,prevId,varName)=>{
     const b64=ev.target.result;
     if(varName==='kyc-img-dui')kycImgDUI=b64;
     else kycImgSelfie=b64;
-    const prev=$(prevId);prev.src=b64;prev.style.display='block';
+    // Mostrar preview
+    const prev=$(prevId);
+    if(prev){prev.src=b64;prev.style.display='block';}
+    // Ocultar placeholder por id directo
+    const phId=zoneId==='kup-dui'?'kup-dui-ph':'kup-selfie-ph';
+    const ph=$(phId);if(ph)ph.style.display='none';
     $(zoneId).classList.add('has');
-    $(zoneId).querySelector('[id$="-ph"]').style.display='none';
   };
   r.readAsDataURL(f);
 };
