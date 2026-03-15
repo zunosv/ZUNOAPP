@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Términos y Condiciones — Zuno</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f5f7;--s1:#ffffff;--s2:#f0f0f5;
+  --border:#e2e2ec;--border2:#d0d0e0;
+  --red:#e8192c;--redbg:rgba(232,25,44,.07);--redborder:rgba(232,25,44,.2);
+  --text:#111118;--text2:#666680;--text3:#aaaabc;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;max-width:680px;margin:0 auto;min-height:100vh;padding-bottom:40px}
+
+/* HEADER */
+.hdr{background:#fff;border-bottom:1px solid var(--border);padding:16px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:10;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.back{width:38px;height:38px;border-radius:11px;background:var(--s2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;text-decoration:none;color:var(--text);flex-shrink:0;touch-action:manipulation}
+.back:active{transform:scale(.92)}
+.hdr-info{flex:1}
+.hdr-title{font-size:16px;font-weight:800;color:var(--text)}
+.hdr-sub{font-size:11px;color:var(--text3);margin-top:1px;font-weight:600}
+
+/* HERO */
+.hero{background:linear-gradient(160deg,#fff5f5 0%,#fff 70%);padding:32px 24px;border-bottom:1px solid var(--border);text-align:center}
+.hero-logo{width:52px;height:52px;border-radius:16px;background:var(--red);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 4px 16px rgba(232,25,44,.25);margin:0 auto 16px}
+.hero h1{font-size:22px;font-weight:800;color:var(--text);margin-bottom:6px}
+.hero p{font-size:13px;color:var(--text2);line-height:1.7;max-width:440px;margin:0 auto}
+.hero-date{display:inline-flex;align-items:center;gap:6px;margin-top:14px;background:var(--redbg);border:1px solid var(--redborder);border-radius:20px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--red)}
+
+/* ÍNDICE */
+.index-wrap{margin:20px 20px 0;background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.index-hdr{padding:14px 16px;background:var(--redbg);border-bottom:1px solid var(--redborder)}
+.index-hdr span{font-size:12px;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:.4px}
+.index-item{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--border);text-decoration:none;color:var(--text);transition:background .12s;cursor:pointer}
+.index-item:last-child{border-bottom:none}
+.index-item:active{background:var(--s2)}
+.index-num{width:24px;height:24px;border-radius:7px;background:var(--redbg);border:1px solid var(--redborder);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--red);flex-shrink:0}
+.index-txt{font-size:13px;font-weight:600;flex:1}
+.index-arr{color:var(--text3);font-size:14px}
+
+/* CONTENIDO */
+.content{padding:0 20px}
+.section{background:#fff;border:1px solid var(--border);border-radius:16px;margin-top:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.sec-hdr{padding:16px 18px;background:var(--redbg);border-bottom:1px solid var(--redborder);display:flex;align-items:center;gap:12px}
+.sec-num{width:28px;height:28px;border-radius:8px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+.sec-title{font-size:15px;font-weight:800;color:var(--red)}
+.sec-body{padding:18px}
+.sec-body p{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:12px}
+.sec-body p:last-child{margin-bottom:0}
+.sec-body strong{color:var(--text);font-weight:700}
+.sec-body ul{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.sec-body ul li{font-size:13px;color:var(--text2);line-height:1.7;padding-left:20px;position:relative}
+.sec-body ul li::before{content:'›';position:absolute;left:0;color:var(--red);font-weight:800;font-size:16px;line-height:1.4}
+.highlight{background:var(--redbg);border:1px solid var(--redborder);border-radius:10px;padding:12px 14px;margin-bottom:12px}
+.highlight p{color:var(--red);font-weight:600;margin-bottom:0}
+.info-box{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:12px}
+.info-box p{color:var(--text2);margin-bottom:0}
+
+/* TABLA */
+.tabla{width:100%;border-collapse:collapse;margin-bottom:12px;border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.tabla th{background:var(--s2);font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;padding:10px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.tabla td{font-size:12px;color:var(--text2);padding:10px 12px;border-bottom:1px solid var(--border);line-height:1.6}
+.tabla tr:last-child td{border-bottom:none}
+.tabla td strong{color:var(--text);font-weight:700}
+
+/* FOOTER */
+.footer{margin:20px 20px 0;background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.footer p{font-size:12px;color:var(--text3);line-height:1.8}
+.footer a{color:var(--red);font-weight:700;text-decoration:none}
+.footer-brand{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px}
+.footer-ic{width:32px;height:32px;border-radius:9px;background:var(--red);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.footer-name{font-size:18px;font-weight:800;color:var(--text)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <a class="back" href="javascript:history.back()">←</a>
+  <div class="hdr-info">
+    <div class="hdr-title">Términos y Condiciones</div>
+    <div class="hdr-sub">Última actualización: marzo 2026</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-logo">
+    <img src="recursos/zlogo.png" alt="Zuno" style="width:100%;height:100%;object-fit:contain;padding:6px;filter:invert(1)">
+  </div>
+  <h1>Términos y Condiciones de Uso</h1>
+  <p>Al registrarte y usar la plataforma Zuno, aceptás estos términos en su totalidad. Por favor leelos antes de continuar.</p>
+  <div class="hero-date">📅 Vigentes desde el 1 de enero de 2026</div>
+</div>
+
+<!-- ÍNDICE -->
+<div class="index-wrap">
+  <div class="index-hdr"><span>📋 Contenido</span></div>
+  <a class="index-item" href="#s1"><div class="index-num">1</div><div class="index-txt">Información general y aceptación</div><span class="index-arr">›</span></a>
+  <a class="index-item" href="#s2"><div class="index-num">2</div><div class="index-txt">Uso de la app y el saldo Zuno</div><span class="index-arr">›</span></a>
+  <a class="index-item" href="#s3"><div class="index-num">3</div><div class="index-txt">Política de cashback</div><span class="index-arr">›</span></a>
+  <a class="index-item" href="#s4"><div class="index-num">4</div><div class="index-txt">Verificación de identidad (KYC)</div><span class="index-arr">›</span></a>
+  <a class="index-item" href="#s5"><div class="index-num">5</div><div class="index-txt">Protección de datos personales</div><span class="index-arr">›</span></a>
+  <a class="index-item" href="#s6"><div class="index-num">6</div><div class="index-txt">Limitación de responsabilidad</div><span class="index-arr">›</span></a>
+  <a class="index-item" href="#s7"><div class="index-num">7</div><div class="index-txt">Modificaciones y contacto</div><span class="index-arr">›</span></a>
+</div>
+
+<!-- CONTENIDO -->
+<div class="content">
+
+  <!-- 1 -->
+  <div class="section" id="s1">
+    <div class="sec-hdr"><div class="sec-num">1</div><div class="sec-title">Información general y aceptación</div></div>
+    <div class="sec-body">
+      <p><strong>Zuno</strong> es una plataforma digital de cashback y fidelización operada por <strong>Héctor Rivas</strong>, persona natural domiciliada en El Salvador, en adelante referida como "Zuno", "nosotros" o "el operador".</p>
+      <p>Al crear una cuenta en Zuno, el usuario declara haber leído, entendido y aceptado estos Términos y Condiciones en su totalidad, así como la Política de Protección de Datos.</p>
+      <div class="highlight"><p>⚠️ Si no estás de acuerdo con estos términos, no debés usar la plataforma Zuno.</p></div>
+      <p>Para usar Zuno debés:</p>
+      <ul>
+        <li>Ser mayor de 18 años o contar con autorización de un tutor legal</li>
+        <li>Residir en El Salvador</li>
+        <li>Proporcionar información veraz y actualizada al registrarte</li>
+        <li>Poseer un número de teléfono activo en El Salvador</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="section" id="s2">
+    <div class="sec-hdr"><div class="sec-num">2</div><div class="sec-title">Uso de la app y el saldo Zuno</div></div>
+    <div class="sec-body">
+      <p>El <strong>saldo Zuno</strong> es un crédito digital acumulado mediante el programa de cashback. No constituye dinero electrónico regulado ni depósito bancario.</p>
+      <div class="info-box"><p>📌 El saldo Zuno solo puede ser usado dentro de la red de comercios y beneficios habilitados por la plataforma.</p></div>
+      <p><strong>Está estrictamente prohibido:</strong></p>
+      <ul>
+        <li>Crear cuentas falsas o duplicadas</li>
+        <li>Subir tickets falsos, alterados o de terceros</li>
+        <li>Intentar manipular el sistema de puntos o cashback</li>
+        <li>Usar la plataforma para actividades ilegales o fraudulentas</li>
+        <li>Transferir o vender tu cuenta a terceros</li>
+      </ul>
+      <p>Zuno se reserva el derecho de <strong>suspender o eliminar</strong> cualquier cuenta que incumpla estas normas, sin previo aviso y sin obligación de reembolso del saldo acumulado.</p>
+      <p>Cada usuario es responsable de mantener la confidencialidad de su contraseña. Zuno no se hace responsable por accesos no autorizados derivados de negligencia del usuario.</p>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="section" id="s3">
+    <div class="sec-hdr"><div class="sec-num">3</div><div class="sec-title">Política de cashback</div></div>
+    <div class="sec-body">
+      <p>El cashback se acredita en dólares estadounidenses (USD) al saldo Zuno del usuario, una vez que el ticket enviado sea <strong>verificado y aprobado</strong> por el equipo Zuno.</p>
+
+      <table class="tabla">
+        <tr><th>Nivel</th><th>Puntos requeridos</th><th>Bonus cashback</th></tr>
+        <tr><td>🥉 <strong>Bronce</strong></td><td>0 – 499 pts</td><td>Base (0% extra)</td></tr>
+        <tr><td>🥈 <strong>Plata</strong></td><td>500 – 1,499 pts</td><td>+0.5% extra</td></tr>
+        <tr><td>🥇 <strong>Oro</strong></td><td>1,500 – 2,999 pts</td><td>+1% extra</td></tr>
+        <tr><td>💎 <strong>Diamante</strong></td><td>3,000+ pts</td><td>+1.5% extra</td></tr>
+      </table>
+
+      <p><strong>Condiciones del cashback:</strong></p>
+      <ul>
+        <li>Solo se acredita cashback por compras realizadas en <strong>comercios activos de la red Zuno</strong></li>
+        <li>El ticket debe ser legible, real y corresponder al comercio seleccionado</li>
+        <li>Cada ticket puede subirse una sola vez — tickets duplicados serán rechazados</li>
+        <li>El monto del ticket debe ser ingresado correctamente por el usuario</li>
+        <li>Zuno se reserva el derecho de rechazar tickets que no cumplan los requisitos, sin obligación de explicación detallada</li>
+      </ul>
+
+      <div class="highlight"><p>⚠️ El cashback aprobado no tiene fecha de vencimiento mientras la cuenta esté activa. Cuentas inactivas por más de 12 meses consecutivos podrán ser suspendidas previo aviso.</p></div>
+
+      <p><strong>Sistema de temporadas:</strong> Los puntos de nivel se reinician cada 6 meses. Al reiniciarse, todos los usuarios bajan un nivel (Diamante → Oro, Oro → Plata, etc.). El saldo en dólares acumulado <strong>no se ve afectado</strong> por el reinicio de temporada.</p>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="section" id="s4">
+    <div class="sec-hdr"><div class="sec-num">4</div><div class="sec-title">Verificación de identidad (KYC)</div></div>
+    <div class="sec-body">
+      <p>Para acceder a todas las funciones de Zuno y desbloquear beneficios premium (incluyendo la futura Tarjeta Zuno), el usuario debe completar el proceso de <strong>Verificación de Identidad (KYC)</strong>.</p>
+      <p>Este proceso requiere:</p>
+      <ul>
+        <li>Fotografía del Documento Único de Identidad (DUI) — cara frontal</li>
+        <li>Selfie del usuario sosteniendo su DUI visible</li>
+      </ul>
+      <div class="info-box"><p>🔒 Los documentos enviados son revisados manualmente por el equipo Zuno y <strong>eliminados de nuestros sistemas</strong> inmediatamente después de completar la verificación, independientemente del resultado.</p></div>
+      <p>Zuno se reserva el derecho de <strong>rechazar o revocar</strong> la verificación de cualquier usuario si se detecta información falsa, documentos alterados o suplantación de identidad.</p>
+      <p>La verificación KYC es voluntaria para el uso básico de la app, pero <strong>obligatoria</strong> para acceder a funciones avanzadas como la Tarjeta Zuno cuando esté disponible.</p>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="section" id="s5">
+    <div class="sec-hdr"><div class="sec-num">5</div><div class="sec-title">Protección de datos personales</div></div>
+    <div class="sec-body">
+      <p>Zuno recopila y almacena los siguientes datos personales con el único fin de operar la plataforma:</p>
+      <ul>
+        <li>Nombre completo y número de DUI</li>
+        <li>Número de teléfono</li>
+        <li>Historial de tickets y transacciones</li>
+        <li>Imágenes de tickets de compra (eliminadas tras su revisión)</li>
+        <li>Documentos de identidad para KYC (eliminados tras su verificación)</li>
+      </ul>
+      <p><strong>Zuno NO:</strong></p>
+      <ul>
+        <li>Vende ni comparte tus datos personales con terceros con fines comerciales</li>
+        <li>Almacena información de tarjetas de crédito o débito</li>
+        <li>Usa tus datos para publicidad de terceros sin tu consentimiento</li>
+      </ul>
+      <div class="info-box"><p>📧 Para solicitar la eliminación de tus datos personales, enviá un correo a <strong>zunosv@gmail.com</strong> con el asunto "Eliminación de datos". Procesaremos tu solicitud en un plazo máximo de 15 días hábiles.</p></div>
+      <p>Los datos se almacenan en servidores seguros de <strong>Google Firebase</strong> (Firebase Firestore) ubicados en la nube, con acceso restringido únicamente al equipo operador de Zuno.</p>
+    </div>
+  </div>
+
+  <!-- 6 -->
+  <div class="section" id="s6">
+    <div class="sec-hdr"><div class="sec-num">6</div><div class="sec-title">Limitación de responsabilidad</div></div>
+    <div class="sec-body">
+      <p>Zuno es una plataforma de cashback independiente. <strong>No es una entidad bancaria, financiera ni emisora de dinero electrónico</strong> regulada por el Banco Central de Reserva de El Salvador.</p>
+      <p>Zuno no se hace responsable por:</p>
+      <ul>
+        <li>Interrupciones del servicio por mantenimiento, fallos técnicos o causas de fuerza mayor</li>
+        <li>Pérdida de acceso a la cuenta por olvido de contraseña o dispositivo perdido</li>
+        <li>Decisiones de compra del usuario en los comercios de la red</li>
+        <li>Cambios en las tasas de cashback de comercios asociados, los cuales pueden modificarse con previo aviso</li>
+        <li>Daños directos o indirectos derivados del uso o imposibilidad de uso de la plataforma</li>
+      </ul>
+      <div class="highlight"><p>⚠️ El saldo Zuno no está garantizado por ninguna entidad gubernamental ni fondo de seguro de depósitos.</p></div>
+      <p>Zuno se reserva el derecho de <strong>modificar, suspender o discontinuar</strong> el servicio en cualquier momento, notificando a los usuarios con al menos <strong>30 días de anticipación</strong> a través de la app o correo electrónico registrado.</p>
+      <p>En caso de discontinuación del servicio, Zuno hará su mejor esfuerzo para permitir al usuario utilizar su saldo acumulado dentro del período de notificación.</p>
+    </div>
+  </div>
+
+  <!-- 7 -->
+  <div class="section" id="s7">
+    <div class="sec-hdr"><div class="sec-num">7</div><div class="sec-title">Modificaciones y contacto</div></div>
+    <div class="sec-body">
+      <p>Zuno puede actualizar estos Términos y Condiciones en cualquier momento. Los cambios serán notificados mediante:</p>
+      <ul>
+        <li>Aviso dentro de la aplicación al iniciar sesión</li>
+        <li>Correo electrónico al número de teléfono o cuenta registrada</li>
+      </ul>
+      <p>El uso continuado de la plataforma tras la notificación implica la aceptación de los nuevos términos.</p>
+      <div class="info-box">
+        <p>📬 <strong>Contacto:</strong><br>
+        Correo: <strong>zunosv@gmail.com</strong><br>
+        WhatsApp: <strong>+503 6956 7050</strong><br>
+        Redes: <strong>@zunoapp</strong> en Facebook e Instagram<br>
+        País de operación: <strong>El Salvador 🇸🇻</strong></p>
+      </div>
+      <p>Estos términos se rigen por las leyes vigentes de la <strong>República de El Salvador</strong>. Cualquier disputa será sometida a la jurisdicción de los tribunales competentes de El Salvador.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-brand">
+    <div class="footer-ic"><img src="recursos/zlogo.png" alt="Zuno" style="width:100%;height:100%;object-fit:contain;padding:4px;filter:invert(1)"></div>
+    <div class="footer-name">ZUNO</div>
+  </div>
+  <p>© 2026 Zuno — Operado por Héctor Rivas, El Salvador 🇸🇻<br>
+  Última actualización: marzo de 2026<br>
+  <a href="mailto:zunosv@gmail.com">zunosv@gmail.com</a> · <a href="https://wa.me/50369567050">+503 6956 7050</a></p>
+</div>
+
+</body>
+</html>

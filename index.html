@@ -7,299 +7,240 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#09090f;--s1:#111118;--s2:#17171f;--s3:#1e1e28;
-  --border:#1e1e2e;--border2:#2a2a3e;
-  --red:#e8192c;--red2:#ff2d40;--red3:#ff7080;--redbg:rgba(232,25,44,.09);--redborder:rgba(232,25,44,.22);
-  --green:#00d68f;--greenbg:rgba(0,214,143,.09);--greenborder:rgba(0,214,143,.22);
-  --gold:#ffb800;--goldbg:rgba(255,184,0,.09);--goldborder:rgba(255,184,0,.22);
-  --blue:#3b82f6;--bluebg:rgba(59,130,246,.09);--blueborder:rgba(59,130,246,.22);
-  --purple:#7c3aed;--purplebg:rgba(124,58,237,.1);--purpleborder:rgba(124,58,237,.22);--purple3:#c4b5fd;
-  --text:#f0f0fa;--text2:#8080a0;--text3:#40405a;
+  --bg:#f5f5f7;--s1:#ffffff;--s2:#f0f0f5;--s3:#e8e8f0;
+  --border:#e2e2ec;--border2:#d0d0e0;
+  --red:#e8192c;--red2:#ff2d40;--redbg:rgba(232,25,44,.07);--redborder:rgba(232,25,44,.2);
+  --green:#00a86b;--greenbg:rgba(0,168,107,.08);--greenborder:rgba(0,168,107,.2);
+  --gold:#e09000;--goldbg:rgba(224,144,0,.08);--goldborder:rgba(224,144,0,.2);
+  --blue:#2563eb;--bluebg:rgba(37,99,235,.07);--blueborder:rgba(37,99,235,.2);
+  --purple:#7c3aed;--purplebg:rgba(124,58,237,.07);--purpleborder:rgba(124,58,237,.2);--purple3:#7c3aed;
+  --text:#111118;--text2:#666680;--text3:#aaaabc;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;max-width:430px;margin:0 auto;min-height:100vh;overflow-x:hidden;padding-bottom:88px}
-.scr{display:none;flex-direction:column;min-height:100vh}
-.scr.on{display:flex}
-
-/* NAV */
-.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(9,9,15,.97);backdrop-filter:blur(24px);border-top:1px solid var(--border2);display:none;padding:8px 0 22px;z-index:100}
+.scr{display:none;flex-direction:column;min-height:100vh}.scr.on{display:flex}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(255,255,255,.97);backdrop-filter:blur(24px);border-top:1px solid var(--border);display:none;padding:8px 0 22px;z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,.06)}
 .bnav.show{display:flex}
 .bn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;color:var(--text3);font-size:10px;font-weight:700;padding:4px 0;transition:color .12s;touch-action:manipulation}
-.bn.on{color:var(--red2)}
-.bn-ic{font-size:22px}
-.bn-bar{width:20px;height:3px;border-radius:2px;background:var(--red2);opacity:0;transition:opacity .12s;margin-top:1px}
-.bn.on .bn-bar{opacity:1}
-
-/* INPUTS */
+.bn.on{color:var(--red)}.bn-ic{font-size:22px}
+.bn-bar{width:20px;height:3px;border-radius:2px;background:var(--red);opacity:0;transition:opacity .12s;margin-top:1px}.bn.on .bn-bar{opacity:1}
 .field{margin-bottom:13px}
 .field label{display:block;font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
-.field input,.field select{width:100%;padding:13px 15px;background:var(--s2);border:1.5px solid var(--border2);border-radius:13px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;outline:none;transition:all .15s;-webkit-appearance:none}
-.field input:focus,.field select:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(232,25,44,.1)}
-.field input::placeholder{color:var(--text3)}
-.field select option{background:var(--s2)}
-
-/* BTNS */
+.field input,.field select{width:100%;padding:13px 15px;background:var(--s2);border:1.5px solid var(--border);border-radius:13px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;outline:none;transition:all .15s;-webkit-appearance:none}
+.field input:focus,.field select:focus{border-color:var(--red);background:#fff;box-shadow:0 0 0 3px rgba(232,25,44,.08)}
+.field input::placeholder{color:var(--text3)}.field select option{background:#fff}
 .btn{display:block;width:100%;padding:15px;border:none;border-radius:13px;font-family:'Plus Jakarta Sans';font-size:15px;font-weight:700;cursor:pointer;transition:all .12s;touch-action:manipulation}
 .btn:active{transform:scale(.97);opacity:.85}
-.btn-red{background:var(--red);color:#fff;box-shadow:0 4px 20px rgba(232,25,44,.3)}
+.btn-red{background:var(--red);color:#fff;box-shadow:0 4px 16px rgba(232,25,44,.25)}
 .btn-ghost{background:transparent;border:1.5px solid var(--border2);color:var(--text2);margin-top:8px}
-
-/* TOAST */
-.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--s2);border:1px solid var(--border2);color:var(--text);padding:11px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.5);max-width:90vw}
-.toast.show{transform:translateX(-50%) translateY(0)}
-.toast.ok{border-color:var(--green);color:var(--green)}
-.toast.err{border-color:var(--red2);color:var(--red2)}
-
-/* LOADING */
-.load-ov{display:none;position:fixed;inset:0;z-index:500;align-items:center;justify-content:center}
+.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--text);color:#fff;padding:11px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.2);max-width:90vw}
+.toast.show{transform:translateX(-50%) translateY(0)}.toast.ok{background:var(--green)}.toast.err{background:var(--red)}
+.load-ov{display:none;position:fixed;inset:0;z-index:500;align-items:center;justify-content:center;background:rgba(255,255,255,.7);backdrop-filter:blur(4px)}
 .load-ov.show{display:flex}
-.load-chip{background:rgba(17,17,24,.97);border:1px solid var(--border2);border-radius:14px;padding:16px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 40px rgba(0,0,0,.6)}
-.spinner{width:20px;height:20px;border:2.5px solid var(--border2);border-top-color:var(--red2);border-radius:50%;animation:spin .65s linear infinite;flex-shrink:0}
-@keyframes spin{to{transform:rotate(360deg)}}
-.load-chip p{font-size:13px;font-weight:600;color:var(--text2)}
-
-/* MODAL */
-.mov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(12px);z-index:200;align-items:flex-end;justify-content:center}
+.load-chip{background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 40px rgba(0,0,0,.12)}
+.spinner{width:20px;height:20px;border:2.5px solid var(--border2);border-top-color:var(--red);border-radius:50%;animation:spin .65s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}.load-chip p{font-size:13px;font-weight:600;color:var(--text2)}
+.mov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);z-index:200;align-items:flex-end;justify-content:center}
 .mov.open{display:flex}
-.modal{background:var(--s1);border:1px solid var(--border2);border-top:2px solid var(--red);border-radius:22px 22px 0 0;padding:20px 20px 50px;width:100%;max-width:430px;animation:mUp .28s cubic-bezier(.34,1.2,.64,1);max-height:92vh;overflow-y:auto}
+.modal{background:#fff;border-radius:22px 22px 0 0;padding:20px 20px 50px;width:100%;max-width:430px;animation:mUp .28s cubic-bezier(.34,1.2,.64,1);max-height:92vh;overflow-y:auto;box-shadow:0 -8px 40px rgba(0,0,0,.12)}
 @keyframes mUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .m-pill{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 18px}
-.modal h3{font-size:19px;font-weight:800;margin-bottom:4px}
-
-/* ── LOGIN ── */
-#s-login{background:var(--bg)}
-.login-hero{background:linear-gradient(170deg,#1a0005 0%,#09090f 55%);padding:56px 24px 40px;text-align:center;position:relative;overflow:hidden}
-.login-hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:320px;height:320px;background:radial-gradient(circle,rgba(232,25,44,.15),transparent 70%);pointer-events:none}
-.brand{display:inline-flex;align-items:center;gap:10px;margin-bottom:32px;position:relative;z-index:1}
-.brand-ico{width:52px;height:52px;border-radius:16px;background:var(--red);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 4px 24px rgba(232,25,44,.45)}
-.brand-name{font-size:36px;font-weight:800}
-.login-title{font-size:25px;font-weight:800;line-height:1.3;position:relative;z-index:1}
-.login-sub{font-size:13px;color:var(--text2);margin-top:8px;line-height:1.7;position:relative;z-index:1}
-.login-steps{display:flex;justify-content:center;gap:0;margin-top:22px;position:relative;z-index:1}
-.lstep{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1}
-.lstep-ic{font-size:24px}
-.lstep-lbl{font-size:10px;font-weight:700;color:var(--text2)}
-.lstep-arrow{align-self:flex-start;margin-top:10px;color:var(--text3);font-size:16px;flex-shrink:0}
-.login-body{padding:24px 20px}
+.modal h3{font-size:19px;font-weight:800;margin-bottom:4px;color:var(--text)}
+/* LOGIN */
+#s-login{background:#fff}
+.login-hero{background:linear-gradient(160deg,#fff5f5 0%,#fff 60%);padding:44px 24px 28px;text-align:center;position:relative;overflow:hidden}
+.login-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(232,25,44,.08),transparent 70%);pointer-events:none}
+.brand{display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;position:relative;z-index:1}
+.brand-ico{width:46px;height:46px;border-radius:14px;background:var(--red);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 4px 16px rgba(232,25,44,.3)}
+.brand-name{font-size:30px;font-weight:800;color:var(--text)}
+/* MOCKUP */
+.phone-mock-wrap{position:relative;width:156px;height:215px;margin:0 auto 18px;z-index:1}
+.phone-mock-wrap::after{content:'';position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:90px;height:12px;background:radial-gradient(ellipse,rgba(232,25,44,.18),transparent 70%);border-radius:50%}
+.phone-mock{width:156px;height:215px;background:#111;border-radius:22px;border:5px solid #1a1a1a;position:relative;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.22),0 0 0 1px rgba(255,255,255,.08);animation:phoneFloat 3.5s ease-in-out infinite}
+@keyframes phoneFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-12px) rotate(-2deg)}}
+.phone-notch{width:42px;height:8px;background:#111;border-radius:0 0 7px 7px;margin:6px auto 0;position:relative;z-index:3}
+.phone-screen{padding:5px 7px;background:#f5f5f7;height:calc(100% - 22px)}
+.ps-hdr{display:flex;align-items:center;justify-content:space-between;padding:3px 0 5px}
+.ps-logo{font-size:9px;font-weight:800;color:var(--red);letter-spacing:.5px}
+.ps-av{width:15px;height:15px;border-radius:4px;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff;font-weight:800}
+.ps-balcard{background:#fff;border-radius:9px;padding:7px;margin-bottom:5px;box-shadow:0 2px 6px rgba(0,0,0,.07)}
+.ps-bal-lbl{font-size:6px;color:var(--text3);font-weight:600;text-transform:uppercase}
+.ps-bal{font-size:17px;font-weight:800;color:var(--text);line-height:1.2}
+.ps-bal-sub{font-size:6px;color:var(--green);font-weight:700}
+.ps-row{background:#fff;border-radius:7px;padding:5px 6px;display:flex;align-items:center;gap:4px;margin-bottom:3px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.ps-row-ic{font-size:11px;flex-shrink:0}.ps-row-info{flex:1}
+.ps-row-name{font-size:6px;font-weight:700;color:var(--text)}.ps-row-sub{font-size:5px;color:var(--text3)}
+.ps-row-amt{font-size:7px;font-weight:800;color:var(--green)}
+.ps-cta{background:var(--red);border-radius:6px;padding:5px;text-align:center;font-size:6px;font-weight:800;color:#fff;margin-top:3px}
+.login-tagline{font-size:19px;font-weight:800;color:var(--text);line-height:1.3;position:relative;z-index:1}
+.login-tagline span{color:var(--red)}
+.login-steps{display:flex;justify-content:center;gap:0;margin-top:12px;position:relative;z-index:1}
+.lstep{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
+.lstep-ic{font-size:17px}.lstep-lbl{font-size:9px;font-weight:700;color:var(--text3)}
+.lstep-arrow{align-self:flex-start;margin-top:6px;color:var(--text3);font-size:13px;flex-shrink:0}
+.login-body{padding:22px 20px;background:#fff}
 .login-tabs{display:flex;background:var(--s2);border-radius:12px;padding:3px;margin-bottom:20px;border:1px solid var(--border)}
 .ltab{flex:1;padding:10px;border:none;background:transparent;color:var(--text3);font-family:'Plus Jakarta Sans';font-size:13px;font-weight:700;border-radius:10px;cursor:pointer;transition:all .15s}
-.ltab.on{background:var(--red);color:#fff}
-.ltab:active{transform:scale(.97)}
-
-/* ── PENDING ── */
+.ltab.on{background:var(--red);color:#fff;box-shadow:0 2px 8px rgba(232,25,44,.25)}.ltab:active{transform:scale(.97)}
+/* PENDING */
 #s-pending{background:var(--bg);align-items:center;justify-content:center;padding:40px 24px;text-align:center;gap:22px}
-
-/* ── HOME ── */
+/* HOME */
 #s-home{background:var(--bg)}
-.home-top{padding:22px 18px 0;display:flex;align-items:center;justify-content:space-between}
+.home-top{padding:20px 18px 0;display:flex;align-items:center;justify-content:space-between}
 .greet-lbl{font-size:12px;color:var(--text3);font-weight:600}
-.greet-name{font-size:21px;font-weight:800;margin-top:1px}
+.greet-name{font-size:21px;font-weight:800;color:var(--text);margin-top:1px}
 .hav{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;cursor:pointer;touch-action:manipulation}
 .hav:active{transform:scale(.92)}
-
-/* BALANCE CARD */
-.bal-card{margin:16px 18px 0;border-radius:22px;padding:24px;position:relative;overflow:hidden;background:linear-gradient(135deg,#160003 0%,#0e0011 100%);border:1px solid var(--redborder)}
-.bal-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(232,25,44,.6),transparent)}
-.bal-card::after{content:'ZUNO';position:absolute;bottom:-8px;right:8px;font-size:80px;font-weight:800;opacity:.04;letter-spacing:2px;color:#fff;pointer-events:none}
-.bal-lbl{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
-.bal-amt{font-size:48px;font-weight:800;line-height:1}
-.bal-desc{font-size:12px;color:var(--text3);margin-top:5px}
-.bal-desc .hi{color:var(--green);font-weight:700}
-.tier-row{display:flex;align-items:center;justify-content:space-between;margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.05)}
-.tier-badge{padding:5px 11px;border-radius:8px;font-size:11px;font-weight:700;background:var(--goldbg);border:1px solid var(--goldborder);color:var(--gold);flex-shrink:0}
+.bal-card{margin:14px 18px 0;border-radius:20px;padding:22px;position:relative;overflow:hidden;background:var(--red);box-shadow:0 8px 28px rgba(232,25,44,.28)}
+.bal-card::before{content:'';position:absolute;top:-40px;right:-40px;width:150px;height:150px;background:rgba(255,255,255,.08);border-radius:50%}
+.bal-card::after{content:'ZUNO';position:absolute;bottom:-8px;right:10px;font-size:68px;font-weight:800;opacity:.07;letter-spacing:2px;color:#fff;pointer-events:none}
+.bal-lbl{font-size:11px;font-weight:700;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
+.bal-amt{font-size:42px;font-weight:800;line-height:1;color:#fff}
+.bal-desc{font-size:12px;color:rgba(255,255,255,.7);margin-top:5px}.bal-desc .hi{color:#fff;font-weight:700}
+.tier-row{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.15)}
+.tier-badge{padding:4px 10px;border-radius:8px;font-size:11px;font-weight:700;background:rgba(255,255,255,.15);color:#fff;flex-shrink:0}
 .prog-wrap{flex:1;margin-left:12px}
-.prog-bar{height:4px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--red2));border-radius:100px;transition:width 1s ease}
-.prog-hint{font-size:10px;color:var(--text3);margin-top:4px;text-align:right}
-
-/* ACCIONES */
-.act-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:14px 18px 0}
-.act{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:13px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:all .12s;touch-action:manipulation}
-.act:active{transform:scale(.93);background:var(--s2)}
-.act.hi{background:var(--redbg);border-color:var(--redborder)}
-.act-ic{font-size:22px}
-.act-lbl{font-size:10px;font-weight:700;color:var(--text2);text-align:center;line-height:1.2}
-
-/* PENDIENTES BANNER */
+.prog-bar{height:4px;background:rgba(255,255,255,.2);border-radius:100px;overflow:hidden}
+.prog-fill{height:100%;background:#fff;border-radius:100px;transition:width 1s ease}
+.prog-hint{font-size:10px;color:rgba(255,255,255,.6);margin-top:4px;text-align:right}
+.act-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px 18px 0}
+.act{background:#fff;border:1px solid var(--border);border-radius:16px;padding:13px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:all .12s;touch-action:manipulation;box-shadow:0 2px 6px rgba(0,0,0,.04)}
+.act:active{transform:scale(.93);background:var(--s2)}.act.hi{background:var(--redbg);border-color:var(--redborder)}
+.act-ic{font-size:22px}.act-lbl{font-size:10px;font-weight:700;color:var(--text2);text-align:center;line-height:1.2}
 .pend-ban{margin:12px 18px 0;background:var(--bluebg);border:1px solid var(--blueborder);border-radius:14px;padding:12px 16px;display:none;align-items:center;gap:12px;cursor:pointer;touch-action:manipulation}
-.pend-ban:active{opacity:.8}
-.pb-txt{flex:1;font-size:13px;color:var(--blue);font-weight:700;line-height:1.4}
+.pend-ban:active{opacity:.8}.pb-txt{flex:1;font-size:13px;color:var(--blue);font-weight:700;line-height:1.4}
 .pb-cnt{background:var(--blue);color:#fff;font-size:12px;font-weight:800;padding:4px 10px;border-radius:8px;flex-shrink:0}
-
-/* TARJETA PROMO */
-.card-promo{margin:12px 18px 0;background:linear-gradient(135deg,#0a0020,#12001a);border:1px solid var(--purpleborder);border-radius:16px;padding:16px;display:flex;align-items:center;gap:14px}
+.card-promo{margin:12px 18px 0;background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 6px rgba(0,0,0,.04)}
 .cp-ic{width:44px;height:44px;border-radius:12px;background:var(--purplebg);border:1px solid var(--purpleborder);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.cp-name{font-size:13px;font-weight:800;margin-bottom:2px}
-.cp-sub{font-size:11px;color:var(--text3);line-height:1.5}
+.cp-name{font-size:13px;font-weight:800;color:var(--text);margin-bottom:2px}.cp-sub{font-size:11px;color:var(--text3);line-height:1.5}
 .cp-badge{font-size:10px;background:var(--purplebg);border:1px solid var(--purpleborder);color:var(--purple3);padding:2px 8px;border-radius:6px;font-weight:700;margin-left:6px}
-
-/* HISTORIAL */
 .sec-hdr{padding:18px 18px 10px;display:flex;align-items:center;justify-content:space-between}
-.sec-hdr h3{font-size:15px;font-weight:800}
-.sec-hdr span{font-size:12px;color:var(--red3);font-weight:600;cursor:pointer}
+.sec-hdr h3{font-size:15px;font-weight:800;color:var(--text)}.sec-hdr span{font-size:12px;color:var(--red);font-weight:600;cursor:pointer}
 .hist{padding:0 18px;display:flex;flex-direction:column;gap:8px}
-.hi-row{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:13px 14px;display:flex;align-items:center;gap:12px}
+.hi-row{background:#fff;border:1px solid var(--border);border-radius:14px;padding:13px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 6px rgba(0,0,0,.04)}
 .hi-ico{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.hi-info{flex:1}
-.hi-name{font-weight:700;font-size:13px}
-.hi-date{font-size:11px;color:var(--text3);margin-top:1px}
-.hi-amt{font-size:14px;font-weight:800}
-.amt-earn{color:var(--green)}
-.amt-pend{color:var(--gold)}
-.amt-rej{color:var(--red3)}
-
-/* ── SUBIR TICKET ── */
+.hi-info{flex:1}.hi-name{font-weight:700;font-size:13px;color:var(--text)}.hi-date{font-size:11px;color:var(--text3);margin-top:1px}
+.hi-amt{font-size:14px;font-weight:800}.amt-earn{color:var(--green)}.amt-pend{color:var(--gold)}.amt-rej{color:var(--red)}
+/* TICKET */
 #s-ticket{background:var(--bg)}
-.sub-hdr{padding:22px 18px 16px;display:flex;align-items:center;gap:14px}
-.back{width:38px;height:38px;border-radius:11px;background:var(--s2);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;flex-shrink:0;touch-action:manipulation}
-.back:active{transform:scale(.92)}
-.sub-hdr h2{font-size:20px;font-weight:800}
-.sub-body{padding:0 18px}
+.sub-hdr{padding:18px 18px 14px;display:flex;align-items:center;gap:14px;background:#fff;border-bottom:1px solid var(--border)}
+.back{width:38px;height:38px;border-radius:11px;background:var(--s2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;flex-shrink:0;touch-action:manipulation;color:var(--text)}
+.back:active{transform:scale(.92)}.sub-hdr h2{font-size:20px;font-weight:800;color:var(--text)}
+.sub-body{padding:16px 18px}
 .step-lbl{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:9px}
-
-/* Upload */
-.upz{border:2px dashed var(--border2);border-radius:18px;padding:30px 20px;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;background:var(--s1);margin-bottom:16px}
-.upz.has-img{border-style:solid;border-color:var(--green);padding:0;background:#000}
-.upz input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.upz-ic{font-size:40px;margin-bottom:10px}
-.upz-lbl{font-size:14px;font-weight:700;margin-bottom:4px}
-.upz-sub{font-size:12px;color:var(--text3)}
+.upz{border:2px dashed var(--border2);border-radius:18px;padding:30px 20px;text-align:center;position:relative;overflow:hidden;background:#fff;margin-bottom:16px}
+.upz.has-img{border-style:solid;border-color:var(--green);padding:0}
+.upz-ic{font-size:38px;margin-bottom:10px}.upz-lbl{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}.upz-sub{font-size:12px;color:var(--text3)}
 #up-prev{width:100%;max-height:260px;object-fit:contain;border-radius:16px;display:none}
-
-/* Comercios selector */
 .com-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
-.copt{background:var(--s1);border:1.5px solid var(--border2);border-radius:13px;padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .12s;touch-action:manipulation}
-.copt:active{transform:scale(.95)}
-.copt.on{border-color:var(--red);background:var(--redbg)}
+.copt{background:#fff;border:1.5px solid var(--border);border-radius:13px;padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .12s;touch-action:manipulation;box-shadow:0 2px 6px rgba(0,0,0,.04)}
+.copt:active{transform:scale(.95)}.copt.on{border-color:var(--red);background:var(--redbg)}
 .copt-logo{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.copt-name{font-size:12px;font-weight:800;line-height:1.2}
-.copt-rate{font-size:10px;color:var(--text3);margin-top:2px;font-weight:600}
-
-/* Monto */
-.monto-wrap{display:flex;align-items:center;background:var(--s2);border:1.5px solid var(--border2);border-radius:13px;overflow:hidden;margin-bottom:16px;transition:border-color .15s}
+.copt-name{font-size:12px;font-weight:800;line-height:1.2;color:var(--text)}.copt-rate{font-size:10px;color:var(--text3);margin-top:2px;font-weight:600}
+.monto-wrap{display:flex;align-items:center;background:#fff;border:1.5px solid var(--border);border-radius:13px;overflow:hidden;margin-bottom:16px;transition:border-color .15s;box-shadow:0 2px 6px rgba(0,0,0,.04)}
 .monto-wrap:focus-within{border-color:var(--red)}
 .monto-ico{padding:0 14px;font-size:22px;font-weight:800;color:var(--green);flex-shrink:0}
 .monto-wrap input{flex:1;padding:14px 14px 14px 0;background:transparent;border:none;color:var(--text);font-family:'Plus Jakarta Sans';font-size:22px;font-weight:700;outline:none}
 .monto-wrap input::placeholder{color:var(--text3)}
-
-/* Cashback preview */
 .cbp{background:var(--greenbg);border:1px solid var(--greenborder);border-radius:14px;padding:14px 16px;margin-bottom:16px;display:none}
 .cbp-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
-.cbp-lbl{font-size:12px;color:var(--green);font-weight:700}
-.cbp-amt{font-size:28px;font-weight:800;color:var(--green)}
-.cbp-sub{font-size:11px;color:var(--text3)}
-
-/* ── MIS TICKETS ── */
+.cbp-lbl{font-size:12px;color:var(--green);font-weight:700}.cbp-amt{font-size:28px;font-weight:800;color:var(--green)}.cbp-sub{font-size:11px;color:var(--text3)}
+/* MIS TICKETS */
 #s-mytickets{background:var(--bg)}
-.mth{padding:22px 18px 14px;display:flex;align-items:center;gap:14px}
-.mth h2{font-size:20px;font-weight:800}
-.frow{display:flex;gap:7px;padding:0 18px 14px;overflow-x:auto;scrollbar-width:none}
+.mth{padding:18px 18px 14px;display:flex;align-items:center;gap:14px;background:#fff;border-bottom:1px solid var(--border)}
+.mth h2{font-size:20px;font-weight:800;color:var(--text)}
+.frow{display:flex;gap:7px;padding:14px 18px;overflow-x:auto;scrollbar-width:none;background:#fff;border-bottom:1px solid var(--border)}
 .frow::-webkit-scrollbar{display:none}
-.ftab{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border2);background:var(--s1);color:var(--text3);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .12s;touch-action:manipulation}
-.ftab:active{transform:scale(.94)}
-.ftab.on{background:var(--redbg);border-color:var(--redborder);color:var(--red2)}
-.tklist{padding:0 18px}
-.tcard{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px;display:flex;gap:13px}
-.tc-thumb{width:58px;height:58px;border-radius:11px;object-fit:cover;flex-shrink:0;background:var(--s3);cursor:pointer}
-.tc-ph{width:58px;height:58px;border-radius:11px;background:var(--s3);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
-.tc-info{flex:1}
-.tc-com{font-size:13px;font-weight:800}
-.tc-monto{font-size:12px;color:var(--text2);font-weight:600;margin-top:2px}
-.tc-date{font-size:11px;color:var(--text3);margin-top:2px}
+.ftab{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--s2);color:var(--text3);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .12s;touch-action:manipulation}
+.ftab:active{transform:scale(.94)}.ftab.on{background:var(--red);border-color:var(--red);color:#fff}
+.tklist{padding:14px 18px}
+.tcard{background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px;display:flex;gap:13px;box-shadow:0 2px 6px rgba(0,0,0,.04)}
+.tc-thumb{width:56px;height:56px;border-radius:11px;object-fit:cover;flex-shrink:0;background:var(--s2);cursor:pointer}
+.tc-ph{width:56px;height:56px;border-radius:11px;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.tc-info{flex:1}.tc-com{font-size:13px;font-weight:800;color:var(--text)}
+.tc-monto{font-size:12px;color:var(--text2);font-weight:600;margin-top:2px}.tc-date{font-size:11px;color:var(--text3);margin-top:2px}
 .tc-st{padding:4px 10px;border-radius:7px;font-size:11px;font-weight:800;margin-top:6px;display:inline-flex;align-items:center;gap:4px}
 .st-p{background:var(--goldbg);border:1px solid var(--goldborder);color:var(--gold)}
 .st-a{background:var(--greenbg);border:1px solid var(--greenborder);color:var(--green)}
-.st-r{background:var(--redbg);border:1px solid var(--redborder);color:var(--red3)}
+.st-r{background:var(--redbg);border:1px solid var(--redborder);color:var(--red)}
 .tc-note{font-size:11px;color:var(--text3);margin-top:5px;line-height:1.4}
-
-/* ── COMERCIOS ── */
+/* COMERCIOS */
 #s-map{background:var(--bg)}
-.map-hdr{padding:22px 18px 12px}
-.map-hdr h2{font-size:22px;font-weight:800}
-.map-hdr p{font-size:13px;color:var(--text2);margin-top:4px}
-.catrow{display:flex;gap:8px;padding:0 18px 14px;overflow-x:auto;scrollbar-width:none}
+.map-hdr{padding:18px 18px 12px;background:#fff;border-bottom:1px solid var(--border)}
+.map-hdr h2{font-size:22px;font-weight:800;color:var(--text)}.map-hdr p{font-size:13px;color:var(--text3);margin-top:4px}
+.catrow{display:flex;gap:8px;padding:14px 18px;overflow-x:auto;scrollbar-width:none;background:#fff;border-bottom:1px solid var(--border)}
 .catrow::-webkit-scrollbar{display:none}
-.catbtn{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border2);background:var(--s1);color:var(--text3);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .12s;touch-action:manipulation}
-.catbtn:active{transform:scale(.94)}
-.catbtn.on{background:var(--redbg);border-color:var(--redborder);color:var(--red2)}
-.com-list{padding:0 18px;display:flex;flex-direction:column;gap:10px}
-.ccard{background:var(--s1);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:pointer;touch-action:manipulation;transition:border-color .12s}
-.ccard:active{border-color:var(--redborder)}
+.catbtn{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--s2);color:var(--text3);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .12s;touch-action:manipulation}
+.catbtn:active{transform:scale(.94)}.catbtn.on{background:var(--red);border-color:var(--red);color:#fff}
+.com-list{padding:14px 18px;display:flex;flex-direction:column;gap:10px}
+.ccard{background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:pointer;touch-action:manipulation;transition:all .12s;box-shadow:0 2px 6px rgba(0,0,0,.04)}
+.ccard:active{border-color:var(--redborder);transform:scale(.99)}
 .ccard-top{padding:15px;display:flex;align-items:center;gap:13px}
-.ccard-logo{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
-.ccard-info{flex:1}
-.ccard-name{font-size:15px;font-weight:800}
-.ccard-cat{font-size:11px;color:var(--text3);margin-top:2px;font-weight:600}
-.ccard-cb{font-size:12px;font-weight:700;margin-top:4px;color:var(--green)}
-.ccard-action{padding:8px 14px;border-radius:10px;border:1px solid var(--redborder);font-family:'Plus Jakarta Sans';font-size:12px;font-weight:700;cursor:pointer;background:var(--redbg);color:var(--red2);flex-shrink:0;touch-action:manipulation}
-.ccard-action:active{transform:scale(.93)}
-
-/* ── PERFIL ── */
-#s-profile{background:var(--bg);padding:0 18px 24px}
-.prof-hd{text-align:center;padding:30px 0 20px}
-.prof-av{width:80px;height:80px;border-radius:22px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;color:#fff}
-.prof-name{font-size:22px;font-weight:800}
-.prof-sub{font-size:12px;color:var(--text3);margin-top:4px}
+.ccard-logo{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.ccard-info{flex:1}.ccard-name{font-size:15px;font-weight:800;color:var(--text)}.ccard-cat{font-size:11px;color:var(--text3);margin-top:2px;font-weight:600}.ccard-cb{font-size:12px;font-weight:700;margin-top:4px;color:var(--green)}
+.ccard-action{padding:8px 14px;border-radius:10px;border:1.5px solid var(--redborder);font-family:'Plus Jakarta Sans';font-size:12px;font-weight:700;cursor:pointer;background:#fff;color:var(--red);flex-shrink:0;touch-action:manipulation}
+.ccard-action:active{background:var(--redbg);transform:scale(.93)}
+/* PERFIL */
+#s-profile{background:var(--bg)}
+.prof-hd{text-align:center;padding:26px 18px 18px;background:#fff;border-bottom:1px solid var(--border)}
+.prof-av{width:74px;height:74px;border-radius:22px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.prof-name{font-size:21px;font-weight:800;color:var(--text)}.prof-sub{font-size:12px;color:var(--text3);margin-top:4px}
 .prof-tags{display:flex;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap}
 .ptag{padding:4px 10px;border-radius:8px;font-size:11px;font-weight:700}
 .ptag-tier{background:var(--goldbg);border:1px solid var(--goldborder);color:var(--gold)}
 .ptag-v{background:var(--greenbg);border:1px solid var(--greenborder);color:var(--green)}
 .ptag-p{background:var(--goldbg);border:1px solid var(--goldborder);color:var(--gold)}
-.stats3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:20px}
-.sbox{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center}
-.sbox-v{font-size:20px;font-weight:800;color:var(--red2)}
-.sbox-l{font-size:10px;color:var(--text3);margin-top:3px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
-.pmenu{display:flex;flex-direction:column;gap:8px}
-.pmi{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .12s;touch-action:manipulation}
-.pmi:active{background:var(--s2)}
-.pmi-ic{font-size:20px;width:26px;flex-shrink:0}
-.pmi-tx{flex:1;font-size:14px;font-weight:600}
-.pmi-ar{color:var(--text3)}
-.logout{width:100%;padding:14px;margin-top:14px;background:transparent;border:1.5px solid var(--redborder);border-radius:14px;color:var(--red3);font-family:'Plus Jakarta Sans';font-size:14px;font-weight:700;cursor:pointer;transition:all .12s}
+.stats3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:16px 18px}
+.sbox{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.04)}
+.sbox-v{font-size:20px;font-weight:800;color:var(--red)}.sbox-l{font-size:10px;color:var(--text3);margin-top:3px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+.pmenu{display:flex;flex-direction:column;gap:8px;padding:0 18px}
+.pmi{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .12s;touch-action:manipulation;box-shadow:0 2px 6px rgba(0,0,0,.04)}
+.pmi:active{background:var(--s2)}.pmi-ic{font-size:20px;width:26px;flex-shrink:0}.pmi-tx{flex:1;font-size:14px;font-weight:600;color:var(--text)}.pmi-ar{color:var(--text3)}
+.logout{width:100%;padding:14px;margin:14px 0 0;background:transparent;border:1.5px solid var(--redborder);border-radius:14px;color:var(--red);font-family:'Plus Jakarta Sans';font-size:14px;font-weight:700;cursor:pointer;transition:all .12s}
 .logout:active{background:var(--redbg)}
-
 /* KYC */
-.kyc-ban{border-radius:16px;padding:16px;margin-bottom:16px;cursor:pointer;transition:all .12s;touch-action:manipulation}
+.kyc-ban{border-radius:16px;padding:16px;margin-bottom:0;cursor:pointer;transition:all .12s;touch-action:manipulation}
 .kyc-ban:active{opacity:.8}
 .kyc-ban.pend{background:var(--goldbg);border:1px solid var(--goldborder)}
 .kyc-ban.review{background:var(--bluebg);border:1px solid var(--blueborder);cursor:default}
 .kyc-ban.done{background:var(--greenbg);border:1px solid var(--greenborder);cursor:default}
-.kyc-top{display:flex;align-items:center;gap:12px;margin-bottom:6px}
-.kyc-ic{font-size:26px;flex-shrink:0}
-.kyc-ttl{font-size:14px;font-weight:800}
-.kyc-sub{font-size:12px;margin-top:2px;line-height:1.5;color:var(--text2)}
-.kyc-progress{display:flex;gap:6px;margin-top:10px}
-.kyc-dot{flex:1;height:4px;border-radius:2px;background:var(--border2)}
-.kyc-dot.on{background:var(--gold)}
-.kyc-dot.done{background:var(--green)}
-.kyc-btn-gold{width:100%;padding:11px;border:none;border-radius:11px;background:var(--gold);color:#000;font-family:'Plus Jakarta Sans';font-size:13px;font-weight:800;cursor:pointer;margin-top:10px;transition:all .12s;touch-action:manipulation}
+.kyc-top{display:flex;align-items:center;gap:12px;margin-bottom:6px}.kyc-ic{font-size:24px;flex-shrink:0}
+.kyc-ttl{font-size:14px;font-weight:800;color:var(--text)}.kyc-sub{font-size:12px;margin-top:2px;line-height:1.5;color:var(--text2)}
+.kyc-progress{display:flex;gap:6px;margin-top:10px}.kyc-dot{flex:1;height:4px;border-radius:2px;background:var(--border2)}.kyc-dot.on{background:var(--gold)}.kyc-dot.done{background:var(--green)}
+.kyc-btn-gold{width:100%;padding:11px;border:none;border-radius:11px;background:var(--gold);color:#fff;font-family:'Plus Jakarta Sans';font-size:13px;font-weight:800;cursor:pointer;margin-top:10px;transition:all .12s;touch-action:manipulation}
 .kyc-btn-gold:active{transform:scale(.97)}
 .kup{border:2px dashed var(--border2);border-radius:14px;padding:22px;text-align:center;cursor:pointer;position:relative;overflow:hidden;background:var(--s2);margin-bottom:12px;transition:all .15s}
-.kup.has{border-style:solid;border-color:var(--green);padding:0}
-.kup input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.kup-ic{font-size:28px;margin-bottom:6px}
-.kup-lbl{font-size:13px;font-weight:700}
-.kup-sub{font-size:11px;color:var(--text3);margin-top:3px}
+.kup.has{border-style:solid;border-color:var(--green);padding:0;background:#fff}
+.kup-ic{font-size:26px;margin-bottom:6px}.kup-lbl{font-size:13px;font-weight:700;color:var(--text)}.kup-sub{font-size:11px;color:var(--text3);margin-top:3px}
 .kup img{width:100%;max-height:180px;object-fit:contain;border-radius:12px;display:none}
 </style>
 </head>
 <body>
-
-<!-- ══ LOGIN ══ -->
 <div id="s-login" class="scr on">
   <div class="login-hero">
     <div class="brand">
       <div class="brand-ico"><img src="recursos/zlogo.png" alt="Zuno" style="width:100%;height:100%;object-fit:contain;padding:6px;filter:invert(1)"></div>
       <div class="brand-name">ZUNO</div>
     </div>
-    <div class="login-title">Gana cashback real<br>en cada compra</div>
-    <div class="login-sub">Subí tu ticket → Lo verificamos<br>→ Saldo real en tu cuenta</div>
-    <div class="login-steps">
-      <div class="lstep"><div class="lstep-ic">📸</div><div class="lstep-lbl">Foto ticket</div></div>
+    <div class="phone-mock-wrap">
+      <div class="phone-mock">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="ps-hdr"><span class="ps-logo">⚡ ZUNO</span><div class="ps-av">H</div></div>
+          <div class="ps-balcard"><div class="ps-bal-lbl">Saldo Zuno</div><div class="ps-bal">$12.50</div><div class="ps-bal-sub">💵 Total ganado: $24.80</div></div>
+          <div class="ps-row"><span class="ps-row-ic">⛽</span><div class="ps-row-info"><div class="ps-row-name">Texaco Andalucía</div><div class="ps-row-sub">Ticket $45.00</div></div><span class="ps-row-amt">+$1.35</span></div>
+          <div class="ps-row"><span class="ps-row-ic">🛒</span><div class="ps-row-info"><div class="ps-row-name">Super Selectos</div><div class="ps-row-sub">Ticket $38.00</div></div><span class="ps-row-amt">+$0.57</span></div>
+          <div class="ps-cta">📸 Subir ticket →</div>
+        </div>
+      </div>
+    </div>
+    <div class="login-tagline">Comprá. Subí tu ticket.<br><span>Ganás cashback real.</span></div>
+    <div class="login-steps" style="margin-top:12px">
+      <div class="lstep"><div class="lstep-ic">📸</div><div class="lstep-lbl">Subís</div></div>
       <div class="lstep-arrow">›</div>
       <div class="lstep"><div class="lstep-ic">✅</div><div class="lstep-lbl">Verificamos</div></div>
       <div class="lstep-arrow">›</div>
-      <div class="lstep"><div class="lstep-ic">💵</div><div class="lstep-lbl">Cashback $</div></div>
+      <div class="lstep"><div class="lstep-ic">💵</div><div class="lstep-lbl">Cashback</div></div>
       <div class="lstep-arrow">›</div>
       <div class="lstep"><div class="lstep-ic">💳</div><div class="lstep-lbl">Zuno Pay</div></div>
     </div>
@@ -324,124 +265,76 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
     </div>
   </div>
 </div>
-
-<!-- ══ PENDIENTE ══ -->
 <div id="s-pending" class="scr">
-  <div style="width:96px;height:96px;border-radius:50%;border:2px solid var(--red);display:flex;align-items:center;justify-content:center;font-size:44px;box-shadow:0 0 40px rgba(232,25,44,.2)">⏳</div>
-  <div style="text-align:center">
-    <div style="font-size:24px;font-weight:800;margin-bottom:8px">¡Registro exitoso!</div>
-    <div style="color:var(--text2);font-size:14px;line-height:1.7;max-width:300px;margin:0 auto">Verificaremos tu DUI en menos de 24h.<br>Mientras tanto, ya podés subir tickets.</div>
-  </div>
-  <div style="background:var(--s1);border:1px solid var(--redborder);border-radius:16px;padding:16px 28px;width:100%;max-width:320px;text-align:center">
+  <div style="width:90px;height:90px;border-radius:50%;border:2px solid var(--red);display:flex;align-items:center;justify-content:center;font-size:40px">⏳</div>
+  <div style="text-align:center"><div style="font-size:24px;font-weight:800;margin-bottom:8px;color:var(--text)">¡Registro exitoso!</div><div style="color:var(--text2);font-size:14px;line-height:1.7;max-width:300px;margin:0 auto">Verificaremos tu DUI en menos de 24h.<br>Mientras tanto, ya podés subir tickets.</div></div>
+  <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px 28px;width:100%;max-width:320px;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.06)">
     <div style="font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Tiempo restante</div>
-    <div style="font-size:44px;font-weight:800;color:var(--red2)" id="countdown">24:00:00</div>
+    <div style="font-size:44px;font-weight:800;color:var(--red)" id="countdown">24:00:00</div>
   </div>
   <button class="btn btn-red" style="max-width:280px;margin:0 auto" onclick="goTo('home')">Ir a mi cuenta →</button>
 </div>
-
-<!-- ══ HOME ══ -->
 <div id="s-home" class="scr">
   <div class="home-top">
-    <div>
-      <div class="greet-lbl">Hola de vuelta 👋</div>
-      <div class="greet-name" id="hh-name">—</div>
-    </div>
+    <div><div class="greet-lbl">Hola de vuelta 👋</div><div class="greet-name" id="hh-name">—</div></div>
     <div class="hav" id="hh-av" onclick="goTo('profile')">?</div>
   </div>
-
   <div id="verif-ban" style="display:none;margin:12px 18px 0;background:var(--goldbg);border:1px solid var(--goldborder);border-radius:12px;padding:10px 14px;font-size:12px;color:var(--gold);font-weight:600;line-height:1.5">⏳ Verificando tu DUI — los canjes se habilitan pronto</div>
-
   <div class="bal-card">
     <div class="bal-lbl">Saldo Zuno</div>
     <div class="bal-amt" id="h-bal">$0.00</div>
     <div class="bal-desc">Total ganado: <span class="hi" id="h-total">$0.00</span></div>
     <div class="tier-row">
       <span class="tier-badge" id="h-tier">🥉 Bronce</span>
-      <div class="prog-wrap">
-        <div class="prog-bar"><div class="prog-fill" id="h-prog" style="width:0%"></div></div>
-        <div class="prog-hint" id="h-hint">500 pts para Plata</div>
-      </div>
+      <div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" id="h-prog" style="width:0%"></div></div><div class="prog-hint" id="h-hint">500 pts para Plata</div></div>
     </div>
   </div>
-
   <div class="act-row">
     <div class="act hi" onclick="goTo('ticket')"><span class="act-ic">📸</span><span class="act-lbl">Subir ticket</span></div>
     <div class="act" onclick="goTo('mytickets')"><span class="act-ic">🧾</span><span class="act-lbl">Mis tickets</span></div>
     <div class="act" onclick="goTo('map')"><span class="act-ic">🏪</span><span class="act-lbl">Comercios</span></div>
     <div class="act" onclick="goTo('profile')"><span class="act-ic">👤</span><span class="act-lbl">Perfil</span></div>
   </div>
+  <div class="pend-ban" id="pb" onclick="goTo('mytickets')"><span style="font-size:22px">📋</span><div class="pb-txt" id="pb-txt">Tickets en revisión</div><span class="pb-cnt" id="pb-cnt">0</span></div>
 
-  <div class="pend-ban" id="pb" onclick="goTo('mytickets')">
-    <span style="font-size:22px">📋</span>
-    <div class="pb-txt" id="pb-txt">Tickets en revisión</div>
-    <span class="pb-cnt" id="pb-cnt">0</span>
-  </div>
-
-  <div class="card-promo">
-    <div class="cp-ic">💳</div>
-    <div>
-      <div class="cp-name">Tarjeta Zuno<span class="cp-badge">PRONTO</span></div>
-      <div class="cp-sub">Débito con cashback en toda la red Zuno</div>
+  <!-- BANNER TEMPORADA -->
+  <div style="margin:12px 18px 0;background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid var(--redborder);border-radius:16px;padding:14px 16px;cursor:pointer;touch-action:manipulation" onclick="goTo('ranking')">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <div style="font-size:12px;font-weight:800;color:var(--red)" id="season-label">Temporada 1</div>
+      <div style="font-size:11px;font-weight:700;color:var(--text3)" id="season-countdown">—</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="font-size:22px">🏆</span>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:700;color:var(--text)">Ver tabla de clasificación</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">Top 3 al final ganan badge exclusivo</div>
+      </div>
+      <span style="color:var(--text3)">›</span>
     </div>
   </div>
-
-  <div class="sec-hdr">
-    <h3>Últimos movimientos</h3>
-    <span onclick="goTo('mytickets')">Ver todo</span>
-  </div>
-  <div class="hist" id="h-hist">
-    <div style="text-align:center;color:var(--text3);padding:28px;font-size:13px;line-height:1.8">Subí tu primer ticket<br>para empezar a ganar 📸</div>
-  </div>
+  <div class="card-promo"><div class="cp-ic">💳</div><div><div class="cp-name">Tarjeta Zuno<span class="cp-badge">PRONTO</span></div><div class="cp-sub">Débito con cashback en toda la red</div></div></div>
+  <div class="sec-hdr"><h3>Últimos movimientos</h3><span onclick="goTo('mytickets')">Ver todo</span></div>
+  <div class="hist" id="h-hist"><div style="text-align:center;color:var(--text3);padding:28px;font-size:13px;line-height:1.8">Subí tu primer ticket<br>para empezar a ganar 📸</div></div>
 </div>
-
-<!-- ══ SUBIR TICKET ══ -->
 <div id="s-ticket" class="scr">
-  <div class="sub-hdr">
-    <div class="back" onclick="goTo('home')">←</div>
-    <h2>Subir ticket</h2>
-  </div>
+  <div class="sub-hdr"><div class="back" onclick="goTo('home')">←</div><h2>Subir ticket</h2></div>
   <div class="sub-body">
     <div class="step-lbl">1 · Foto del recibo o factura</div>
     <div class="upz" id="upz">
-      <label for="up-file" style="display:block;width:100%;cursor:pointer">
-        <div id="upz-ph">
-          <div class="upz-ic">📸</div>
-          <div class="upz-lbl">Tocá para seleccionar foto</div>
-          <div class="upz-sub">JPG, PNG · máx 5MB</div>
-        </div>
-        <img id="up-prev" alt="preview">
-      </label>
+      <label for="up-file" style="display:block;width:100%;cursor:pointer"><div id="upz-ph"><div class="upz-ic">📸</div><div class="upz-lbl">Tocá para seleccionar foto</div><div class="upz-sub">JPG, PNG · máx 5MB</div></div><img id="up-prev" alt="preview"></label>
       <input type="file" id="up-file" accept="image/*" onchange="onFile(event)" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none">
     </div>
-
     <div class="step-lbl">2 · ¿Dónde compraste?</div>
     <div class="com-grid" id="com-grid"></div>
-
     <div class="step-lbl">3 · Monto del ticket</div>
-    <div class="monto-wrap">
-      <span class="monto-ico">$</span>
-      <input type="number" id="tk-monto" placeholder="0.00" min="0.01" step="0.01" inputmode="decimal" oninput="calcCB()">
-    </div>
-
-    <div class="cbp" id="cbp">
-      <div class="cbp-top">
-        <span class="cbp-lbl">💵 Recibirás en tu saldo</span>
-        <span class="cbp-amt" id="cbp-amt">$0.00</span>
-      </div>
-      <div class="cbp-sub" id="cbp-sub">—</div>
-    </div>
-
+    <div class="monto-wrap"><span class="monto-ico">$</span><input type="number" id="tk-monto" placeholder="0.00" min="0.01" step="0.01" inputmode="decimal" oninput="calcCB()"></div>
+    <div class="cbp" id="cbp"><div class="cbp-top"><span class="cbp-lbl">💵 Recibirás en tu saldo</span><span class="cbp-amt" id="cbp-amt">$0.00</span></div><div class="cbp-sub" id="cbp-sub">—</div></div>
     <button class="btn btn-red" onclick="submitTicket()">Enviar ticket →</button>
     <button class="btn btn-ghost" onclick="goTo('home')" style="margin-bottom:20px">Cancelar</button>
   </div>
 </div>
-
-<!-- ══ MIS TICKETS ══ -->
 <div id="s-mytickets" class="scr">
-  <div class="mth">
-    <div class="back" onclick="goTo('home')">←</div>
-    <h2>Mis tickets</h2>
-  </div>
+  <div class="mth"><div class="back" onclick="goTo('home')">←</div><h2>Mis tickets</h2></div>
   <div class="frow">
     <div class="ftab on" onclick="setTkF('all',this)">Todos</div>
     <div class="ftab" onclick="setTkF('pending',this)">⏳ En revisión</div>
@@ -450,13 +343,8 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
   </div>
   <div class="tklist" id="tklist"></div>
 </div>
-
-<!-- ══ COMERCIOS ══ -->
 <div id="s-map" class="scr">
-  <div class="map-hdr">
-    <h2>Red Zuno</h2>
-    <p>Comprá aquí y subí tu ticket para ganar cashback</p>
-  </div>
+  <div class="map-hdr"><h2>Red Zuno</h2><p>Comprá aquí y subí tu ticket para ganar cashback</p></div>
   <div class="catrow">
     <div class="catbtn on" onclick="setCat('all',this)">🌟 Todos</div>
     <div class="catbtn" onclick="setCat('gasolinera',this)">⛽ Gasolineras</div>
@@ -466,134 +354,127 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
   </div>
   <div class="com-list" id="com-list"></div>
 </div>
-
-<!-- ══ PERFIL ══ -->
 <div id="s-profile" class="scr">
   <div class="prof-hd">
     <div class="prof-av" id="p-av">?</div>
     <div class="prof-name" id="p-name">—</div>
     <div class="prof-sub" id="p-sub">—</div>
-    <div class="prof-tags">
-      <span class="ptag ptag-tier" id="p-tier">🥉 Bronce</span>
-      <span class="ptag" id="p-verif">⏳ Pendiente</span>
-    </div>
+    <div class="prof-tags"><span class="ptag ptag-tier" id="p-tier">🥉 Bronce</span><span class="ptag" id="p-verif">⏳ Pendiente</span></div>
   </div>
   <div class="stats3">
     <div class="sbox"><div class="sbox-v" id="ps-bal">$0</div><div class="sbox-l">Saldo</div></div>
     <div class="sbox"><div class="sbox-v" id="ps-tks">0</div><div class="sbox-l">Tickets</div></div>
     <div class="sbox"><div class="sbox-v" id="ps-cb">$0</div><div class="sbox-l">Ganado</div></div>
   </div>
-
-  <!-- KYC BANNER -->
-  <div id="kyc-ban" class="kyc-ban pend" onclick="openKYC()">
-    <div class="kyc-top">
-      <span class="kyc-ic">🆔</span>
-      <div>
-        <div class="kyc-ttl">Verificá tu identidad</div>
-        <div class="kyc-sub">Desbloquea la tarjeta Zuno y límites mayores</div>
-      </div>
-    </div>
-    <div class="kyc-progress">
-      <div class="kyc-dot" id="kd1"></div>
-      <div class="kyc-dot" id="kd2"></div>
-    </div>
-    <button class="kyc-btn-gold" id="kyc-main-btn">Verificar ahora →</button>
+  <!-- TABLA NIVELES -->
+  <div style="margin:0 18px 12px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px 16px;box-shadow:0 2px 6px rgba(0,0,0,.04)">
+    <div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:10px;text-transform:uppercase;letter-spacing:.4px">🏆 Beneficios por nivel</div>
+    <div id="niveles-box"></div>
   </div>
-
   <div class="pmenu">
+    <div id="kyc-ban" class="kyc-ban pend" onclick="openKYC()">
+      <div class="kyc-top"><span class="kyc-ic">🆔</span><div><div class="kyc-ttl">Verificá tu identidad</div><div class="kyc-sub">Desbloquea la tarjeta Zuno</div></div></div>
+      <div class="kyc-progress"><div class="kyc-dot" id="kd1"></div><div class="kyc-dot" id="kd2"></div></div>
+      <button class="kyc-btn-gold" id="kyc-main-btn">Verificar ahora →</button>
+    </div>
     <div class="pmi" onclick="goTo('ticket')"><span class="pmi-ic">📸</span><span class="pmi-tx">Subir ticket</span><span class="pmi-ar">›</span></div>
     <div class="pmi" onclick="goTo('mytickets')"><span class="pmi-ic">🧾</span><span class="pmi-tx">Mis tickets</span><span class="pmi-ar">›</span></div>
     <div class="pmi" onclick="goTo('map')"><span class="pmi-ic">🏪</span><span class="pmi-tx">Comercios Zuno</span><span class="pmi-ar">›</span></div>
     <div class="pmi" id="pmi-tarjeta" style="opacity:.5;cursor:not-allowed"><span class="pmi-ic">💳</span><span class="pmi-tx">Tarjeta Zuno <span style="font-size:10px;background:var(--purplebg);color:var(--purple3);padding:2px 7px;border-radius:5px;font-weight:700;margin-left:6px">PRONTO</span></span></div>
     <div class="pmi" onclick="goTo('home')"><span class="pmi-ic">🏠</span><span class="pmi-tx">Inicio</span><span class="pmi-ar">›</span></div>
+    <a href="terminos.html" style="text-decoration:none"><div class="pmi"><span class="pmi-ic">📄</span><span class="pmi-tx">Términos y condiciones</span><span class="pmi-ar">›</span></div></a>
   </div>
-  <button class="logout" onclick="doLogout()">Cerrar sesión</button>
+  <div style="padding:0 18px"><button class="logout" onclick="doLogout()">Cerrar sesión</button></div>
 </div>
 
-<!-- MODAL KYC -->
-<div class="mov" id="m-kyc">
-  <div class="modal">
-    <div class="m-pill"></div>
-    <h3>Verificación de identidad</h3>
-    <div style="font-size:13px;color:var(--text2);margin-bottom:18px;line-height:1.6">Necesitamos verificar que sos vos. Subí los siguientes documentos — los revisamos en menos de 24h.</div>
-
-    <!-- PASO 1: DUI -->
-    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">1 · Foto de tu DUI (frente)</div>
-    <div class="kup" id="kup-dui">
-      <label for="kup-dui-file" style="display:block;width:100%;cursor:pointer">
-        <div id="kup-dui-ph">
-          <div class="kup-ic">🪪</div>
-          <div class="kup-lbl">Foto del DUI frente</div>
-          <div class="kup-sub">Asegurate que se lean todos los datos</div>
+<!-- ══ RANKING ══ -->
+<div id="s-ranking" class="scr">
+  <div class="sub-hdr"><div class="back" onclick="goTo('home')">←</div><h2>🏆 Clasificación</h2></div>
+  <div style="padding:14px 18px 0">
+    <div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid var(--redborder);border-radius:16px;padding:16px;margin-bottom:14px">
+      <div style="font-size:14px;font-weight:800;color:var(--red);margin-bottom:4px" id="rk-season-lbl">—</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:12px" id="rk-season-end">—</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center">
+          <div style="font-size:22px;font-weight:800;color:var(--red)" id="rk-my-pos">—</div>
+          <div style="font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;margin-top:2px">Tu posición</div>
         </div>
-        <img id="kup-dui-prev" alt="DUI">
-      </label>
-      <input type="file" id="kup-dui-file" accept="image/*" onchange="onKUP(event,'kup-dui','kup-dui-prev','kyc-img-dui')" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none">
-    </div>
-
-    <!-- PASO 2: SELFIE -->
-    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">2 · Selfie sosteniendo tu DUI</div>
-    <div class="kup" id="kup-selfie">
-      <label for="kup-selfie-file" style="display:block;width:100%;cursor:pointer">
-        <div id="kup-selfie-ph">
-          <div class="kup-ic">🤳</div>
-          <div class="kup-lbl">Selfie con tu DUI visible</div>
-          <div class="kup-sub">Tu cara y el DUI deben verse claramente</div>
+        <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center">
+          <div style="font-size:22px;font-weight:800;color:var(--text)" id="rk-my-pts">—</div>
+          <div style="font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;margin-top:2px">Tus puntos</div>
         </div>
-        <img id="kup-selfie-prev" alt="Selfie">
-      </label>
-      <input type="file" id="kup-selfie-file" accept="image/*" onchange="onKUP(event,'kup-selfie','kup-selfie-prev','kyc-img-selfie')" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none">
+      </div>
     </div>
-
-    <div style="background:var(--bluebg);border:1px solid var(--blueborder);border-radius:11px;padding:11px 14px;font-size:12px;color:var(--blue);font-weight:600;line-height:1.6;margin-bottom:16px">
-      🔒 Tus documentos son confidenciales y solo se usan para verificar tu identidad.
+    <div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.04)">
+      <div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:10px;text-transform:uppercase;letter-spacing:.4px">🎖️ Premios al final</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px">🥇</span><div><div style="font-size:13px;font-weight:700;color:var(--text)">1er lugar</div><div style="font-size:11px;color:var(--text3)">Badge exclusivo + +0.5% cashback siguiente temporada</div></div></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px">🥈</span><div><div style="font-size:13px;font-weight:700;color:var(--text)">2do lugar</div><div style="font-size:11px;color:var(--text3)">Badge exclusivo + nivel protegido al reinicio</div></div></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px">🥉</span><div><div style="font-size:13px;font-weight:700;color:var(--text)">3er lugar</div><div style="font-size:11px;color:var(--text3)">Badge exclusivo de temporada</div></div></div>
+      </div>
     </div>
-
-    <button class="btn btn-red" onclick="submitKYC()">Enviar para verificación →</button>
-    <button class="btn btn-ghost" onclick="closeM('m-kyc')" style="margin-bottom:0">Cancelar</button>
+    <div style="background:var(--goldbg);border:1px solid var(--goldborder);border-radius:14px;padding:13px 16px;margin-bottom:14px">
+      <div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px">⏳ Al terminar la temporada</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.8">Todos los niveles bajan uno:<br>💎 Diamante → 🥇 Oro &nbsp;·&nbsp; 🥇 Oro → 🥈 Plata<br>🥈 Plata → 🥉 Bronce &nbsp;·&nbsp; 🥉 Bronce se mantiene</div>
+    </div>
+    <div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:10px;text-transform:uppercase;letter-spacing:.4px">Tabla de clasificación</div>
+    <div id="rk-list"><div style="text-align:center;color:var(--text3);padding:28px;font-size:13px">Cargando ranking...</div></div>
   </div>
 </div>
 
-<!-- NAV -->
 <div class="bnav" id="bnav">
   <div class="bn on" id="bn-home" onclick="goTo('home')"><div class="bn-ic">🏠</div><span>Inicio</span><div class="bn-bar"></div></div>
   <div class="bn" id="bn-ticket" onclick="goTo('ticket')"><div class="bn-ic">📸</div><span>Ticket</span><div class="bn-bar"></div></div>
+  <div class="bn" id="bn-ranking" onclick="goTo('ranking')"><div class="bn-ic">🏆</div><span>Ranking</span><div class="bn-bar"></div></div>
   <div class="bn" id="bn-map" onclick="goTo('map')"><div class="bn-ic">🏪</div><span>Comercios</span><div class="bn-bar"></div></div>
-  <div class="bn" id="bn-mytickets" onclick="goTo('mytickets')"><div class="bn-ic">🧾</div><span>Mis tickets</span><div class="bn-bar"></div></div>
   <div class="bn" id="bn-profile" onclick="goTo('profile')"><div class="bn-ic">👤</div><span>Perfil</span><div class="bn-bar"></div></div>
 </div>
-
-<!-- MODAL COMERCIO -->
 <div class="mov" id="m-com">
   <div class="modal">
     <div class="m-pill"></div>
     <div style="display:flex;align-items:center;gap:13px;margin-bottom:14px">
-      <div id="mc-logo" style="width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">⛽</div>
+      <div id="mc-logo" style="width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;background:var(--s2)">⛽</div>
       <div><h3 id="mc-name" style="margin-bottom:2px">—</h3><div style="font-size:12px;color:var(--text3);font-weight:600" id="mc-sub">—</div></div>
     </div>
     <div style="background:var(--greenbg);border:1px solid var(--greenborder);border-radius:12px;padding:12px 16px;font-size:13px;color:var(--green);font-weight:600;line-height:1.6;margin-bottom:16px" id="mc-info">—</div>
     <div style="font-size:11px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px">Cómo ganar cashback</div>
     <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px">
-      <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span>1️⃣</span>Comprá en este comercio</div>
-      <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span>2️⃣</span>Guardá tu recibo o factura</div>
-      <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span>3️⃣</span>Subí la foto desde Zuno</div>
-      <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span>4️⃣</span>Recibís $ en tu saldo al aprobar</div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)"><span>1️⃣</span>Comprá en este comercio</div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)"><span>2️⃣</span>Guardá tu recibo o factura</div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)"><span>3️⃣</span>Subí la foto desde Zuno</div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)"><span>4️⃣</span>Recibís $ en tu saldo al aprobar</div>
     </div>
     <button class="btn btn-red" onclick="closeM('m-com');goTo('ticket')">📸 Subir ticket ahora →</button>
     <button class="btn btn-ghost" onclick="closeM('m-com')">Cerrar</button>
   </div>
 </div>
-
+<div class="mov" id="m-kyc">
+  <div class="modal">
+    <div class="m-pill"></div>
+    <h3>Verificación de identidad</h3>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:18px;line-height:1.6">Necesitamos verificar que sos vos. Los revisamos en menos de 24h.</div>
+    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">1 · Foto de tu DUI (frente)</div>
+    <div class="kup" id="kup-dui">
+      <label for="kup-dui-file" style="display:block;width:100%;cursor:pointer"><div id="kup-dui-ph"><div class="kup-ic">🪪</div><div class="kup-lbl">Foto del DUI frente</div><div class="kup-sub">Asegurate que se lean todos los datos</div></div><img id="kup-dui-prev" alt="DUI"></label>
+      <input type="file" id="kup-dui-file" accept="image/*" onchange="onKUP(event,'kup-dui','kup-dui-prev','kyc-img-dui')" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none">
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">2 · Selfie sosteniendo tu DUI</div>
+    <div class="kup" id="kup-selfie">
+      <label for="kup-selfie-file" style="display:block;width:100%;cursor:pointer"><div id="kup-selfie-ph"><div class="kup-ic">🤳</div><div class="kup-lbl">Selfie con tu DUI visible</div><div class="kup-sub">Tu cara y el DUI deben verse claramente</div></div><img id="kup-selfie-prev" alt="Selfie"></label>
+      <input type="file" id="kup-selfie-file" accept="image/*" onchange="onKUP(event,'kup-selfie','kup-selfie-prev','kyc-img-selfie')" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none">
+    </div>
+    <div style="background:var(--bluebg);border:1px solid var(--blueborder);border-radius:11px;padding:11px 14px;font-size:12px;color:var(--blue);font-weight:600;line-height:1.6;margin-bottom:16px">🔒 Tus documentos son confidenciales.</div>
+    <button class="btn btn-red" onclick="submitKYC()">Enviar para verificación →</button>
+    <button class="btn btn-ghost" onclick="closeM('m-kyc')" style="margin-bottom:0">Cancelar</button>
+  </div>
+</div>
 <div class="load-ov" id="loading"><div class="load-chip"><div class="spinner"></div><p id="ltxt">Cargando...</p></div></div>
 <div class="toast" id="toast"></div>
-
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
 import{getFirestore,doc,getDoc,setDoc,updateDoc,collection,addDoc,query,where,getDocs,increment}from"https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
-
 const app=initializeApp({apiKey:"AIzaSyAqXjnH6WrXuEQivE3RGwvav1qyFOOyoeY",authDomain:"zuno-1285e.firebaseapp.com",projectId:"zuno-1285e",storageBucket:"zuno-1285e.firebasestorage.app",messagingSenderId:"234427184784",appId:"1:234427184784:web:1bdb29f6f2a1f4e85b4a15"});
 const db=getFirestore(app);
-
 const COLS=['#e8192c','#10b981','#3b82f6','#f59e0b','#8b5cf6','#06b6d4'];
 const uC=id=>COLS[Math.abs([...id].reduce((a,c)=>a+c.charCodeAt(0),0))%COLS.length];
 const uI=n=>(n||'?')[0].toUpperCase();
@@ -601,384 +482,228 @@ const $=id=>document.getElementById(id);
 const fUSD=v=>'$'+(v||0).toFixed(2);
 const fDate=ts=>ts?new Date(ts).toLocaleDateString('es-SV',{day:'2-digit',month:'short',year:'numeric'}):'—';
 const TIERS=[{n:'🥉 Bronce',min:0,max:499},{n:'🥈 Plata',min:500,max:1499},{n:'🥇 Oro',min:1500,max:2999},{n:'💎 Diamante',min:3000,max:9e9}];
+const TIER_BONUS=[0,0.5,1,1.5]; // bonus % por nivel
 const gT=p=>TIERS.find(t=>p>=t.min&&p<=t.max)||TIERS[0];
-
+const gBonus=p=>TIER_BONUS[TIERS.indexOf(gT(p))]||0;
+const getTotalCB=(basePct,pts)=>parseFloat((basePct+gBonus(pts)).toFixed(2));
+// ── TEMPORADAS ──
+const SEASON_START=new Date('2026-01-01').getTime();
+const SEASON_MS=6*30*24*60*60*1000;
+function getCurrentSeason(){return Math.floor((Date.now()-SEASON_START)/SEASON_MS)+1;}
+function getSeasonEnd(){return new Date(SEASON_START+(getCurrentSeason()*SEASON_MS));}
+function getSeasonLabel(){return `Temporada ${getCurrentSeason()} · Termina ${getSeasonEnd().toLocaleDateString('es-SV',{day:'2-digit',month:'short',year:'numeric'})}`;}
+function msToSeasonEnd(){return Math.max(0,getSeasonEnd().getTime()-Date.now());}
+function fCountdown(ms){const d=Math.floor(ms/86400000),h=Math.floor((ms%86400000)/3600000);return d>0?`${d}d ${h}h`:`${h}h`;}
+const TOP_BADGES=['🥇','🥈','🥉'];
 const DEFAULT_COMS=[
-  {id:'c1',name:'Texaco',cat:'gasolinera',emoji:'⛽',color:'#c00',cashbackPct:3,active:true},
-  {id:'c2',name:'Esso',cat:'gasolinera',emoji:'🔴',color:'#b00',cashbackPct:3,active:true},
+  {id:'c1',name:'Texaco',cat:'gasolinera',emoji:'⛽',color:'#e8192c',cashbackPct:3,active:true},
+  {id:'c2',name:'Esso',cat:'gasolinera',emoji:'🔴',color:'#c00',cashbackPct:3,active:true},
   {id:'c3',name:'UNO',cat:'gasolinera',emoji:'⚡',color:'#f59e0b',cashbackPct:2.5,active:true},
   {id:'c4',name:'Super Selectos',cat:'tienda',emoji:'🛒',color:'#2563eb',cashbackPct:1.5,active:true},
   {id:'c5',name:'La Despensa',cat:'tienda',emoji:'🏪',color:'#16a34a',cashbackPct:1.5,active:true},
   {id:'c6',name:'Pizza Hut',cat:'restaurante',emoji:'🍕',color:'#dc2626',cashbackPct:2,active:true},
   {id:'c7',name:'Econofarma',cat:'farmacia',emoji:'💊',color:'#0891b2',cashbackPct:1,active:true},
 ];
-
-let CU=null,CI=null,allComs=[],selCom=null,imgB64=null,tkFilter='all';
-
+let CU=null,CI=null,allComs=[],selCom=null,imgB64=null,tkFilter='all',kycImgDUI=null,kycImgSelfie=null;
 const load=(s,t='Cargando...')=>{if(s){$('loading').classList.add('show');$('ltxt').textContent=t;}else $('loading').classList.remove('show');};
 const toast=(m,tp='')=>{const t=$('toast');t.textContent=m;t.className='toast show'+(tp?' '+tp:'');setTimeout(()=>t.className='toast',3200);};
 const showS=id=>{document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));$('s-'+id).classList.add('on');};
 window.closeM=id=>$(id).classList.remove('open');
 document.querySelectorAll('.mov').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('open')}));
-
-async function getComs(){
-  try{const s=await getDoc(doc(db,'config','comercios'));return s.exists()?s.data().list.filter(c=>c.active!==false):DEFAULT_COMS;}
-  catch{return DEFAULT_COMS;}
-}
-
-window.setTab=t=>{
-  document.querySelectorAll('.ltab').forEach((b,i)=>b.classList.toggle('on',(i===0&&t==='login')||(i===1&&t==='reg')));
-  $('lt-login').style.display=t==='login'?'':'none';
-  $('lt-reg').style.display=t==='reg'?'':'none';
-};
-
-// ── SESIÓN PERSISTENTE ──
-function saveSession(user){
-  localStorage.setItem('zuno_session',JSON.stringify({id:user.id,phone:user.phone,pass:user.pass}));
-}
-function clearSession(){
-  localStorage.removeItem('zuno_session');
-}
+async function getComs(){try{const s=await getDoc(doc(db,'config','comercios'));return s.exists()?s.data().list.filter(c=>c.active!==false):DEFAULT_COMS;}catch{return DEFAULT_COMS;}}
+function saveSession(u){localStorage.setItem('zuno_session',JSON.stringify({id:u.id,phone:u.phone,pass:u.pass}));}
+function clearSession(){localStorage.removeItem('zuno_session');}
 async function restoreSession(){
-  try{
-    const s=localStorage.getItem('zuno_session');
-    if(!s)return false;
-    const {id,phone,pass}=JSON.parse(s);
-    const snap=await getDoc(doc(db,'users',id));
-    if(!snap.exists()){clearSession();return false;}
-    const u=snap.data();
-    if(u.phone!==phone||u.pass!==pass){clearSession();return false;}
-    CU={id,phone,...u};
-    return true;
-  }catch{clearSession();return false;}
+  try{const s=localStorage.getItem('zuno_session');if(!s)return false;
+  const{id,phone,pass}=JSON.parse(s);const snap=await getDoc(doc(db,'users',id));
+  if(!snap.exists()){clearSession();return false;}const u=snap.data();
+  if(u.phone!==phone||u.pass!==pass){clearSession();return false;}
+  CU={id,...u};return true;}catch{clearSession();return false;}
 }
-
+window.setTab=t=>{document.querySelectorAll('.ltab').forEach((b,i)=>b.classList.toggle('on',(i===0&&t==='login')||(i===1&&t==='reg')));$('lt-login').style.display=t==='login'?'':'none';$('lt-reg').style.display=t==='reg'?'':'none';};
 window.doLogin=async()=>{
   const ph=$('l-phone').value.trim(),pw=$('l-pass').value;
-  if(!ph||!pw){toast('Completá todos los campos','err');return;}
-  load(true,'Verificando...');
-  try{
-    const q=query(collection(db,'users'),where('phone','==',ph),where('pass','==',pw),where('role','==','client'));
-    const snap=await getDocs(q);
-    if(snap.empty){toast('Datos incorrectos','err');load(false);return;}
-    CU={id:snap.docs[0].id,...snap.docs[0].data()};
-    saveSession(CU);
-    load(false);
-    if(!CU.verified&&(Date.now()-CU.registeredAt)<86400000){showS('pending');startCD(CU.registeredAt);}
-    else{$('bnav').classList.add('show');goTo('home');}
-  }catch{toast('Error de conexión','err');load(false);}
+  if(!ph||!pw){toast('Completá todos los campos','err');return;}load(true,'Verificando...');
+  try{const q=query(collection(db,'users'),where('phone','==',ph),where('pass','==',pw),where('role','==','client'));
+  const snap=await getDocs(q);if(snap.empty){toast('Datos incorrectos','err');load(false);return;}
+  CU={id:snap.docs[0].id,...snap.docs[0].data()};saveSession(CU);load(false);
+  if(!CU.verified&&(Date.now()-CU.registeredAt)<86400000){showS('pending');startCD(CU.registeredAt);}
+  else{$('bnav').classList.add('show');goTo('home');}}catch{toast('Error de conexión','err');load(false);}
 };
-
 window.doRegister=async()=>{
   const name=$('r-name').value.trim(),dui=$('r-dui').value.trim(),ph=$('r-phone').value.trim(),pw=$('r-pass').value;
   if(!name||!dui||!ph||!pw){toast('Completá todos los campos','err');return;}
   if(dui.length!==9||isNaN(dui)){toast('DUI debe tener 9 dígitos','err');return;}
-  if(pw.length<6){toast('Contraseña mínimo 6 caracteres','err');return;}
-  load(true,'Creando cuenta...');
-  try{
-    const[sp,sd]=await Promise.all([getDocs(query(collection(db,'users'),where('phone','==',ph))),getDocs(query(collection(db,'users'),where('dui','==',dui)))]);
-    if(!sp.empty){toast('Teléfono ya registrado','err');load(false);return;}
-    if(!sd.empty){toast('DUI ya registrado','err');load(false);return;}
-    const all=await getDocs(query(collection(db,'users'),where('role','==','client')));
-    const code='ZN-'+String(all.size+1).padStart(3,'0');
-    const nu={name,dui,phone:ph,pass:pw,code,balance:0,totalCashback:0,points:0,tickets:0,role:'client',verified:false,registeredAt:Date.now(),history:[]};
-    const ref=await addDoc(collection(db,'users'),nu);
-    CU={id:ref.id,...nu};
-    saveSession(CU);
-    load(false);
-    showS('pending');startCD(nu.registeredAt);
-    toast('¡Registro exitoso! 🎉','ok');
-  }catch(e){toast('Error al registrar','err');load(false);}
+  if(pw.length<6){toast('Contraseña mínimo 6 caracteres','err');return;}load(true,'Creando cuenta...');
+  try{const[sp,sd]=await Promise.all([getDocs(query(collection(db,'users'),where('phone','==',ph))),getDocs(query(collection(db,'users'),where('dui','==',dui)))]);
+  if(!sp.empty){toast('Teléfono ya registrado','err');load(false);return;}
+  if(!sd.empty){toast('DUI ya registrado','err');load(false);return;}
+  const all=await getDocs(query(collection(db,'users'),where('role','==','client')));
+  const code='ZN-'+String(all.size+1).padStart(3,'0');
+  const nu={name,dui,phone:ph,pass:pw,code,balance:0,totalCashback:0,points:0,tickets:0,role:'client',verified:false,registeredAt:Date.now(),history:[]};
+  const ref=await addDoc(collection(db,'users'),nu);CU={id:ref.id,...nu};saveSession(CU);load(false);
+  showS('pending');startCD(nu.registeredAt);toast('¡Registro exitoso! 🎉','ok');}catch(e){toast('Error al registrar','err');load(false);}
 };
-
-function startCD(reg){
-  if(CI)clearInterval(CI);
-  const upd=()=>{
-    const rem=Math.max(0,86400000-(Date.now()-reg));
-    const h=Math.floor(rem/3600000),m=Math.floor((rem%3600000)/60000),s=Math.floor((rem%60000)/1000);
-    const el=$('countdown');if(el)el.textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-    if(rem===0){clearInterval(CI);updateDoc(doc(db,'users',CU.id),{verified:true});CU.verified=true;toast('¡Cuenta verificada! 🎉','ok');$('bnav').classList.add('show');goTo('home');}
-  };
-  upd();CI=setInterval(upd,1000);
-}
-
+function startCD(reg){if(CI)clearInterval(CI);
+  const upd=()=>{const rem=Math.max(0,86400000-(Date.now()-reg));const h=Math.floor(rem/3600000),m=Math.floor((rem%3600000)/60000),s=Math.floor((rem%60000)/1000);
+  const el=$('countdown');if(el)el.textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  if(rem===0){clearInterval(CI);updateDoc(doc(db,'users',CU.id),{verified:true});CU.verified=true;toast('¡Cuenta verificada!','ok');$('bnav').classList.add('show');goTo('home');}};
+  upd();CI=setInterval(upd,1000);}
 window.doLogout=()=>{CU=null;clearSession();if(CI)clearInterval(CI);$('bnav').classList.remove('show');showS('login');};
-
-window.goTo=async id=>{
-  showS(id);
-  document.querySelectorAll('.bn').forEach(b=>b.classList.remove('on'));
-  const nb=$('bn-'+id);if(nb)nb.classList.add('on');
-  if(id==='home')rHome();
-  if(id==='ticket')initTicket();
-  if(id==='mytickets')rMyTickets();
-  if(id==='map')rMap();
-  if(id==='profile')rProfile();
-};
-
-// HOME
+window.goTo=async id=>{showS(id);document.querySelectorAll('.bn').forEach(b=>b.classList.remove('on'));const nb=$('bn-'+id);if(nb)nb.classList.add('on');
+  if(id==='home')rHome();if(id==='ticket')initTicket();if(id==='mytickets')rMyTickets();if(id==='map')rMap();if(id==='profile')rProfile();if(id==='ranking')rRanking();};
 async function rHome(){
-  try{
-    const snap=await getDoc(doc(db,'users',CU.id));
-    if(snap.exists())CU={id:CU.id,...snap.data()};
-    const av=$('hh-av');av.textContent=uI(CU.name);av.style.background=uC(CU.id);
-    $('hh-name').textContent=CU.name.split(' ')[0];
-    $('h-bal').textContent=fUSD(CU.balance||0);
-    $('h-total').textContent=fUSD(CU.totalCashback||0);
-    $('verif-ban').style.display=CU.verified?'none':'block';
-    const tier=gT(CU.points||0),next=TIERS[TIERS.indexOf(tier)+1];
-    $('h-tier').textContent=tier.n;
-    if(next){const pct=((CU.points-tier.min)/(next.min-tier.min))*100;$('h-prog').style.width=Math.min(pct,100)+'%';$('h-hint').textContent=(next.min-(CU.points||0))+' pts para '+next.n.split(' ')[1];}
-    else{$('h-prog').style.width='100%';$('h-hint').textContent='¡Nivel máximo! 💎';}
-    // tickets pendientes
-    const pSnap=await getDocs(query(collection(db,'tickets'),where('userId','==',CU.id),where('status','==','pending')));
-    const pc=pSnap.size;
-    const pb=$('pb');
-    if(pc>0){pb.style.display='flex';$('pb-cnt').textContent=pc;$('pb-txt').textContent=pc===1?'1 ticket en revisión':pc+' tickets en revisión';}
-    else pb.style.display='none';
-    // historial
-    const hist=(CU.history||[]).slice().reverse().slice(0,6);
-    $('h-hist').innerHTML=hist.length?hist.map(h=>`
-      <div class="hi-row">
-        <div class="hi-ico" style="background:${h.type==='earn'?'var(--greenbg)':h.type==='pending'?'var(--goldbg)':'var(--redbg)'}">${h.type==='earn'?'💵':h.type==='pending'?'⏳':'❌'}</div>
-        <div class="hi-info"><div class="hi-name">${h.name}</div><div class="hi-date">${fDate(h.ts)}</div></div>
-        <div class="hi-amt ${h.type==='earn'?'amt-earn':h.type==='pending'?'amt-pend':'amt-rej'}">${h.type==='earn'?'+'+fUSD(h.cb):h.type==='pending'?'⏳':'—'}</div>
-      </div>`).join('')
-    :'<div style="text-align:center;color:var(--text3);padding:28px;font-size:13px;line-height:1.8">Subí tu primer ticket<br>para empezar a ganar 📸</div>';
-  }catch(e){console.error(e);}
+  try{const snap=await getDoc(doc(db,'users',CU.id));if(snap.exists())CU={id:CU.id,...snap.data()};
+  const av=$('hh-av');av.textContent=uI(CU.name);av.style.background=uC(CU.id);
+  $('hh-name').textContent=CU.name.split(' ')[0];$('h-bal').textContent=fUSD(CU.balance||0);$('h-total').textContent=fUSD(CU.totalCashback||0);
+  $('verif-ban').style.display=CU.verified?'none':'block';
+  const tier=gT(CU.points||0),next=TIERS[TIERS.indexOf(tier)+1];$('h-tier').textContent=tier.n;
+  const bonus=gBonus(CU.points||0);
+  if(next){const pct=((CU.points-tier.min)/(next.min-tier.min))*100;$('h-prog').style.width=Math.min(pct,100)+'%';
+    $('h-hint').textContent=bonus>0?`+${bonus}% bonus activo · ${next.min-(CU.points||0)} pts para ${next.n.split(' ')[1]}`:`${next.min-(CU.points||0)} pts para ${next.n.split(' ')[1]}`;}
+  else{$('h-prog').style.width='100%';$('h-hint').textContent='+1.5% bonus activo · ¡Nivel máximo! 💎';}
+  // Temporada banner
+  const slEl=$('season-label');const scEl=$('season-countdown');
+  if(slEl)slEl.textContent=`Temporada ${getCurrentSeason()}`;
+  if(scEl)scEl.textContent=fCountdown(msToSeasonEnd())+' restantes';
+  const pc=pSnap.size;const pb=$('pb');
+  if(pc>0){pb.style.display='flex';$('pb-cnt').textContent=pc;$('pb-txt').textContent=pc===1?'1 ticket en revisión':pc+' tickets en revisión';}else pb.style.display='none';
+  const hist=(CU.history||[]).slice().reverse().slice(0,6);
+  $('h-hist').innerHTML=hist.length?hist.map(h=>`<div class="hi-row"><div class="hi-ico" style="background:${h.type==='earn'?'var(--greenbg)':h.type==='pending'?'var(--goldbg)':'var(--redbg)'}">${h.type==='earn'?'💵':h.type==='pending'?'⏳':'❌'}</div><div class="hi-info"><div class="hi-name">${h.name}</div><div class="hi-date">${fDate(h.ts)}</div></div><div class="hi-amt ${h.type==='earn'?'amt-earn':h.type==='pending'?'amt-pend':'amt-rej'}">${h.type==='earn'?'+'+fUSD(h.cb):h.type==='pending'?'⏳':'—'}</div></div>`).join('')
+  :'<div style="text-align:center;color:var(--text3);padding:28px;font-size:13px;line-height:1.8">Subí tu primer ticket<br>para empezar a ganar 📸</div>';}catch(e){console.error(e);}
 }
-
-// TICKET
-async function initTicket(){
-  allComs=await getComs();
-  selCom=null;imgB64=null;
-  $('tk-monto').value='';
-  $('up-prev').style.display='none';
-  $('upz-ph').style.display='block';
-  $('upz').classList.remove('has-img');
-  $('cbp').style.display='none';
-  // Comercios
-  $('com-grid').innerHTML=allComs.map(c=>`
-    <div class="copt" id="copt-${c.id}" onclick="selC('${c.id}')">
-      <div class="copt-logo" style="background:${c.color}">${c.emoji}</div>
-      <div><div class="copt-name">${c.name}</div><div class="copt-rate">${c.cashbackPct}% cashback</div></div>
-    </div>`).join('');
-}
-window.onFile=e=>{
-  const f=e.target.files[0];if(!f)return;
-  if(f.size>5*1024*1024){toast('Imagen muy grande (máx 5MB)','err');return;}
-  const r=new FileReader();
-  r.onload=ev=>{imgB64=ev.target.result;const pr=$('up-prev');pr.src=imgB64;pr.style.display='block';$('upz-ph').style.display='none';$('upz').classList.add('has-img');};
-  r.readAsDataURL(f);
-};
-window.selC=id=>{
-  selCom=allComs.find(c=>c.id===id);
-  document.querySelectorAll('.copt').forEach(el=>el.classList.remove('on'));
-  $('copt-'+id).classList.add('on');
-  calcCB();
-};
-window.calcCB=()=>{
-  const m=parseFloat($('tk-monto').value)||0;
-  const cbp=$('cbp');
+async function initTicket(){allComs=await getComs();selCom=null;imgB64=null;$('tk-monto').value='';$('up-prev').style.display='none';$('upz-ph').style.display='block';$('upz').classList.remove('has-img');$('cbp').style.display='none';
+  $('com-grid').innerHTML=allComs.map(c=>{
+    const totalPct=getTotalCB(c.cashbackPct,CU.points||0);
+    const bonus=gBonus(CU.points||0);
+    const bonusTxt=bonus>0?` <span style="color:var(--green);font-size:9px">(+${bonus}% bonus)</span>`:'';
+    return `<div class="copt" id="copt-${c.id}" onclick="selC('${c.id}')"><div class="copt-logo" style="background:${c.color}">${c.emoji}</div><div><div class="copt-name">${c.name}</div><div class="copt-rate">${totalPct}% cashback${bonusTxt}</div></div></div>`;}).join('');}
+window.onFile=e=>{const f=e.target.files[0];if(!f)return;if(f.size>5*1024*1024){toast('Imagen muy grande','err');return;}
+  const r=new FileReader();r.onload=ev=>{imgB64=ev.target.result;const pr=$('up-prev');pr.src=imgB64;pr.style.display='block';$('upz-ph').style.display='none';$('upz').classList.add('has-img');};r.readAsDataURL(f);};
+window.selC=id=>{selCom=allComs.find(c=>c.id===id);document.querySelectorAll('.copt').forEach(el=>el.classList.remove('on'));$('copt-'+id).classList.add('on');calcCB();};
+window.calcCB=()=>{const m=parseFloat($('tk-monto').value)||0;const cbp=$('cbp');
   if(m>0&&selCom){
-    const cb=(m*(selCom.cashbackPct/100));
+    const basePct=selCom.cashbackPct;
+    const bonus=gBonus(CU.points||0);
+    const totalPct=getTotalCB(basePct,CU.points||0);
+    const cb=(m*(totalPct/100));
     $('cbp-amt').textContent=fUSD(cb);
-    $('cbp-sub').textContent=selCom.cashbackPct+'% de '+fUSD(m)+' en '+selCom.name+' · se acredita al aprobar';
+    const bonusTxt=bonus>0?` (+${bonus}% bonus ${gT(CU.points||0).n})`:'';
+    $('cbp-sub').textContent=totalPct+'% de '+fUSD(m)+' en '+selCom.name+bonusTxt+' · se acredita al aprobar';
     cbp.style.display='block';
-  }else cbp.style.display='none';
-};
+  }else cbp.style.display='none';};
 window.submitTicket=async()=>{
-  if(!imgB64){toast('Subí una foto del ticket','err');return;}
-  if(!selCom){toast('Elegí el comercio','err');return;}
-  const monto=parseFloat($('tk-monto').value);
-  if(!monto||monto<=0){toast('Ingresá el monto del ticket','err');return;}
-  const cashback=parseFloat((monto*(selCom.cashbackPct/100)).toFixed(2));
-  load(true,'Enviando ticket...');
-  try{
-    await addDoc(collection(db,'tickets'),{
-      userId:CU.id,userName:CU.name,userPhone:CU.phone,
-      comercioId:selCom.id,comercioName:selCom.name,
-      monto,cashback,cashbackPct:selCom.cashbackPct,
-      imgBase64:imgB64,status:'pending',
-      createdAt:Date.now(),note:''
-    });
-    const newHist=[...(CU.history||[]),{type:'pending',name:selCom.name+' · '+fUSD(monto),cb:cashback,ts:Date.now()}];
-    await updateDoc(doc(db,'users',CU.id),{tickets:increment(1),history:newHist});
-    CU.tickets=(CU.tickets||0)+1;CU.history=newHist;
-    load(false);toast('✅ Ticket enviado — revisamos pronto','ok');goTo('home');
-  }catch{toast('Error al enviar. Intentá de nuevo.','err');load(false);}
+  if(!imgB64){toast('Subí una foto del ticket','err');return;}if(!selCom){toast('Elegí el comercio','err');return;}
+  const monto=parseFloat($('tk-monto').value);if(!monto||monto<=0){toast('Ingresá el monto','err');return;}
+  const totalPct=getTotalCB(selCom.cashbackPct,CU.points||0);
+  const cashback=parseFloat((monto*(totalPct/100)).toFixed(2));load(true,'Enviando ticket...');
+  try{await addDoc(collection(db,'tickets'),{userId:CU.id,userName:CU.name,userPhone:CU.phone,comercioId:selCom.id,comercioName:selCom.name,monto,cashback,cashbackPct:totalPct,basePct:selCom.cashbackPct,bonusPct:gBonus(CU.points||0),userTier:gT(CU.points||0).n,imgBase64:imgB64,status:'pending',createdAt:Date.now(),note:''});
+  const newHist=[...(CU.history||[]),{type:'pending',name:selCom.name+' · '+fUSD(monto),cb:cashback,ts:Date.now()}];
+  await updateDoc(doc(db,'users',CU.id),{tickets:increment(1),history:newHist});CU.tickets=(CU.tickets||0)+1;CU.history=newHist;
+  load(false);toast('✅ Ticket enviado — revisamos pronto','ok');goTo('home');}catch{toast('Error al enviar. Intentá de nuevo.','err');load(false);}
 };
-
-// MIS TICKETS
-async function rMyTickets(){
-  load(true,'Cargando...');
-  try{
-    const snap=await getDocs(query(collection(db,'tickets'),where('userId','==',CU.id)));
-    let tks=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.createdAt-a.createdAt);
-    if(tkFilter!=='all')tks=tks.filter(t=>t.status===tkFilter);
-    $('tklist').innerHTML=tks.length?tks.map(t=>{
-      const sc=t.status==='approved'?'st-a':t.status==='rejected'?'st-r':'st-p';
-      const sl=t.status==='approved'?'✅ Aprobado':t.status==='rejected'?'❌ Rechazado':'⏳ En revisión';
-      return `<div class="tcard">
-        ${t.imgBase64?`<img class="tc-thumb" src="${t.imgBase64}" alt="ticket">`:`<div class="tc-ph">📄</div>`}
-        <div class="tc-info">
-          <div class="tc-com">${t.comercioName}</div>
-          <div class="tc-monto">Ticket: ${fUSD(t.monto)} · Cashback: <span style="color:var(--green);font-weight:800">${fUSD(t.cashback)}</span></div>
-          <div class="tc-date">${fDate(t.createdAt)}</div>
-          <span class="tc-st ${sc}">${sl}</span>
-          ${t.note?`<div class="tc-note">📝 ${t.note}</div>`:''}
-        </div>
-      </div>`;}).join('')
-    :'<div style="text-align:center;color:var(--text3);padding:40px;font-size:13px">Sin tickets en esta categoría</div>';
-    load(false);
-  }catch{load(false);}
+async function rMyTickets(){load(true,'Cargando...');
+  try{const snap=await getDocs(query(collection(db,'tickets'),where('userId','==',CU.id)));
+  let tks=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.createdAt-a.createdAt);
+  if(tkFilter!=='all')tks=tks.filter(t=>t.status===tkFilter);
+  $('tklist').innerHTML=tks.length?tks.map(t=>{const sc=t.status==='approved'?'st-a':t.status==='rejected'?'st-r':'st-p';const sl=t.status==='approved'?'✅ Aprobado':t.status==='rejected'?'❌ Rechazado':'⏳ En revisión';
+  return `<div class="tcard">${t.imgBase64?`<img class="tc-thumb" src="${t.imgBase64}" alt="ticket">`:`<div class="tc-ph">📄</div>`}<div class="tc-info"><div class="tc-com">${t.comercioName}</div><div class="tc-monto">Ticket: ${fUSD(t.monto)} · CB: <span style="color:var(--green);font-weight:800">${fUSD(t.cashback)}</span></div><div class="tc-date">${fDate(t.createdAt)}</div><span class="tc-st ${sc}">${sl}</span>${t.note?`<div class="tc-note">📝 ${t.note}</div>`:''}</div></div>`;}).join('')
+  :'<div style="text-align:center;color:var(--text3);padding:40px;font-size:13px">Sin tickets</div>';load(false);}catch{load(false);}
 }
 window.setTkF=(f,el)=>{tkFilter=f;document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('on'));el.classList.add('on');rMyTickets();};
-
-// COMERCIOS
 let curCat='all';
 async function rMap(){allComs=await getComs();renderComs();}
-function renderComs(){
-  const list=curCat==='all'?allComs:allComs.filter(c=>c.cat===curCat);
-  $('com-list').innerHTML=list.length?list.map(c=>`
-    <div class="ccard" onclick="verCom('${c.id}')">
-      <div class="ccard-top">
-        <div class="ccard-logo" style="background:${c.color}">${c.emoji}</div>
-        <div class="ccard-info">
-          <div class="ccard-name">${c.name}</div>
-          <div class="ccard-cat">${c.cat.charAt(0).toUpperCase()+c.cat.slice(1)}</div>
-          <div class="ccard-cb">💵 ${c.cashbackPct}% de cashback en cada compra</div>
-        </div>
-        <button class="ccard-action" onclick="event.stopPropagation();goTo('ticket')">Subir ticket</button>
-      </div>
-    </div>`).join('')
-  :'<div style="text-align:center;color:var(--text3);padding:40px;font-size:13px">Sin comercios en esta categoría</div>';
-}
+function renderComs(){const list=curCat==='all'?allComs:allComs.filter(c=>c.cat===curCat);
+  const pts=CU?.points||0;
+  $('com-list').innerHTML=list.length?list.map(c=>{
+    const totalPct=getTotalCB(c.cashbackPct,pts);
+    const bonus=gBonus(pts);
+    const bonusTxt=bonus>0?` <span style="font-size:10px;color:var(--gold);font-weight:700">+${bonus}% ${gT(pts).n}</span>`:'';
+    return `<div class="ccard" onclick="verCom('${c.id}')"><div class="ccard-top"><div class="ccard-logo" style="background:${c.color}">${c.emoji}</div><div class="ccard-info"><div class="ccard-name">${c.name}</div><div class="ccard-cat">${c.cat.charAt(0).toUpperCase()+c.cat.slice(1)}</div><div class="ccard-cb">💵 ${totalPct}% de cashback${bonusTxt}</div></div><button class="ccard-action" onclick="event.stopPropagation();goTo('ticket')">Subir ticket</button></div></div>`;}).join('')
+  :'<div style="text-align:center;color:var(--text3);padding:40px;font-size:13px">Sin comercios</div>';}
 window.setCat=(cat,el)=>{curCat=cat;document.querySelectorAll('.catbtn').forEach(c=>c.classList.remove('on'));el.classList.add('on');renderComs();};
-window.verCom=id=>{
-  const c=allComs.find(x=>x.id===id);if(!c)return;
-  $('mc-logo').textContent=c.emoji;$('mc-logo').style.background=c.color;
-  $('mc-name').textContent=c.name;
-  $('mc-sub').textContent=c.cat+' · '+c.cashbackPct+'% cashback';
-  $('mc-info').textContent='Por cada $100 que gastés en '+c.name+', recibís '+fUSD(c.cashbackPct)+' de cashback directo a tu saldo Zuno.';
-  $('m-com').classList.add('open');
-};
-
-// PERFIL
-async function rProfile(){
-  const snap=await getDoc(doc(db,'users',CU.id));if(snap.exists())CU={id:CU.id,...snap.data()};
-  const av=$('p-av');av.textContent=uI(CU.name);av.style.background=uC(CU.id);
-  $('p-name').textContent=CU.name;
-  $('p-sub').textContent='📱 '+CU.phone+' · '+CU.code;
-  $('p-tier').textContent=gT(CU.points||0).n;
+window.verCom=id=>{const c=allComs.find(x=>x.id===id);if(!c)return;$('mc-logo').textContent=c.emoji;$('mc-logo').style.background=c.color;$('mc-name').textContent=c.name;$('mc-sub').textContent=c.cat+' · '+c.cashbackPct+'% cashback';$('mc-info').textContent='Por cada $100 que gastés en '+c.name+', recibís '+fUSD(c.cashbackPct)+' de cashback en tu saldo Zuno.';$('m-com').classList.add('open');};
+async function rProfile(){const snap=await getDoc(doc(db,'users',CU.id));if(snap.exists())CU={id:CU.id,...snap.data()};
+  const av=$('p-av');av.textContent=uI(CU.name);av.style.background=uC(CU.id);$('p-name').textContent=CU.name;$('p-sub').textContent='📱 '+CU.phone+' · '+CU.code;$('p-tier').textContent=gT(CU.points||0).n;
   const pv=$('p-verif');pv.className='ptag '+(CU.verified?'ptag-v':'ptag-p');pv.textContent=CU.verified?'✅ Verificado':'⏳ Pendiente';
-  $('ps-bal').textContent=fUSD(CU.balance||0);
-  $('ps-tks').textContent=CU.tickets||0;
-  $('ps-cb').textContent=fUSD(CU.totalCashback||0);
-  // KYC banner
-  const kb=$('kyc-ban');const kbtn=$('kyc-main-btn');
-  const ks=CU.kycStatus||'none';
-  if(ks==='approved'){
-    kb.className='kyc-ban done';kb.onclick=null;
-    kb.innerHTML=`<div class="kyc-top"><span class="kyc-ic">✅</span><div><div class="kyc-ttl" style="color:var(--green)">Identidad verificada</div><div class="kyc-sub">Tu cuenta está completamente verificada</div></div></div>`;
-    const pt=$('pmi-tarjeta');if(pt){pt.style.opacity='1';pt.style.cursor='pointer';}
-  } else if(ks==='pending'){
-    kb.className='kyc-ban review';kb.onclick=null;
-    kb.innerHTML=`<div class="kyc-top"><span class="kyc-ic">⏳</span><div><div class="kyc-ttl" style="color:var(--blue)">En revisión</div><div class="kyc-sub">Estamos verificando tus documentos — menos de 24h</div></div></div><div class="kyc-progress"><div class="kyc-dot on"></div><div class="kyc-dot on"></div></div>`;
-  } else {
-    kb.className='kyc-ban pend';kb.onclick=openKYC;
-    if($('kd1'))$('kd1').className='kyc-dot';
-    if($('kd2'))$('kd2').className='kyc-dot';
-    if(kbtn)kbtn.style.display='block';
+  $('ps-bal').textContent=fUSD(CU.balance||0);$('ps-tks').textContent=CU.tickets||0;$('ps-cb').textContent=fUSD(CU.totalCashback||0);
+  // Tabla de niveles
+  const nv=document.getElementById('niveles-box');
+  if(nv){
+    const pts=CU.points||0;
+    nv.innerHTML=TIERS.map((t,i)=>{
+      const isActive=pts>=t.min&&pts<=t.max;
+      const bonus=TIER_BONUS[i];
+      return `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);${i===TIERS.length-1?'border-bottom:none':''}">
+        <span style="font-size:20px">${t.n.split(' ')[0]}</span>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:800;color:${isActive?'var(--red)':'var(--text)'}">${t.n.split(' ').slice(1).join(' ')} ${isActive?'← tu nivel':''}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px">${t.min===0?'Desde el inicio':'$'+t.min+' gastados'}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:13px;font-weight:800;color:${bonus>0?'var(--green)':'var(--text3)'}">${bonus>0?'+'+bonus+'% extra':'Base'}</div>
+          <div style="font-size:10px;color:var(--text3)">en cashback</div>
+        </div>
+      </div>`;}).join('');
   }
+  const kb=$('kyc-ban');const kbtn=$('kyc-main-btn');const ks=CU.kycStatus||'none';
+  if(ks==='approved'){kb.className='kyc-ban done';kb.onclick=null;kb.innerHTML=`<div class="kyc-top"><span class="kyc-ic">✅</span><div><div class="kyc-ttl" style="color:var(--green)">Identidad verificada</div><div class="kyc-sub">Tu cuenta está completamente verificada</div></div></div>`;const pt=$('pmi-tarjeta');if(pt){pt.style.opacity='1';pt.style.cursor='pointer';}}
+  else if(ks==='pending'){kb.className='kyc-ban review';kb.onclick=null;kb.innerHTML=`<div class="kyc-top"><span class="kyc-ic">⏳</span><div><div class="kyc-ttl" style="color:var(--blue)">En revisión</div><div class="kyc-sub">Estamos verificando tus documentos</div></div></div><div class="kyc-progress"><div class="kyc-dot on"></div><div class="kyc-dot on"></div></div>`;}
+  else{kb.className='kyc-ban pend';kb.onclick=openKYC;if($('kd1'))$('kd1').className='kyc-dot';if($('kd2'))$('kd2').className='kyc-dot';if(kbtn)kbtn.style.display='block';}
 }
-
-// KYC
-let kycImgDUI=null,kycImgSelfie=null;
-window.openKYC=()=>{
-  kycImgDUI=null;kycImgSelfie=null;
-  ['kup-dui','kup-selfie'].forEach(id=>{
-    const el=$(id);el.classList.remove('has');
-    el.querySelector('img').style.display='none';
-    el.querySelector('[id$="-ph"]').style.display='block';
-  });
-  $('m-kyc').classList.add('open');
-};
-// Comprimir imagen antes de guardar
-function compressImg(b64,maxW=800,quality=0.7){
-  return new Promise(res=>{
-    const img=new Image();
-    img.onload=()=>{
-      const canvas=document.createElement('canvas');
-      let w=img.width,h=img.height;
-      if(w>maxW){h=Math.round(h*(maxW/w));w=maxW;}
-      canvas.width=w;canvas.height=h;
-      canvas.getContext('2d').drawImage(img,0,0,w,h);
-      res(canvas.toDataURL('image/jpeg',quality));
-    };
-    img.src=b64;
-  });
-}
-
-window.onKUP=(e,zoneId,prevId,varName)=>{
-  const f=e.target.files[0];if(!f)return;
-  if(f.size>10*1024*1024){toast('Imagen muy grande (máx 10MB)','err');return;}
-  const r=new FileReader();
-  r.onload=async ev=>{
-    // Comprimir antes de guardar
-    const b64=await compressImg(ev.target.result,800,0.65);
-    if(varName==='kyc-img-dui')kycImgDUI=b64;
-    else kycImgSelfie=b64;
-    // Mostrar preview
-    const prev=$(prevId);
-    if(prev){prev.src=b64;prev.style.display='block';}
-    // Ocultar placeholder por id directo
-    const phId=zoneId==='kup-dui'?'kup-dui-ph':'kup-selfie-ph';
-    const ph=$(phId);if(ph)ph.style.display='none';
-    $(zoneId).classList.add('has');
-  };
-  r.readAsDataURL(f);
-};
-
-window.submitKYC=async()=>{
-  if(!kycImgDUI){toast('Subí la foto de tu DUI','err');return;}
-  if(!kycImgSelfie){toast('Subí el selfie con tu DUI','err');return;}
-  load(true,'Enviando documentos...');
+// ── RANKING ──
+async function rRanking(){
+  // Info temporada
+  const s=getCurrentSeason();
+  const end=getSeasonEnd();
+  const endFmt=end.toLocaleDateString('es-SV',{day:'2-digit',month:'long',year:'numeric'});
+  $('rk-season-lbl').textContent=`Temporada ${s}`;
+  $('rk-season-end').textContent=`Termina el ${endFmt} · ${fCountdown(msToSeasonEnd())} restantes`;
+  // Cargar ranking
   try{
-    // Guardar en dos documentos separados para evitar límite 1MB de Firestore
-    await setDoc(doc(db,'kyc',CU.id),{
-      userId:CU.id,userName:CU.name,userDUI:CU.dui,userPhone:CU.phone,
-      status:'pending',createdAt:Date.now()
-    });
-    await setDoc(doc(db,'kyc_imgs',CU.id),{
-      imgDUI:kycImgDUI,
-      imgSelfie:kycImgSelfie,
-    });
-    await updateDoc(doc(db,'users',CU.id),{kycStatus:'pending'});
-    CU.kycStatus='pending';
-    closeM('m-kyc');load(false);
-    toast('✅ Documentos enviados — revisamos pronto','ok');
-    rProfile();
-  }catch(e){
-    console.error('KYC error:',e);
-    toast('Error: '+e.message,'err');
-    load(false);
-  }
+    const snap=await getDocs(query(collection(db,'users'),where('role','==','client')));
+    const all=snap.docs.map(d=>({id:d.id,...d.data()}))
+      .filter(u=>u.verified)
+      .sort((a,b)=>(b.points||0)-(a.points||0));
+    // Posición del usuario
+    const myPos=all.findIndex(u=>u.id===CU.id)+1;
+    $('rk-my-pos').textContent=myPos>0?'#'+myPos:'—';
+    $('rk-my-pts').textContent=(CU.points||0).toLocaleString()+' pts';
+    // Lista
+    $('rk-list').innerHTML=all.length?all.slice(0,20).map((u,i)=>{
+      const pos=i+1;
+      const isMe=u.id===CU.id;
+      const isTop=pos<=3;
+      const badge=isTop?TOP_BADGES[i]:'';
+      const topBadge=u.seasonBadge?` <span style="font-size:14px">${u.seasonBadge}</span>`:'';
+      return `<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:${isMe?'var(--redbg)':'#fff'};border:1.5px solid ${isMe?'var(--redborder)':'var(--border)'};border-radius:14px;margin-bottom:8px;box-shadow:0 2px 6px rgba(0,0,0,.04)">
+        <div style="width:28px;text-align:center;font-size:${isTop?'22':'14'}px;font-weight:800;color:${isTop?'inherit':'var(--text3)'};flex-shrink:0">${badge||pos}</div>
+        <div style="width:36px;height:36px;border-radius:10px;background:${uC(u.id)};display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;flex-shrink:0">${uI(u.name)}</div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:${isMe?'800':'700'};color:${isMe?'var(--red)':'var(--text)'}">${u.name.split(' ')[0]}${isMe?' (vos)':''}${topBadge}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:1px">${gT(u.points||0).n}</div>
+        </div>
+        <div style="font-size:13px;font-weight:800;color:${isMe?'var(--red)':'var(--text)'}">${(u.points||0).toLocaleString()}<span style="font-size:10px;font-weight:600;color:var(--text3)"> pts</span></div>
+      </div>`;}).join('')
+    :'<div style="text-align:center;color:var(--text3);padding:28px;font-size:13px">Sin participantes aún</div>';
+  }catch(e){$('rk-list').innerHTML='<div style="text-align:center;color:var(--text3);padding:28px;font-size:13px">Error cargando ranking</div>';}
+}
+// ── REINICIO DE TEMPORADA (lo ejecuta el admin, pero el cliente ve el estado) ──
+// La lógica de reinicio está en el admin — al fin de temporada el admin
+// ejecuta el reinicio que baja un nivel a cada usuario(b64,maxW=800,quality=0.7){return new Promise(res=>{const img=new Image();img.onload=()=>{const canvas=document.createElement('canvas');let w=img.width,h=img.height;if(w>maxW){h=Math.round(h*(maxW/w));w=maxW;}canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(img,0,0,w,h);res(canvas.toDataURL('image/jpeg',quality));};img.src=b64;});}
+window.openKYC=()=>{kycImgDUI=null;kycImgSelfie=null;['kup-dui','kup-selfie'].forEach(id=>{const el=$(id);el.classList.remove('has');el.querySelector('img').style.display='none';const ph=el.querySelector('[id$="-ph"]');if(ph)ph.style.display='block';});$('m-kyc').classList.add('open');};
+window.onKUP=(e,zoneId,prevId,varName)=>{const f=e.target.files[0];if(!f)return;if(f.size>10*1024*1024){toast('Imagen muy grande','err');return;}
+  const r=new FileReader();r.onload=async ev=>{const b64=await compressImg(ev.target.result,800,0.65);if(varName==='kyc-img-dui')kycImgDUI=b64;else kycImgSelfie=b64;
+  const prev=$(prevId);if(prev){prev.src=b64;prev.style.display='block';}const phId=zoneId==='kup-dui'?'kup-dui-ph':'kup-selfie-ph';const ph=$(phId);if(ph)ph.style.display='none';$(zoneId).classList.add('has');};r.readAsDataURL(f);};
+window.submitKYC=async()=>{if(!kycImgDUI){toast('Subí la foto de tu DUI','err');return;}if(!kycImgSelfie){toast('Subí el selfie con tu DUI','err');return;}
+  load(true,'Enviando documentos...');
+  try{await setDoc(doc(db,'kyc',CU.id),{userId:CU.id,userName:CU.name,userDUI:CU.dui,userPhone:CU.phone,status:'pending',createdAt:Date.now()});
+  await setDoc(doc(db,'kyc_imgs',CU.id),{imgDUI:kycImgDUI,imgSelfie:kycImgSelfie});
+  await updateDoc(doc(db,'users',CU.id),{kycStatus:'pending'});CU.kycStatus='pending';
+  closeM('m-kyc');load(false);toast('✅ Documentos enviados — revisamos pronto','ok');rProfile();}catch(e){console.error('KYC error:',e);toast('Error: '+e.message,'err');load(false);}
 };
-
-// ── AUTO LOGIN AL CARGAR ──
-(async()=>{
-  load(true,'Cargando...');
-  const ok=await restoreSession();
-  load(false);
-  if(ok){
-    $('bnav').classList.add('show');
-    if(!CU.verified&&(Date.now()-CU.registeredAt)<86400000){
-      showS('pending');startCD(CU.registeredAt);
-    } else {
-      goTo('home');
-    }
-  }
-  // Si no hay sesión se queda en login (pantalla por defecto)
+(async()=>{load(true,'Cargando...');const ok=await restoreSession();load(false);
+  if(ok){$('bnav').classList.add('show');if(!CU.verified&&(Date.now()-CU.registeredAt)<86400000){showS('pending');startCD(CU.registeredAt);}else goTo('home');}
 })();
 </script>
 </body>
