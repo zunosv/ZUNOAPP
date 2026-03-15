@@ -656,7 +656,21 @@ function rClientes(){
   :'<div style="color:var(--text3);font-size:13px;text-align:center;padding:32px">Sin clientes</div>';
 }
 window.setCLF=(f,el)=>{clFilter=f;document.querySelectorAll('#panel-clientes .ftab').forEach(t=>t.classList.remove('on'));el.classList.add('on');rClientes();};
-window.qVerify=async id=>{load(true);try{await updateDoc(doc(db,'users',id),{verified:true});await loadAll();rClientes();toast('✅ Verificado','ok');}catch{toast('Error','err');}load(false);};
+window.qVerify=async id=>{
+  if(!confirm('¿Verificar manualmente este cliente?\n(Usá esto cuando te envíen su DUI por WhatsApp)'))return;
+  load(true,'Verificando...');
+  try{
+    await updateDoc(doc(db,'users',id),{
+      verified:true,
+      kycStatus:'approved',
+      kycManual:true,
+      kycManualAt:Date.now()
+    });
+    await loadAll();rClientes();
+    toast('✅ Cliente verificado manualmente','ok');
+  }catch{toast('Error','err');}
+  load(false);
+};
 
 window.verCl=id=>{
   const u=allUsers.find(x=>x.id===id);if(!u)return;selUID=id;selUDoc=u;
@@ -669,7 +683,8 @@ window.verCl=id=>{
     </div>
     <div style="font-size:12px;color:var(--text3);margin-bottom:10px;font-weight:600">DUI: ${u.dui} · Tel: ${u.phone} · ${u.tickets||0} tickets</div>
     ${hist.map(h=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:16px">${h.type==='earn'?'💵':h.type==='pending'?'⏳':'❌'}</span><div style="flex:1;font-size:12px;font-weight:600">${h.name}</div><span style="font-size:12px;font-weight:700;color:${h.type==='earn'?'var(--green)':'var(--text3)'}">${h.type==='earn'?'+'+fUSD(h.cb):h.type==='pending'?'⏳':'—'}</span></div>`).join('')||'<div style="font-size:12px;color:var(--text3)">Sin historial</div>'}
-    <div style="display:flex;gap:8px;margin-top:14px">
+    <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+      ${!u.verified?`<button class="btn-sm g" style="flex:1;padding:10px;font-size:12px" onclick="closeM('m-cl');qVerify('${u.id}')">✅ Verificar manual</button>`:''}
       <button class="btn-sm gold" style="flex:1;padding:10px;font-size:12px" onclick="closeM('m-cl');openM('m-dui');loadDUI('${u.id}')">🆔 Verificar DUI</button>
       <button class="btn-sm p" style="flex:1;padding:10px;font-size:12px" onclick="closeM('m-cl');openBal('${u.id}','${u.name}')">💵 Ajustar saldo</button>
     </div>`;
@@ -873,22 +888,46 @@ window.reviewKYC=async status=>{
 window.doLogin=async()=>{
   const u=$('l-user').value.trim(),p=$('l-pass').value;
   if(u==='admin'&&p==='admin'){
+    localStorage.setItem('zuno_admin_session',JSON.stringify({user:u,pass:p}));
     $('s-login').style.display='none';$('s-app').style.display='block';
     await loadAll();rDash();
   }else{
-    // Chequear admins en Firebase
     load(true,'Verificando...');
     try{
       const snap=await getDoc(doc(db,'config','admins'));
       const admins=snap.exists()?snap.data().list:[];
       const found=admins.find(a=>a.user===u&&a.pass===p);
-      if(found){$('s-login').style.display='none';$('s-app').style.display='block';await loadAll();rDash();}
-      else toast('Credenciales incorrectas','err');
+      if(found){
+        localStorage.setItem('zuno_admin_session',JSON.stringify({user:u,pass:p}));
+        $('s-login').style.display='none';$('s-app').style.display='block';
+        await loadAll();rDash();
+      } else toast('Credenciales incorrectas','err');
     }catch{toast('Error de conexión','err');}
     load(false);
   }
 };
-window.doLogout=()=>{$('s-app').style.display='none';$('s-login').style.display='flex';};
+window.doLogout=()=>{
+  localStorage.removeItem('zuno_admin_session');
+  $('s-app').style.display='none';$('s-login').style.display='flex';
+};
+
+// ── AUTO LOGIN ADMIN ──
+(async()=>{
+  const s=localStorage.getItem('zuno_admin_session');
+  if(!s)return;
+  const {user,pass}=JSON.parse(s);
+  if(user==='admin'&&pass==='admin'){
+    $('s-login').style.display='none';$('s-app').style.display='block';
+    await loadAll();rDash();return;
+  }
+  try{
+    const snap=await getDoc(doc(db,'config','admins'));
+    const admins=snap.exists()?snap.data().list:[];
+    const found=admins.find(a=>a.user===user&&a.pass===pass);
+    if(found){$('s-login').style.display='none';$('s-app').style.display='block';await loadAll();rDash();}
+    else localStorage.removeItem('zuno_admin_session');
+  }catch{localStorage.removeItem('zuno_admin_session');}
+})();
 </script>
 </body>
 </html>

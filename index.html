@@ -632,6 +632,27 @@ window.setTab=t=>{
   $('lt-reg').style.display=t==='reg'?'':'none';
 };
 
+// ── SESIÓN PERSISTENTE ──
+function saveSession(user){
+  localStorage.setItem('zuno_session',JSON.stringify({id:user.id,phone:user.phone,pass:user.pass}));
+}
+function clearSession(){
+  localStorage.removeItem('zuno_session');
+}
+async function restoreSession(){
+  try{
+    const s=localStorage.getItem('zuno_session');
+    if(!s)return false;
+    const {id,phone,pass}=JSON.parse(s);
+    const snap=await getDoc(doc(db,'users',id));
+    if(!snap.exists()){clearSession();return false;}
+    const u=snap.data();
+    if(u.phone!==phone||u.pass!==pass){clearSession();return false;}
+    CU={id,phone,...u};
+    return true;
+  }catch{clearSession();return false;}
+}
+
 window.doLogin=async()=>{
   const ph=$('l-phone').value.trim(),pw=$('l-pass').value;
   if(!ph||!pw){toast('Completá todos los campos','err');return;}
@@ -641,6 +662,7 @@ window.doLogin=async()=>{
     const snap=await getDocs(q);
     if(snap.empty){toast('Datos incorrectos','err');load(false);return;}
     CU={id:snap.docs[0].id,...snap.docs[0].data()};
+    saveSession(CU);
     load(false);
     if(!CU.verified&&(Date.now()-CU.registeredAt)<86400000){showS('pending');startCD(CU.registeredAt);}
     else{$('bnav').classList.add('show');goTo('home');}
@@ -661,7 +683,9 @@ window.doRegister=async()=>{
     const code='ZN-'+String(all.size+1).padStart(3,'0');
     const nu={name,dui,phone:ph,pass:pw,code,balance:0,totalCashback:0,points:0,tickets:0,role:'client',verified:false,registeredAt:Date.now(),history:[]};
     const ref=await addDoc(collection(db,'users'),nu);
-    CU={id:ref.id,...nu};load(false);
+    CU={id:ref.id,...nu};
+    saveSession(CU);
+    load(false);
     showS('pending');startCD(nu.registeredAt);
     toast('¡Registro exitoso! 🎉','ok');
   }catch(e){toast('Error al registrar','err');load(false);}
@@ -678,7 +702,7 @@ function startCD(reg){
   upd();CI=setInterval(upd,1000);
 }
 
-window.doLogout=()=>{CU=null;if(CI)clearInterval(CI);$('bnav').classList.remove('show');showS('login');};
+window.doLogout=()=>{CU=null;clearSession();if(CI)clearInterval(CI);$('bnav').classList.remove('show');showS('login');};
 
 window.goTo=async id=>{
   showS(id);
@@ -940,6 +964,22 @@ window.submitKYC=async()=>{
     load(false);
   }
 };
+
+// ── AUTO LOGIN AL CARGAR ──
+(async()=>{
+  load(true,'Cargando...');
+  const ok=await restoreSession();
+  load(false);
+  if(ok){
+    $('bnav').classList.add('show');
+    if(!CU.verified&&(Date.now()-CU.registeredAt)<86400000){
+      showS('pending');startCD(CU.registeredAt);
+    } else {
+      goTo('home');
+    }
+  }
+  // Si no hay sesión se queda en login (pantalla por defecto)
+})();
 </script>
 </body>
 </html>
