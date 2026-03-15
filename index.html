@@ -879,12 +879,29 @@ window.openKYC=()=>{
   });
   $('m-kyc').classList.add('open');
 };
+// Comprimir imagen antes de guardar
+function compressImg(b64,maxW=800,quality=0.7){
+  return new Promise(res=>{
+    const img=new Image();
+    img.onload=()=>{
+      const canvas=document.createElement('canvas');
+      let w=img.width,h=img.height;
+      if(w>maxW){h=Math.round(h*(maxW/w));w=maxW;}
+      canvas.width=w;canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      res(canvas.toDataURL('image/jpeg',quality));
+    };
+    img.src=b64;
+  });
+}
+
 window.onKUP=(e,zoneId,prevId,varName)=>{
   const f=e.target.files[0];if(!f)return;
-  if(f.size>5*1024*1024){toast('Imagen muy grande (máx 5MB)','err');return;}
+  if(f.size>10*1024*1024){toast('Imagen muy grande (máx 10MB)','err');return;}
   const r=new FileReader();
-  r.onload=ev=>{
-    const b64=ev.target.result;
+  r.onload=async ev=>{
+    // Comprimir antes de guardar
+    const b64=await compressImg(ev.target.result,800,0.65);
     if(varName==='kyc-img-dui')kycImgDUI=b64;
     else kycImgSelfie=b64;
     // Mostrar preview
@@ -897,22 +914,31 @@ window.onKUP=(e,zoneId,prevId,varName)=>{
   };
   r.readAsDataURL(f);
 };
+
 window.submitKYC=async()=>{
   if(!kycImgDUI){toast('Subí la foto de tu DUI','err');return;}
   if(!kycImgSelfie){toast('Subí el selfie con tu DUI','err');return;}
   load(true,'Enviando documentos...');
   try{
+    // Guardar en dos documentos separados para evitar límite 1MB de Firestore
     await setDoc(doc(db,'kyc',CU.id),{
       userId:CU.id,userName:CU.name,userDUI:CU.dui,userPhone:CU.phone,
-      imgDUI:kycImgDUI,imgSelfie:kycImgSelfie,
       status:'pending',createdAt:Date.now()
+    });
+    await setDoc(doc(db,'kyc_imgs',CU.id),{
+      imgDUI:kycImgDUI,
+      imgSelfie:kycImgSelfie,
     });
     await updateDoc(doc(db,'users',CU.id),{kycStatus:'pending'});
     CU.kycStatus='pending';
     closeM('m-kyc');load(false);
     toast('✅ Documentos enviados — revisamos pronto','ok');
     rProfile();
-  }catch(e){toast('Error al enviar. Intentá de nuevo.','err');load(false);}
+  }catch(e){
+    console.error('KYC error:',e);
+    toast('Error: '+e.message,'err');
+    load(false);
+  }
 };
 </script>
 </body>

@@ -821,15 +821,22 @@ async function rKYC(){
 }
 window.setKycF=(f,el)=>{kycFilter=f;document.querySelectorAll('#panel-kyc .ftab').forEach(t=>t.classList.remove('on'));el.classList.add('on');rKYC();};
 
-window.openKYCReview=id=>{
+window.openKYCReview=async id=>{
   const k=allKYC.find(x=>x.id===id);if(!k)return;selKycId=id;
   $('mkr-name').textContent=k.userName;
   $('mkr-sub').textContent='DUI: '+k.userDUI+' · '+k.userPhone;
-  $('mkr-dui').src=k.imgDUI||'';
-  $('mkr-selfie').src=k.imgSelfie||'';
   $('mkr-datos').innerHTML=`👤 <strong>${k.userName}</strong><br>📋 DUI: <strong>${k.userDUI}</strong><br>📱 Tel: ${k.userPhone}<br>📅 Enviado: ${fDate(k.createdAt)}`;
   $('kyc-rej-note').value='';
+  // Cargar fotos desde colección separada
+  $('mkr-dui').src='';$('mkr-selfie').src='';
   openM('m-kyc-rev');
+  try{
+    const imgs=await getDoc(doc(db,'kyc_imgs',id));
+    if(imgs.exists()){
+      $('mkr-dui').src=imgs.data().imgDUI||'';
+      $('mkr-selfie').src=imgs.data().imgSelfie||'';
+    }
+  }catch(e){console.error('Error cargando fotos KYC:',e);}
 };
 
 window.reviewKYC=async status=>{
@@ -841,16 +848,11 @@ window.reviewKYC=async status=>{
     const k=allKYC.find(x=>x.id===selKycId);
     // Guardar resultado SIN las fotos — se eliminan para optimizar Firestore
     await setDoc(doc(db,'kyc',selKycId),{
-      userId:k.userId,
-      userName:k.userName,
-      userDUI:k.userDUI,
-      userPhone:k.userPhone,
-      status,
-      note:note||'',
-      createdAt:k.createdAt,
-      reviewedAt:Date.now(),
-      // imgDUI e imgSelfie se eliminan intencionalmente al revisar
+      userId:k.userId,userName:k.userName,userDUI:k.userDUI,userPhone:k.userPhone,
+      status,note:note||'',createdAt:k.createdAt,reviewedAt:Date.now(),
     });
+    // Eliminar fotos — ya no se necesitan
+    await deleteDoc(doc(db,'kyc_imgs',selKycId));
     await updateDoc(doc(db,'users',k.userId),{
       kycStatus:status,
       ...(status==='approved'?{verified:true}:{})
