@@ -402,14 +402,16 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
   </div>
   <div class="sub-body">
     <div class="step-lbl">1 · Foto del recibo o factura</div>
-    <div class="upz" id="upz" onclick="triggerUp()">
-      <input type="file" id="up-file" accept="image/*" onchange="onFile(event)">
-      <div id="upz-ph">
-        <div class="upz-ic">📸</div>
-        <div class="upz-lbl">Tocá para tomar foto</div>
-        <div class="upz-sub">JPG, PNG · máx 5MB</div>
-      </div>
-      <img id="up-prev" alt="preview">
+    <div class="upz" id="upz">
+      <label for="up-file" style="display:block;width:100%;cursor:pointer">
+        <div id="upz-ph">
+          <div class="upz-ic">📸</div>
+          <div class="upz-lbl">Tocá para seleccionar foto</div>
+          <div class="upz-sub">JPG, PNG · máx 5MB</div>
+        </div>
+        <img id="up-prev" alt="preview">
+      </label>
+      <input type="file" id="up-file" accept="image/*" onchange="onFile(event)" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none">
     </div>
 
     <div class="step-lbl">2 · ¿Dónde compraste?</div>
@@ -517,26 +519,30 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 
     <!-- PASO 1: DUI -->
     <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">1 · Foto de tu DUI (frente)</div>
-    <div class="kup" id="kup-dui" onclick="triggerKUP('kup-dui-file')">
-      <input type="file" id="kup-dui-file" accept="image/*" onchange="onKUP(event,'kup-dui','kup-dui-prev','kyc-img-dui')">
-      <div id="kup-dui-ph">
-        <div class="kup-ic">🪪</div>
-        <div class="kup-lbl">Foto del DUI frente</div>
-        <div class="kup-sub">Asegurate que se lean todos los datos</div>
-      </div>
-      <img id="kup-dui-prev" alt="DUI">
+    <div class="kup" id="kup-dui">
+      <label for="kup-dui-file" style="display:block;width:100%;cursor:pointer">
+        <div id="kup-dui-ph">
+          <div class="kup-ic">🪪</div>
+          <div class="kup-lbl">Foto del DUI frente</div>
+          <div class="kup-sub">Asegurate que se lean todos los datos</div>
+        </div>
+        <img id="kup-dui-prev" alt="DUI">
+      </label>
+      <input type="file" id="kup-dui-file" accept="image/*" onchange="onKUP(event,'kup-dui','kup-dui-prev','kyc-img-dui')" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none">
     </div>
 
     <!-- PASO 2: SELFIE -->
     <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">2 · Selfie sosteniendo tu DUI</div>
-    <div class="kup" id="kup-selfie" onclick="triggerKUP('kup-selfie-file')">
-      <input type="file" id="kup-selfie-file" accept="image/*" onchange="onKUP(event,'kup-selfie','kup-selfie-prev','kyc-img-selfie')">
-      <div id="kup-selfie-ph">
-        <div class="kup-ic">🤳</div>
-        <div class="kup-lbl">Selfie con tu DUI visible</div>
-        <div class="kup-sub">Tu cara y el DUI deben verse claramente</div>
-      </div>
-      <img id="kup-selfie-prev" alt="Selfie">
+    <div class="kup" id="kup-selfie">
+      <label for="kup-selfie-file" style="display:block;width:100%;cursor:pointer">
+        <div id="kup-selfie-ph">
+          <div class="kup-ic">🤳</div>
+          <div class="kup-lbl">Selfie con tu DUI visible</div>
+          <div class="kup-sub">Tu cara y el DUI deben verse claramente</div>
+        </div>
+        <img id="kup-selfie-prev" alt="Selfie">
+      </label>
+      <input type="file" id="kup-selfie-file" accept="image/*" onchange="onKUP(event,'kup-selfie','kup-selfie-prev','kyc-img-selfie')" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none">
     </div>
 
     <div style="background:var(--bluebg);border:1px solid var(--blueborder);border-radius:11px;padding:11px 14px;font-size:12px;color:var(--blue);font-weight:600;line-height:1.6;margin-bottom:16px">
@@ -733,7 +739,6 @@ async function initTicket(){
       <div><div class="copt-name">${c.name}</div><div class="copt-rate">${c.cashbackPct}% cashback</div></div>
     </div>`).join('');
 }
-window.triggerUp=()=>$('up-file').click();
 window.onFile=e=>{
   const f=e.target.files[0];if(!f)return;
   if(f.size>5*1024*1024){toast('Imagen muy grande (máx 5MB)','err');return;}
@@ -874,7 +879,6 @@ window.openKYC=()=>{
   });
   $('m-kyc').classList.add('open');
 };
-window.triggerKUP=id=>$(id).click();
 window.onKUP=(e,zoneId,prevId,varName)=>{
   const f=e.target.files[0];if(!f)return;
   if(f.size>5*1024*1024){toast('Imagen muy grande (máx 5MB)','err');return;}
